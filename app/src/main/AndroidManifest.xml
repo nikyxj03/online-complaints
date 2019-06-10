@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.msm.onlinecomplaintapp">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera2" />
+
+    <application
+        android:name=".GlobalApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="VITMONITOR"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UserActivities.homepage" />
+        <activity android:name=".UserActivities.newcomplaint" />
+        <activity android:name=".cameracapture" />
+        <activity android:name=".UserActivities.mycomplaints" />
+        <activity android:name=".UserActivities.settingsactivity" />
+        <activity android:name=".UserActivities.totcompdesc" />
+        <activity android:name=".DepartmentActivities.department_home" />
+        <activity android:name="com.msm.onlinecomplaintapp.AdminActivities.admin_home" />
+        <activity android:name=".DepartmentActivities.deptcomplaints" />
+        <activity android:name=".DepartmentActivities.deptsettings" />
+        <activity android:name=".DepartmentActivities.depttotcompdec" />
+        <activity android:name=".AdminActivities.adminsettings" />
+        <activity android:name=".AdminActivities.adminrequests" />
+        <activity android:name=".AdminActivities.admincreateaccount" />
+        <activity android:name=".UserActivities.userarchives" />
+        <activity android:name=".DepartmentActivities.deptarchives" />
+        <activity android:name="com.msm.onlinecomplaintapp.AdminActivities.adminarchives" />
+        <activity android:name=".UserActivities.notifictationsactivity"></activity>
+    </application>
+
+</manifest>

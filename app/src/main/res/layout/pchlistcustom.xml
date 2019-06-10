@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/complistmainlinear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/clistitem"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/comptitletext"
+            android:layout_width="208dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:transitionName="trans2"/>
+
+        <TextView
+            android:id="@+id/comptimetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:translationX="-6dp"
+            android:textColor="#000000"
+            android:text="TextView" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/compdesctext"
+            android:layout_width="225dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="18dp"
+            android:ellipsize="end"
+            android:textColor="#000000"
+            android:maxLines="5"/>
+
+        <ImageView
+            android:id="@+id/complistimage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/supportnotext"
+            android:layout_weight="1"
+            android:text="Support:1"
+            android:textColor="#000000"
+            android:translationX="10dp"/>
+
+
+        <ToggleButton
+            android:id="@+id/supportbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="SUPPORT"
+            android:textOn="UNSUPPORT"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:background="@drawable/roundshape"/>
+    </LinearLayout>
+</LinearLayout>
