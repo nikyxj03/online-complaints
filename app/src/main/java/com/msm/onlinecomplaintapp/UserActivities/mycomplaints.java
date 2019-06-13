@@ -550,96 +550,96 @@ public class mycomplaints extends AppCompatActivity {
             else {
                 supportbutton.setChecked(false);
             }
-                complistmainlinear.setVisibility(View.VISIBLE);
-                comptitletext.setText(_data.get(ist).get("title").toString());
-                comptimetext.setText(_data.get(ist).get("time").toString().substring(6,16));
-                compdesctext.setText(_data.get(ist).get("desc").toString());
-                supportnotext.setText("Support:"+_data.get(ist).get("supportno").toString());
-                if(_data.get(ist).containsKey("ciuri")){
-                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
-                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
-                }
-                else {
-                    complistimage.setVisibility(View.GONE);
-                }
-                supportbutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(supportbutton.isChecked()) {
-                            int tf1=0;
-                            tempmap1=new HashMap<>();
-                            for(int i1=0;i1<usersupplistmap.size();i1++){
-                                if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
-                                    tempmap1=usersupplistmap.get(i1);
-                                    tempmap1.put("c"+String.valueOf((int)(usersupplistmap.get(i1).size())),_data.get(ist).get("cid").toString());
-                                    usfb.child(uid).updateChildren(tempmap1);
-                                    tf1=1;
-                                    break;
-                                }
-                            }
-                            if(tf1==0){
-                                tempmap1=new HashMap<>();
-                                tempmap1.put("uid",uid);
-                                tempmap1.put("c1",_data.get(ist).get("cid").toString());
+            complistmainlinear.setVisibility(View.VISIBLE);
+            comptitletext.setText(_data.get(ist).get("title").toString());
+            comptimetext.setText(_data.get(ist).get("time").toString().substring(6,16));
+            compdesctext.setText(_data.get(ist).get("desc").toString());
+            supportnotext.setText("Support:"+_data.get(ist).get("supportno").toString());
+            if(_data.get(ist).containsKey("ciuri")){
+                Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
+                Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
+            }
+            else {
+                complistimage.setVisibility(View.GONE);
+            }
+            supportbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(supportbutton.isChecked()) {
+                        int tf1=0;
+                        tempmap1=new HashMap<>();
+                        for(int i1=0;i1<usersupplistmap.size();i1++){
+                            if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
+                                tempmap1=usersupplistmap.get(i1);
+                                tempmap1.put("c"+String.valueOf((int)(usersupplistmap.get(i1).size())),_data.get(ist).get("cid").toString());
                                 usfb.child(uid).updateChildren(tempmap1);
-                            }
-                            tempmap2=new HashMap<>();
-                            for(int i2=0;i2<complaintlistmap.size();i2++){
-                                if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
-                                    tempmap2=complaintlistmap.get(i2);
-                                    int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                                    tempmap2.remove("supportno");
-                                    tempmap2.put("supportno",tsn+1);
-                                    cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
-                                    break;
-                                }
+                                tf1=1;
+                                break;
                             }
                         }
-                        else{
+                        if(tf1==0){
                             tempmap1=new HashMap<>();
-                            int tpc=0;
-                            for(int i1=0;i1<usersupplistmap.size();i1++){
-                                if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
-                                    tempmap1=usersupplistmap.get(i1);
-                                    for(int j1=0;j1<tempmap1.size()-1;j1++){
-                                        if(tempmap1.get("c"+String.valueOf(j1+1)).equals(_data.get(ist).get("cid").toString())){
-                                            tpc=j1+1;
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                }
+                            tempmap1.put("uid",uid);
+                            tempmap1.put("c1",_data.get(ist).get("cid").toString());
+                            usfb.child(uid).updateChildren(tempmap1);
+                        }
+                        tempmap2=new HashMap<>();
+                        for(int i2=0;i2<complaintlistmap.size();i2++){
+                            if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
+                                tempmap2=complaintlistmap.get(i2);
+                                int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
+                                tempmap2.remove("supportno");
+                                tempmap2.put("supportno",tsn+1);
+                                cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
+                                break;
                             }
-                            tempmap1.remove("c"+String.valueOf(tpc));
-                            for(int j1=tpc;j1<tempmap1.size();j1++){
-                                tempmap1.put("c"+String.valueOf(j1),tempmap1.get("c"+String.valueOf(j1+1)));
-                                tpc=j1+1;
-                            }
-                            if(tempmap1.containsKey("c"+String.valueOf(tpc))) {
-                                tempmap1.remove("c" + String.valueOf(tpc));
-                            }
-                            if(tempmap1.size()==1){
-                                usfb.child(uid).removeValue();
-                            }
-                            else {
-                                usfb.child(uid).removeValue();
-                                usfb.child(uid).updateChildren(tempmap1);
-                            }
-                            tempmap2=new HashMap<>();
-                            for(int i2=0;i2<complaintlistmap.size();i2++){
-                                if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
-                                    tempmap2=complaintlistmap.get(i2);
-                                    int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                                    tempmap2.remove("supportno");
-                                    tempmap2.put("supportno",tsn-1);
-                                    cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
-                                    break;
-                                }
-                            }
-
                         }
                     }
-                });
+                    else{
+                        tempmap1=new HashMap<>();
+                        int tpc=0;
+                        for(int i1=0;i1<usersupplistmap.size();i1++){
+                            if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
+                                tempmap1=usersupplistmap.get(i1);
+                                for(int j1=0;j1<tempmap1.size()-1;j1++){
+                                    if(tempmap1.get("c"+String.valueOf(j1+1)).equals(_data.get(ist).get("cid").toString())){
+                                        tpc=j1+1;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        tempmap1.remove("c"+String.valueOf(tpc));
+                        for(int j1=tpc;j1<tempmap1.size();j1++){
+                            tempmap1.put("c"+String.valueOf(j1),tempmap1.get("c"+String.valueOf(j1+1)));
+                            tpc=j1+1;
+                        }
+                        if(tempmap1.containsKey("c"+String.valueOf(tpc))) {
+                            tempmap1.remove("c" + String.valueOf(tpc));
+                        }
+                        if(tempmap1.size()==1){
+                            usfb.child(uid).removeValue();
+                        }
+                        else {
+                            usfb.child(uid).removeValue();
+                            usfb.child(uid).updateChildren(tempmap1);
+                        }
+                        tempmap2=new HashMap<>();
+                        for(int i2=0;i2<complaintlistmap.size();i2++){
+                            if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
+                                tempmap2=complaintlistmap.get(i2);
+                                int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
+                                tempmap2.remove("supportno");
+                                tempmap2.put("supportno",tsn-1);
+                                cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
+                                break;
+                            }
+                        }
+
+                    }
+                }
+            });
             complaintlistviews.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {

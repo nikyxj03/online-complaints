@@ -1,177 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/_drawer"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:openDrawer="start">
-<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/_drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".myaccountactivity">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            tools:context=".myaccountactivity">
             <LinearLayout
-                android:id="@+id/repalinear"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/repalinear"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <EditText
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:id="@+id/oldpedit"
-                        android:background="@drawable/editboxbg"
-                        android:inputType="textPassword"
-                        android:hint="Enter Old Password"
-                        android:padding="5dp"/>
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:id="@+id/oldpedit"
+                            android:background="@drawable/editboxbg"
+                            android:inputType="textPassword"
+                            android:hint="Enter Old Password"
+                            android:padding="5dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:id="@+id/npedit"
+                            android:background="@drawable/editboxbg"
+                            android:inputType="textPassword"
+                            android:hint="Enter New Password"
+                            android:padding="5dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:id="@+id/rnpedit"
+                            android:background="@drawable/editboxbg"
+                            android:inputType="textPassword"
+                            android:hint="Re-Enter New Password"
+                            android:padding="5dp"/>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/repabutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RESET PASSWORD" />
+
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/acchlinear"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <EditText
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:id="@+id/npedit"
-                        android:background="@drawable/editboxbg"
-                        android:inputType="textPassword"
-                        android:hint="Enter New Password"
-                        android:padding="5dp"/>
-                </LinearLayout>
+                        android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/emailidtext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Email-id:" />
 
-                    <EditText
+                        <EditText
+                            android:id="@+id/emailidedit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:id="@+id/rnpedit"
-                        android:background="@drawable/editboxbg"
-                        android:inputType="textPassword"
-                        android:hint="Re-Enter New Password"
-                        android:padding="5dp"/>
-                </LinearLayout>
+                        android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/repabutton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="RESET PASSWORD" />
+                        <TextView
+                            android:id="@+id/nametext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Name:" />
+
+                        <EditText
+                            android:id="@+id/nameedit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/phonenotext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Phone no:" />
+
+                        <EditText
+                            android:id="@+id/phonenoedit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="phone" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/scbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="SAVE CHANGES" />
+
+                    <Button
+                        android:id="@+id/rpbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CHANGE PASSWORD" />
+                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/acchlinear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/emailidtext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Email-id:" />
-
-                    <EditText
-                        android:id="@+id/emailidedit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/nametext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Name:" />
-
-                    <EditText
-                        android:id="@+id/nameedit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="textPersonName" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/phonenotext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Phone no:" />
-
-                    <EditText
-                        android:id="@+id/phonenoedit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="phone" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/scbutton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="SAVE CHANGES" />
-
-                <Button
-                    android:id="@+id/rpbutton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="CHANGE PASSWORD" />
-            </LinearLayout>
-
         </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+    <LinearLayout
+        android:id="@+id/_nav_view"
+        android:layout_width="270dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#EEEEEE">
+        <include layout="@layout/_drawer_main"/>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
-<LinearLayout
-    android:id="@+id/_nav_view"
-    android:layout_width="270dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:background="#EEEEEE">
-    <include layout="@layout/_drawer_main"/>
-</LinearLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
         vmauth=FirebaseAuth.getInstance();
 
-
         radiocat.check(R.id.studentrb);
         rgno=0;
 
@@ -312,32 +311,32 @@ public class MainActivity extends AppCompatActivity {
         radiocat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    int rgid=radiocat.getCheckedRadioButtonId();
-                    if(rgid==R.id.studentrb){
-                        loginsignupsignuplinear.setVisibility(View.VISIBLE);
-                        rgno=0;
-                    }
-                    else if(rgid==R.id.departmentrb){
-                        loginsignupsignuplinear.setVisibility(View.GONE);
-                        rgno=1;
-                    }
-                    else if(rgid==R.id.administratorrb){
-                        loginsignupsignuplinear.setVisibility(View.GONE);
-                        rgno=2;
-                    }
+                int rgid=radiocat.getCheckedRadioButtonId();
+                if(rgid==R.id.studentrb){
+                    loginsignupsignuplinear.setVisibility(View.VISIBLE);
+                    rgno=0;
                 }
+                else if(rgid==R.id.departmentrb){
+                    loginsignupsignuplinear.setVisibility(View.GONE);
+                    rgno=1;
+                }
+                else if(rgid==R.id.administratorrb){
+                    loginsignupsignuplinear.setVisibility(View.GONE);
+                    rgno=2;
+                }
+            }
         });
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        splashscreenlinear1.setVisibility(View.GONE);
-                        loginsignuplinear.setVisibility(View.GONE);
-                        loginlinear.setVisibility(View.VISIBLE);
-                        signuplinear.setVisibility(View.GONE);
-                        verifylinear.setVisibility(View.GONE);
-                    }
-                });
+            @Override
+            public void onClick(View view) {
+                splashscreenlinear1.setVisibility(View.GONE);
+                loginsignuplinear.setVisibility(View.GONE);
+                loginlinear.setVisibility(View.VISIBLE);
+                signuplinear.setVisibility(View.GONE);
+                verifylinear.setVisibility(View.GONE);
+            }
+        });
         signupbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -444,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
                                         startActivityForResult(homeintent, REQUEST_CODE_HOMEPAGE);
                                     }
-                            });
+                                });
                             }
                             else
                             {
@@ -542,7 +541,6 @@ public class MainActivity extends AppCompatActivity {
                                                     _e.printStackTrace();
                                                 }
                                                 splashscreenlinear1.setVisibility(View.GONE);
-
                                                 if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
                                                     if(loginpreferences.getString("ut","s" ).equals("s")) {
                                                         startActivityForResult(homeintent, REQUEST_CODE_HOMEPAGE);

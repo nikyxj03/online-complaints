@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.MainActivity;
 import com.msm.onlinecomplaintapp.R;
 
@@ -43,30 +44,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class department_home extends AppCompatActivity {
-
-    private static final int REQUEST_CODE_HOMEPAGE_D=21;
-    private static final int REQUEST_CODE_DeptCOMPLAINT_D=22;
-    private static final int REQUEST_CODE_SETTINGS_D=23;
-    private static final int REQUEST_CODE_MAIN_D=0;
-    private static final int REQUEST_CODE_ARCHIVES_D=24;
+public class department_home extends DepartmentActivity {
 
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
 
     private PopupMenu popup;
 
-    private Intent mainintent=new Intent();
-    private Intent deptcomplaintintent=new Intent();
-    private Intent settingsintent=new Intent();
-    private Intent tcdintent=new Intent();
-    private Intent archiveintent=new Intent();
-
     private Button homebutton1;
     private Button logoutbutton1;
     private Button settingsbutton1;
     private Button deptcomplaintsbutton1;
     private Button archivebutton1;
+    private Button deptarchivebutton1;
     private Button sortbutton1;
     private ListView complaintlistview1;
 
@@ -103,12 +93,20 @@ public class department_home extends AppCompatActivity {
                         setResult(RESULT_OK, deptcomplaintintent);
                     } else {
                         if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES_D){
-
+                            archiveintent.putExtra("ac","lo");
+                            setResult(RESULT_OK,archiveintent);
                         }else {
-                            if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
-                                mainintent.putExtra("key1", "logout");
-                                setResult(RESULT_OK, mainintent);
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
                             }
+                            else {
+                                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                    mainintent.putExtra("key1", "logout");
+                                    setResult(RESULT_OK, mainintent);
+                                }
+                            }
+
                         }
 
                     }
@@ -169,12 +167,10 @@ public class department_home extends AppCompatActivity {
         settingsbutton1=findViewById(R.id.settingsbutton1);
         archivebutton1=findViewById(R.id.archivebutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
+        deptarchivebutton1=findViewById(R.id.deptarchivebutton1);
 
-        mainintent.setClass(department_home.this,MainActivity.class);
-        deptcomplaintintent.setClass(department_home.this,deptcomplaints.class);
-        settingsintent.setClass(department_home.this,deptsettings.class);
-        tcdintent.setClass(department_home.this,depttotcompdec.class);
-        archiveintent.setClass(this,deptarchives.class );
+        setintents(this);
+
 
         popup = new PopupMenu(department_home.this,sortbutton1);
         MenuInflater inflater = popup.getMenuInflater();
@@ -201,6 +197,13 @@ public class department_home extends AppCompatActivity {
             }
         });
 
+        deptarchivebutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptarchiveintent,REQUEST_CODE_DEPTARCHIVES_D);
+            }
+        });
+
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -212,7 +215,6 @@ public class department_home extends AppCompatActivity {
                     smf=1;
                 }
                 complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                setListViewHeightBasedOnItems(complaintlistview1);
                 return false;
             }
         });
@@ -229,12 +231,20 @@ public class department_home extends AppCompatActivity {
                         setResult(RESULT_OK, deptcomplaintintent);
                     } else {
                         if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES_D){
-
+                            archiveintent.putExtra("ac","lo");
+                            setResult(RESULT_OK,archiveintent);
                         }else {
-                            if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
-                                mainintent.putExtra("key1", "logout");
-                                setResult(RESULT_OK, mainintent);
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
                             }
+                            else {
+                                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                    mainintent.putExtra("key1", "logout");
+                                    setResult(RESULT_OK, mainintent);
+                                }
+                            }
+
                         }
 
                     }
@@ -264,7 +274,7 @@ public class department_home extends AppCompatActivity {
                             _e.printStackTrace();
                         }
                         complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                        setListViewHeightBasedOnItems(complaintlistview1);
+
                     }
 
                     @Override
@@ -295,7 +305,6 @@ public class department_home extends AppCompatActivity {
                             _e.printStackTrace();
                         }
                         complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                        setListViewHeightBasedOnItems(complaintlistview1);
                     }
 
                     @Override
@@ -325,7 +334,7 @@ public class department_home extends AppCompatActivity {
                             _e.printStackTrace();
                         }
                         complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                        setListViewHeightBasedOnItems(complaintlistview1);
+
                     }
 
                     @Override
@@ -355,7 +364,7 @@ public class department_home extends AppCompatActivity {
                             _e.printStackTrace();
                         }
                         complaintlistview1.setAdapter(new department_home.complaintlistadapter(complaintlistmap,smf));
-                        setListViewHeightBasedOnItems(complaintlistview1);
+
                     }
 
                     @Override
@@ -400,7 +409,7 @@ public class department_home extends AppCompatActivity {
                 }
 
                 complaintlistview1.setAdapter(new department_home.complaintlistadapter(complaintlistmap, smf));
-                setListViewHeightBasedOnItems(complaintlistview1);
+
                 progressDialog.dismiss();
             }
 

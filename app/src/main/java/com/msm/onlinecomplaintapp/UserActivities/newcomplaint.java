@@ -132,7 +132,7 @@ public class newcomplaint extends AppCompatActivity {
     private StorageReference compimgfbs=vmfbs.getReference();
     private StorageReference storageReference;
 
-    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; 
+    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     public static String randomAlphaNumeric(int count) {
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
@@ -170,56 +170,56 @@ public class newcomplaint extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }*/
-            if (resultCode == RESULT_OK) {
-                if (requestCode == 6) {
-                    final ProgressDialog progressDialog = new ProgressDialog(this);
-                    progressDialog.setTitle("Loading...");
-                    progressDialog.show();
-                    Bundle extras=data.getExtras();
-                    storageReference=compimgfbs.child("complaintimages/"+cid);
-                    Bitmap imagebitmap=(Bitmap)extras.get("data");
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    String path = MediaStore.Images.Media.insertImage(getContentResolver(),imagebitmap, "compimage", null);
-                    Uri uri=Uri.parse(path);
-                    storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    cidu=uri.toString();
-                                    ciduf=1;
-                                    progressDialog.dismiss();
-                                    Toast.makeText(newcomplaint.this,"Uploaded Successfully",Toast.LENGTH_LONG).show();
-                                }
-                            });
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 6) {
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("Loading...");
+                progressDialog.show();
+                Bundle extras=data.getExtras();
+                storageReference=compimgfbs.child("complaintimages/"+cid);
+                Bitmap imagebitmap=(Bitmap)extras.get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(),imagebitmap, "compimage", null);
+                Uri uri=Uri.parse(path);
+                storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                cidu=uri.toString();
+                                ciduf=1;
+                                progressDialog.dismiss();
+                                Toast.makeText(newcomplaint.this,"Uploaded Successfully",Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-                        }
-                    });
-                    compimage.setImageBitmap(imagebitmap);
-                }
-                else if (requestCode == 7) {
-                    Uri selectedImage = data.getData();
-                    storageReference=compimgfbs.child("complaintimages/"+cid);
-                    storageReference.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            cidu=taskSnapshot.getUploadSessionUri().toString();
-                            Toast.makeText(newcomplaint.this,"Uploaded Successfully",Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    String[] filePath = { MediaStore.Images.Media.DATA };
-                    Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
-                    c.moveToFirst();
-                    int columnIndex = c.getColumnIndex(filePath[0]);
-                    String picturePath = c.getString(columnIndex);
-                    c.close();
-                    Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    compimage.setImageBitmap(thumbnail);
-                }
+                    }
+                });
+                compimage.setImageBitmap(imagebitmap);
+            }
+            else if (requestCode == 7) {
+                Uri selectedImage = data.getData();
+                storageReference=compimgfbs.child("complaintimages/"+cid);
+                storageReference.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        cidu=taskSnapshot.getUploadSessionUri().toString();
+                        Toast.makeText(newcomplaint.this,"Uploaded Successfully",Toast.LENGTH_LONG).show();
+                    }
+                });
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                compimage.setImageBitmap(thumbnail);
             }
         }
+    }
     //}
 
     @Override
@@ -914,7 +914,7 @@ public class newcomplaint extends AppCompatActivity {
                 ucfb.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                         usercomplistmap= new ArrayList<>();
+                        usercomplistmap= new ArrayList<>();
                         try {
                             GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
                             };
@@ -1032,32 +1032,32 @@ public class newcomplaint extends AppCompatActivity {
             }
             final TextView deptnametext=ds_view.findViewById(R.id.deptnametext);
             final CheckBox depcheck=ds_view.findViewById(R.id.depcheck);
-                deptnametext.setText(_data.get(position).get("name").toString());
-                if(compdeptlist.contains(deptlistmap.get(position).get("did").toString())){
-                    depcheck.setChecked(true);
-                }
-                depcheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(depcheck.isChecked()){
-                            if(!compdeptlist.contains(deptlistmap.get(position).get("did").toString())) {
-                                compdeptlist.add(deptlistmap.get(position).get("did").toString());
-                                if(compdeptlist.size()==1){
-                                    depstext.setText(deptlistmap.get(position).get("name").toString());
-                                    if(depstext.getText().length()>20){
-                                        depstext.setText(depstext.getText().toString().substring(0,18)+"...");
-                                    }
-                                }
-                                else{
-                                    depstext.setText(depstext.getText()+" and "+String.valueOf(compdeptlist.size()-1)+" more");
+            deptnametext.setText(_data.get(position).get("name").toString());
+            if(compdeptlist.contains(deptlistmap.get(position).get("did").toString())){
+                depcheck.setChecked(true);
+            }
+            depcheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(depcheck.isChecked()){
+                        if(!compdeptlist.contains(deptlistmap.get(position).get("did").toString())) {
+                            compdeptlist.add(deptlistmap.get(position).get("did").toString());
+                            if(compdeptlist.size()==1){
+                                depstext.setText(deptlistmap.get(position).get("name").toString());
+                                if(depstext.getText().length()>20){
+                                    depstext.setText(depstext.getText().toString().substring(0,18)+"...");
                                 }
                             }
-                        }
-                        else{
-                            compdeptlist.remove(deptlistmap.get(position).get("did").toString());
+                            else{
+                                depstext.setText(depstext.getText()+" and "+String.valueOf(compdeptlist.size()-1)+" more");
+                            }
                         }
                     }
-                });
+                    else{
+                        compdeptlist.remove(deptlistmap.get(position).get("did").toString());
+                    }
+                }
+            });
 
             return ds_view;
         }

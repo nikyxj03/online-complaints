@@ -363,66 +363,66 @@ public class admin_home extends AppCompatActivity {
                                     _e.printStackTrace();
                                 }
 
-                                        int flag1=0;
-                                        do {
-                                            flag1=0;
-                                            temprid=randomAlphaNumeric(8);
-                                            for (int i1 = 0; i1 < adminrequestlistmap.size(); i1++) {
-                                                if (adminrequestlistmap.get(i1).get("rid").toString().equals(temprid)) {
-                                                    flag1 = 1;
-                                                }
-                                            }
-                                        }while(flag1==1);
-                                        for(int i13=0;i13<deptdatalistmap.size();i13++){
-                                            if(deptdatalistmap.get(i13).get("uid").toString().equals(uid)){
-                                                did=deptdatalistmap.get(i13).get("dept").toString();
-                                            }
+                                int flag1=0;
+                                do {
+                                    flag1=0;
+                                    temprid=randomAlphaNumeric(8);
+                                    for (int i1 = 0; i1 < adminrequestlistmap.size(); i1++) {
+                                        if (adminrequestlistmap.get(i1).get("rid").toString().equals(temprid)) {
+                                            flag1 = 1;
                                         }
-                                        deptcomplaintlistmap=new ArrayList<>();
-                                        for(int i14=0;i14<complaintlistmap.size();i14++){
-                                            if(complaintlistmap.get(i14).get("dept").toString().contains(did) && complaintlistmap.get(i14).get("acm").toString().equals("0")){
-                                                deptcomplaintlistmap.add(complaintlistmap.get(i14));
-                                            }
-                                        }
-                                        complaintlistview2.setAdapter(new complaintlistadapter(deptcomplaintlistmap,smf));
-                                        SwipeMenuCreator creator = new SwipeMenuCreator() {
-                                            @Override
-                                            public void create(SwipeMenu menu) {
-                                                SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
-                                                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
-                                                openItem.setWidth(220);
-                                                openItem.setTitle("View");
-                                                openItem.setTitleSize(18);
-                                                openItem.setTitleColor(Color.WHITE);
-                                                menu.addMenuItem(openItem);
-                                                SwipeMenuItem reply=new SwipeMenuItem(getApplicationContext());
-                                                reply.setTitle("Reply");
-                                                reply.setTitleColor(Color.WHITE);
-                                                reply.setTitleSize(18);
-                                                reply.setWidth(220);
-                                                reply.setBackground(R.color.colorPrimary);
-                                                menu.addMenuItem(reply);
-                                                SwipeMenuItem forward=new SwipeMenuItem(getApplicationContext());
-                                                forward.setTitle("Forward");
-                                                forward.setTitleColor(Color.WHITE);
-                                                forward.setTitleSize(18);
-                                                forward.setWidth(220);
-                                                forward.setBackground(R.color.colorAccent);
-                                                menu.addMenuItem(forward);
-                                                SwipeMenuItem request = new SwipeMenuItem(getApplicationContext());
-                                                request.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                                                request.setWidth(220);
-                                                request.setTitle("DELETE");
-                                                request.setTitleSize(18);
-                                                request.setTitleColor(Color.WHITE);
-                                                menu.addMenuItem(request);
-                                            }
-                                        };
-                                        complaintlistview2.setMenuCreator(creator);
-                                        //setListViewHeightBasedOnItems(complaintlistviews);
-                                        complaintlistview2.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-                                        complaintlistview2.setCloseInterpolator(new BounceInterpolator());
-                                        progressDialog.dismiss();
+                                    }
+                                }while(flag1==1);
+                                for(int i13=0;i13<deptdatalistmap.size();i13++){
+                                    if(deptdatalistmap.get(i13).get("uid").toString().equals(uid)){
+                                        did=deptdatalistmap.get(i13).get("dept").toString();
+                                    }
+                                }
+                                deptcomplaintlistmap=new ArrayList<>();
+                                for(int i14=0;i14<complaintlistmap.size();i14++){
+                                    if(complaintlistmap.get(i14).get("dept").toString().contains(did) && complaintlistmap.get(i14).get("acm").toString().equals("0")){
+                                        deptcomplaintlistmap.add(complaintlistmap.get(i14));
+                                    }
+                                }
+                                complaintlistview2.setAdapter(new complaintlistadapter(deptcomplaintlistmap,smf));
+                                SwipeMenuCreator creator = new SwipeMenuCreator() {
+                                    @Override
+                                    public void create(SwipeMenu menu) {
+                                        SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
+                                        openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+                                        openItem.setWidth(220);
+                                        openItem.setTitle("View");
+                                        openItem.setTitleSize(18);
+                                        openItem.setTitleColor(Color.WHITE);
+                                        menu.addMenuItem(openItem);
+                                        SwipeMenuItem reply=new SwipeMenuItem(getApplicationContext());
+                                        reply.setTitle("Reply");
+                                        reply.setTitleColor(Color.WHITE);
+                                        reply.setTitleSize(18);
+                                        reply.setWidth(220);
+                                        reply.setBackground(R.color.colorPrimary);
+                                        menu.addMenuItem(reply);
+                                        SwipeMenuItem forward=new SwipeMenuItem(getApplicationContext());
+                                        forward.setTitle("Forward");
+                                        forward.setTitleColor(Color.WHITE);
+                                        forward.setTitleSize(18);
+                                        forward.setWidth(220);
+                                        forward.setBackground(R.color.colorAccent);
+                                        menu.addMenuItem(forward);
+                                        SwipeMenuItem request = new SwipeMenuItem(getApplicationContext());
+                                        request.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                                        request.setWidth(220);
+                                        request.setTitle("DELETE");
+                                        request.setTitleSize(18);
+                                        request.setTitleColor(Color.WHITE);
+                                        menu.addMenuItem(request);
+                                    }
+                                };
+                                complaintlistview2.setMenuCreator(creator);
+                                //setListViewHeightBasedOnItems(complaintlistviews);
+                                complaintlistview2.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+                                complaintlistview2.setCloseInterpolator(new BounceInterpolator());
+                                progressDialog.dismiss();
 
 
 

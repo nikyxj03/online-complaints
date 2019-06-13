@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
 
@@ -18,9 +19,8 @@
             @transition/fadetransition</item>
         <item name="android:windowSharedElementExitTransition">
             @transition/explode</item>
-
-
     </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

@@ -18,17 +18,17 @@ public class ConfirmationDialog extends Dialog {
     private Button nobutton;
     private Button yesbutton;
 
-    public ConfirmationDialog(Context context,String title,int resid) {
+    public ConfirmationDialog(Context context,String title) {
         super(context);
         this.title=title;
-        setContentView(resid);
+        this.getWindow().getAttributes().windowAnimations=R.style.DialogSlide;
     }
 
-    public ConfirmationDialog(Context context,String title,String desc,int resid) {
+    public ConfirmationDialog(Context context,String title,String desc) {
         super(context);
         this.title=title;
         this.desc=desc;
-        setContentView(resid);
+        this.getWindow().getAttributes().windowAnimations=R.style.DialogSlide;
     }
 
     @Override
@@ -57,8 +57,8 @@ public class ConfirmationDialog extends Dialog {
     }
 
     @Override
-    public void setContentView(int layoutResID) {
-        View view=getLayoutInflater().inflate(layoutResID,null );
+    public void setContentView(View view) {
+        super.setContentView(view);
         yesbutton=view.findViewById(R.id.cdyesbutton);
         nobutton=view.findViewById(R.id.cdnobutton);
         TextView titletext=view.findViewById(R.id.cdtitletext);

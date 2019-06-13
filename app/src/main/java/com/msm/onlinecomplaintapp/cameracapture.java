@@ -102,7 +102,7 @@ public class cameracapture extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(cmf==0){
-                takePicture();
+                    takePicture();
                 }
                 else
                 {

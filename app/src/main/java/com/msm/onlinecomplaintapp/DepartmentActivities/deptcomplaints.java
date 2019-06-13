@@ -52,6 +52,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.MainActivity;
 import com.msm.onlinecomplaintapp.R;
 
@@ -60,13 +61,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class deptcomplaints extends AppCompatActivity {
+public class deptcomplaints extends DepartmentActivity {
 
-    private static final int REQUEST_CODE_HOMEPAGE_D=21;
-    private static final int REQUEST_CODE_DeptCOMPLAINT_D=22;
-    private static final int REQUEST_CODE_SETTINGS_D=23;
-    private static final int REQUEST_CODE_MAIN_D=0;
-    private static final int REQUEST_CODE_ARCHIVES_D=24;
 
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
@@ -79,6 +75,7 @@ public class deptcomplaints extends AppCompatActivity {
     private Button logoutbutton1;
     private Button settingsbutton1;
     private Button archivebutton1;
+    private Button deptarchivesbutton1;
     private Button deptcomplaintsbutton1;
     private Button dsortbutton1;
     private SwipeMenuListView dcomplaintlistviews;
@@ -91,13 +88,6 @@ public class deptcomplaints extends AppCompatActivity {
     private Button dardeletebutton;
     private Button darblockbutton;
     private Button dararchivebutton;
-
-    private Intent mainintent=new Intent();
-    private Intent depthomeintent=new Intent();
-    private Intent deptcomplaintintent=new Intent();
-    private Intent settingsintent=new Intent();
-    private Intent tcdintent=new Intent();
-    private Intent archiveintent=new Intent();
 
     private ArrayList<HashMap<String,Object>> udlistmap=new ArrayList<>();
     private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
@@ -163,11 +153,18 @@ public class deptcomplaints extends AppCompatActivity {
                             setResult(RESULT_OK,archiveintent);
                         }
                         else {
-                            if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                            {
-                                mainintent.putExtra("key1","logout");
-                                setResult(RESULT_OK,mainintent);
+                            if(getIntent().getIntExtra("pp",0)==REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
                             }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+
                         }
 
                     }
@@ -204,15 +201,12 @@ public class deptcomplaints extends AppCompatActivity {
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);
         settingsbutton1=findViewById(R.id.settingsbutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
+        deptarchivesbutton1=findViewById(R.id.deptarchivebutton1);
         dsortbutton1=findViewById(R.id.dsortbutton1);
         dcomplaintlistviews=findViewById(R.id.dcomplaintlistviews);
         archivebutton1=findViewById(R.id.archivebutton1);
 
-        mainintent.setClass(deptcomplaints.this,MainActivity.class);
-        settingsintent.setClass(deptcomplaints.this,deptsettings.class);
-        depthomeintent.setClass(deptcomplaints.this,department_home.class);
-        tcdintent.setClass(deptcomplaints.this,depttotcompdec.class);
-        archiveintent.setClass(deptcomplaints.this,deptarchives.class );
+        setintents(this);
 
         homebutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,6 +219,20 @@ public class deptcomplaints extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivityForResult(settingsintent,REQUEST_CODE_SETTINGS_D);
+            }
+        });
+
+        archivebutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(archiveintent,REQUEST_CODE_ARCHIVES_D );
+            }
+        });
+
+        deptarchivesbutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptarchiveintent,REQUEST_CODE_DEPTARCHIVES_D);
             }
         });
 
@@ -245,11 +253,18 @@ public class deptcomplaints extends AppCompatActivity {
                             setResult(RESULT_OK,archiveintent);
                         }
                         else {
-                            if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                            {
-                                mainintent.putExtra("key1","logout");
-                                setResult(RESULT_OK,mainintent);
+                            if(getIntent().getIntExtra("pp",0)==REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
                             }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+
                         }
 
                     }
@@ -949,6 +964,7 @@ public class deptcomplaints extends AppCompatActivity {
                                     tempmap1.put("rid",temprid);
                                     tempmap1.put("cid",tempcid);
                                     tempmap1.put("status","0" );
+                                    tempmap1.put("uid", complaintlistmap.get(tempposcid).get("uid").toString());
                                     int f3=0;
                                     for(int i17=0;i17<adminrequestlistmap.size();i17++){
                                         if(adminrequestlistmap.get(i17).get("type").toString().equals("1") && adminrequestlistmap.get(i17).get("status").equals("0")) {
@@ -979,6 +995,7 @@ public class deptcomplaints extends AppCompatActivity {
                                     tempmap1.put("rid",temprid );
                                     tempmap1.put("cid",tempcid);
                                     tempmap1.put("status","0");
+                                    tempmap1.put("uid",complaintlistmap.get(tempposcid).get("uid").toString());
                                     int f3=0;
                                     for(int i17=0;i17<adminrequestlistmap.size();i17++){
                                         if(adminrequestlistmap.get(i17).get("type").toString().equals("2") && adminrequestlistmap.get(i17).get("status").equals("0")) {

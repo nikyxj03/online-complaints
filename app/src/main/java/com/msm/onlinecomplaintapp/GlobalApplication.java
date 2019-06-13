@@ -2,11 +2,9 @@ package com.msm.onlinecomplaintapp;
 
 
 import android.app.Application;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
 
 import com.google.firebase.FirebaseApp;
+import com.msm.onlinecomplaintapp.Others.DatabaseHelper;
 
 public class GlobalApplication extends Application {
 

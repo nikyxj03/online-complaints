@@ -1,9 +1,12 @@
 package com.msm.onlinecomplaintapp.Models;
 
+import com.google.firebase.Timestamp;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Complaint {
+public class Complaint  {
 
     private String title;
     private String desc;
@@ -15,7 +18,7 @@ public class Complaint {
     private String mode; //publish mode
     private String dept;
     private String uid;
-    private String time;
+    private Timestamp time;
 
 
     public String getTitle(){
@@ -54,7 +57,7 @@ public class Complaint {
         this.supportno = supportno;
     }
 
-    public void setTime(String time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
@@ -98,7 +101,7 @@ public class Complaint {
         return uid;
     }
 
-    public String getTime(){
+    public Timestamp getTime(){
         return time;
     }
 

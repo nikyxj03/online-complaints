@@ -254,35 +254,35 @@ public class userarchives extends AppCompatActivity {
                 catch (Exception _e) {
                     _e.printStackTrace();
                 }
-                        udfb.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                udlistmap= new ArrayList<>();
-                                try {
-                                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                                    };
-                                    for (DataSnapshot _data : dataSnapshot.getChildren()) {
-                                        HashMap<String, Object> _map = _data.getValue(_ind);
-                                        udlistmap.add(_map);
-                                    }
-                                } catch (Exception _e) {
-                                    _e.printStackTrace();
-                                }
-                                for (int i23=0;i23<udlistmap.size();i23++){
-                                    if(udlistmap.get(i23).get("uid").toString().equals(uid)){
-                                        uidpos=i23;
-                                    }
-                                }
-                                acomplaintlistmap=new ArrayList<>();
-                                for (int i25=0;i25<complaintlistmap.size();i25++){
-                                    if(complaintlistmap.get(i25).get("mode").toString().equals("public") && complaintlistmap.get(i25).get("acm").toString().equals("1")){
-                                        acomplaintlistmap.add(complaintlistmap.get(i25));
-                                    }
-                                }
+                udfb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        udlistmap= new ArrayList<>();
+                        try {
+                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
+                            };
+                            for (DataSnapshot _data : dataSnapshot.getChildren()) {
+                                HashMap<String, Object> _map = _data.getValue(_ind);
+                                udlistmap.add(_map);
+                            }
+                        } catch (Exception _e) {
+                            _e.printStackTrace();
+                        }
+                        for (int i23=0;i23<udlistmap.size();i23++){
+                            if(udlistmap.get(i23).get("uid").toString().equals(uid)){
+                                uidpos=i23;
+                            }
+                        }
+                        acomplaintlistmap=new ArrayList<>();
+                        for (int i25=0;i25<complaintlistmap.size();i25++){
+                            if(complaintlistmap.get(i25).get("mode").toString().equals("public") && complaintlistmap.get(i25).get("acm").toString().equals("1")){
+                                acomplaintlistmap.add(complaintlistmap.get(i25));
+                            }
+                        }
 
-                                archivelistview1.setAdapter(new complaintlistadapter(acomplaintlistmap,smf));
-                                setListViewHeightBasedOnItems(archivelistview1);
-                                progressDialog.dismiss();
+                        archivelistview1.setAdapter(new complaintlistadapter(acomplaintlistmap,smf));
+                        setListViewHeightBasedOnItems(archivelistview1);
+                        progressDialog.dismiss();
 
                     }
 

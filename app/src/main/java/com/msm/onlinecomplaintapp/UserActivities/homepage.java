@@ -152,46 +152,46 @@ public class homepage extends AppCompatActivity {
         if(_drawer.isDrawerOpen(GravityCompat.START)){
             _drawer.closeDrawer(GravityCompat.START);
         }
-            if(requestCode!=REQUEST_CODE_NEWCOMP && requestCode!=REQUEST_CODE_TCD) {
-                if (resultCode==RESULT_OK) {
-                    if (getIntent().getIntExtra("pp", 0) ==REQUEST_CODE_SETTINGS) {
-                        settingsintent.putExtra("ac", "lo");
-                        setResult(RESULT_OK,settingsintent);
-                    } else {
-                        if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MYCOMPLAINT) {
-                            mycomplaintintent.putExtra("ac", "lo");
-                            setResult(RESULT_OK,mycomplaintintent);
+        if(requestCode!=REQUEST_CODE_NEWCOMP && requestCode!=REQUEST_CODE_TCD) {
+            if (resultCode==RESULT_OK) {
+                if (getIntent().getIntExtra("pp", 0) ==REQUEST_CODE_SETTINGS) {
+                    settingsintent.putExtra("ac", "lo");
+                    setResult(RESULT_OK,settingsintent);
+                } else {
+                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MYCOMPLAINT) {
+                        mycomplaintintent.putExtra("ac", "lo");
+                        setResult(RESULT_OK,mycomplaintintent);
+                    }
+                    else{
+                        if (getIntent().getIntExtra("pp",0 )==REQUEST_CODE_ARCHIVES){
+                            archiveintent.putExtra("ac","lo" );
+                            setResult(RESULT_OK,archiveintent );
                         }
                         else{
-                            if (getIntent().getIntExtra("pp",0 )==REQUEST_CODE_ARCHIVES){
-                                archiveintent.putExtra("ac","lo" );
-                                setResult(RESULT_OK,archiveintent );
+                            if (getIntent().getIntExtra("pp",0 )==REQUEST_CODE_NOTIFICATION){
+                                notificationintent.putExtra("ac","lo" );
+                                setResult(RESULT_OK,notificationintent );
                             }
                             else{
-                                if (getIntent().getIntExtra("pp",0 )==REQUEST_CODE_NOTIFICATION){
-                                    notificationintent.putExtra("ac","lo" );
-                                    setResult(RESULT_OK,notificationintent );
-                                }
-                                else{
-                                    if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                    {
-                                        mainintent.putExtra("key1","logout");
-                                        setResult(RESULT_OK,mainintent);
-                                    }
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
                                 }
                             }
-
-
                         }
+
+
                     }
-                    homepage.this.finish();
                 }
+                homepage.this.finish();
             }
-            else{
-                complaintlistview.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                setListViewHeightBasedOnItems(complaintlistview);
-            }
-            }
+        }
+        else{
+            complaintlistview.setAdapter(new complaintlistadapter(complaintlistmap,smf));
+            setListViewHeightBasedOnItems(complaintlistview);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -817,59 +817,50 @@ public class homepage extends AppCompatActivity {
                 catch (Exception _e) {
                     _e.printStackTrace();
                 }
-                        usfb.addListenerForSingleValueEvent(new ValueEventListener() {
+                usfb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
+                        usersupplistmap = new ArrayList<>();
+                        try {
+                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
+                            };
+                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
+                                HashMap<String, Object> _map = _data.getValue(_ind);
+                                usersupplistmap.add(_map);
+                            }
+                        } catch (Exception _e) {
+                            _e.printStackTrace();
+                        }
+                        udfb.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                                usersupplistmap = new ArrayList<>();
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                udlistmap= new ArrayList<>();
                                 try {
                                     GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
                                     };
-                                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
+                                    for (DataSnapshot _data : dataSnapshot.getChildren()) {
                                         HashMap<String, Object> _map = _data.getValue(_ind);
-                                        usersupplistmap.add(_map);
+                                        udlistmap.add(_map);
                                     }
                                 } catch (Exception _e) {
                                     _e.printStackTrace();
                                 }
-                                udfb.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        udlistmap= new ArrayList<>();
-                                        try {
-                                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                                            };
-                                            for (DataSnapshot _data : dataSnapshot.getChildren()) {
-                                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                                udlistmap.add(_map);
-                                            }
-                                        } catch (Exception _e) {
-                                            _e.printStackTrace();
-                                        }
-                                        for (int i23=0;i23<udlistmap.size();i23++){
-                                            if(udlistmap.get(i23).get("uid").toString().equals(uid)){
-                                                uidpos=i23;
-                                            }
-                                        }
-                                        fcomplaintlistmap=new ArrayList<>();
-                                        for (int i25=0;i25<complaintlistmap.size();i25++){
-                                            if(complaintlistmap.get(i25).get("mode").toString().equals("public") && complaintlistmap.get(i25).get("acm").toString().equals("0")){
-                                                fcomplaintlistmap.add(complaintlistmap.get(i25));
-                                            }
-                                        }
-                                        profileemail.setText(udlistmap.get(uidpos).get("email").toString());
-                                        profilename.setText(udlistmap.get(uidpos).get("fullname").toString());
-                                        complaintlistview.setAdapter(new complaintlistadapter(fcomplaintlistmap,smf));
-                                        setListViewHeightBasedOnItems(complaintlistview);
-                                        progressDialog.dismiss();
+                                for (int i23=0;i23<udlistmap.size();i23++){
+                                    if(udlistmap.get(i23).get("uid").toString().equals(uid)){
+                                        uidpos=i23;
                                     }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                }
+                                fcomplaintlistmap=new ArrayList<>();
+                                for (int i25=0;i25<complaintlistmap.size();i25++){
+                                    if(complaintlistmap.get(i25).get("mode").toString().equals("public") && complaintlistmap.get(i25).get("acm").toString().equals("0")){
+                                        fcomplaintlistmap.add(complaintlistmap.get(i25));
                                     }
-                                });
-
-
+                                }
+                                profileemail.setText(udlistmap.get(uidpos).get("email").toString());
+                                profilename.setText(udlistmap.get(uidpos).get("fullname").toString());
+                                complaintlistview.setAdapter(new complaintlistadapter(fcomplaintlistmap,smf));
+                                setListViewHeightBasedOnItems(complaintlistview);
+                                progressDialog.dismiss();
                             }
 
                             @Override
@@ -877,12 +868,21 @@ public class homepage extends AppCompatActivity {
 
                             }
                         });
+
+
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -1014,7 +1014,7 @@ public class homepage extends AppCompatActivity {
             for(int i3=0;i3<usersupplistmap.size();i3++){
                 if(usersupplistmap.get(i3).get("uid").toString().equals(uid)){
                     for(int j3=0;j3<usersupplistmap.get(i3).size()-1;j3++){
-                       if(usersupplistmap.get(i3).get("c"+String.valueOf(j3+1)).toString().equals(_data.get(ist).get("cid").toString())){
+                        if(usersupplistmap.get(i3).get("c"+String.valueOf(j3+1)).toString().equals(_data.get(ist).get("cid").toString())){
                             tf2=1;
                         }
                     }
@@ -1027,11 +1027,11 @@ public class homepage extends AppCompatActivity {
                 supportbutton.setChecked(false);
             }
 
-                    if(_data.get(_data.size()-ist-1).get("mode").toString().equals("public")){
-                        complistmainlinear.setVisibility(View.VISIBLE);
-                        comptitletext.setText(_data.get(ist).get("title").toString());
-                        comptimetext.setText(_data.get(ist).get("time").toString().substring(6,16));
-                        compdesctext.setText(_data.get(ist).get("desc").toString());
+            if(_data.get(_data.size()-ist-1).get("mode").toString().equals("public")){
+                complistmainlinear.setVisibility(View.VISIBLE);
+                comptitletext.setText(_data.get(ist).get("title").toString());
+                comptimetext.setText(_data.get(ist).get("time").toString().substring(6,16));
+                compdesctext.setText(_data.get(ist).get("desc").toString());
                        /* compdesctext.post(new Runnable() {
                             @Override
                             public void run() {
@@ -1054,96 +1054,96 @@ public class homepage extends AppCompatActivity {
                         else {
                             compdesctext.setText(_data.get(ist).get("desc").toString());
                         }*/
-                        supportnotext.setText("Support:"+_data.get(ist).get("supportno").toString());
-                        if(_data.get(ist).containsKey("ciuri")){
-                            Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
-                            Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
-                        }
-                        else {
-                            complistimage.setVisibility(View.GONE);
-                        }
-                        supportbutton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if(supportbutton.isChecked()) {
-                                    int tf1=0;
-                                    tempmap1=new HashMap<>();
-                                    for(int i1=0;i1<usersupplistmap.size();i1++){
-                                        if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
-                                            tempmap1=usersupplistmap.get(i1);
-                                            tempmap1.put("c"+String.valueOf((int)(usersupplistmap.get(i1).size())),_data.get(ist).get("cid").toString());
-                                            usfb.child(uid).updateChildren(tempmap1);
-                                            tf1=1;
-                                            break;
-                                        }
-                                    }
-                                    if(tf1==0){
-                                        tempmap1=new HashMap<>();
-                                        tempmap1.put("uid",uid);
-                                        tempmap1.put("c1",_data.get(ist).get("cid").toString());
-                                        usfb.child(uid).updateChildren(tempmap1);
-                                    }
-                                    tempmap2=new HashMap<>();
-                                    for(int i2=0;i2<complaintlistmap.size();i2++){
-                                        if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
-                                            tempmap2=complaintlistmap.get(i2);
-                                            int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                                            tempmap2.remove("supportno");
-                                            tempmap2.put("supportno",tsn+1);
-                                            cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
-                                            break;
-                                        }
-                                    }
-                                }
-                                else{
-                                    tempmap1=new HashMap<>();
-                                    int tpc=0;
-                                    for(int i1=0;i1<usersupplistmap.size();i1++){
-                                        if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
-                                            tempmap1=usersupplistmap.get(i1);
-                                            for(int j1=0;j1<tempmap1.size()-1;j1++){
-                                                if(tempmap1.get("c"+String.valueOf(j1+1)).equals(_data.get(ist).get("cid").toString())){
-                                                    tpc=j1+1;
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                    tempmap1.remove("c"+String.valueOf(tpc));
-                                    for(int j1=tpc;j1<tempmap1.size();j1++){
-                                        tempmap1.put("c"+String.valueOf(j1),tempmap1.get("c"+String.valueOf(j1+1)));
-                                        tpc=j1+1;
-                                    }
-                                    if(tempmap1.containsKey("c"+String.valueOf(tpc))) {
-                                        tempmap1.remove("c" + String.valueOf(tpc));
-                                    }
-                                    if(tempmap1.size()==1){
-                                        usfb.child(uid).removeValue();
-                                    }
-                                    else {
-                                        usfb.child(uid).removeValue();
-                                        usfb.child(uid).updateChildren(tempmap1);
-                                    }
-                                    tempmap2=new HashMap<>();
-                                    for(int i2=0;i2<complaintlistmap.size();i2++){
-                                        if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
-                                            tempmap2=complaintlistmap.get(i2);
-                                            int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                                            tempmap2.remove("supportno");
-                                            tempmap2.put("supportno",tsn-1);
-                                            cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
-                                            break;
-                                        }
-                                    }
-
+                supportnotext.setText("Support:"+_data.get(ist).get("supportno").toString());
+                if(_data.get(ist).containsKey("ciuri")){
+                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
+                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage);
+                }
+                else {
+                    complistimage.setVisibility(View.GONE);
+                }
+                supportbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(supportbutton.isChecked()) {
+                            int tf1=0;
+                            tempmap1=new HashMap<>();
+                            for(int i1=0;i1<usersupplistmap.size();i1++){
+                                if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
+                                    tempmap1=usersupplistmap.get(i1);
+                                    tempmap1.put("c"+String.valueOf((int)(usersupplistmap.get(i1).size())),_data.get(ist).get("cid").toString());
+                                    usfb.child(uid).updateChildren(tempmap1);
+                                    tf1=1;
+                                    break;
                                 }
                             }
-                        });
+                            if(tf1==0){
+                                tempmap1=new HashMap<>();
+                                tempmap1.put("uid",uid);
+                                tempmap1.put("c1",_data.get(ist).get("cid").toString());
+                                usfb.child(uid).updateChildren(tempmap1);
+                            }
+                            tempmap2=new HashMap<>();
+                            for(int i2=0;i2<complaintlistmap.size();i2++){
+                                if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
+                                    tempmap2=complaintlistmap.get(i2);
+                                    int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
+                                    tempmap2.remove("supportno");
+                                    tempmap2.put("supportno",tsn+1);
+                                    cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            tempmap1=new HashMap<>();
+                            int tpc=0;
+                            for(int i1=0;i1<usersupplistmap.size();i1++){
+                                if(usersupplistmap.get(i1).get("uid").toString().equals(uid)){
+                                    tempmap1=usersupplistmap.get(i1);
+                                    for(int j1=0;j1<tempmap1.size()-1;j1++){
+                                        if(tempmap1.get("c"+String.valueOf(j1+1)).equals(_data.get(ist).get("cid").toString())){
+                                            tpc=j1+1;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            tempmap1.remove("c"+String.valueOf(tpc));
+                            for(int j1=tpc;j1<tempmap1.size();j1++){
+                                tempmap1.put("c"+String.valueOf(j1),tempmap1.get("c"+String.valueOf(j1+1)));
+                                tpc=j1+1;
+                            }
+                            if(tempmap1.containsKey("c"+String.valueOf(tpc))) {
+                                tempmap1.remove("c" + String.valueOf(tpc));
+                            }
+                            if(tempmap1.size()==1){
+                                usfb.child(uid).removeValue();
+                            }
+                            else {
+                                usfb.child(uid).removeValue();
+                                usfb.child(uid).updateChildren(tempmap1);
+                            }
+                            tempmap2=new HashMap<>();
+                            for(int i2=0;i2<complaintlistmap.size();i2++){
+                                if(complaintlistmap.get(i2).get("cid").toString().equals(_data.get(ist).get("cid").toString())){
+                                    tempmap2=complaintlistmap.get(i2);
+                                    int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
+                                    tempmap2.remove("supportno");
+                                    tempmap2.put("supportno",tsn-1);
+                                    cffb.child(_data.get(ist).get("cid").toString()).updateChildren(tempmap2);
+                                    break;
+                                }
+                            }
+
+                        }
                     }
-                    else{
-                        complistmainlinear.setVisibility(View.GONE);
-                    }
+                });
+            }
+            else{
+                complistmainlinear.setVisibility(View.GONE);
+            }
 
             return cv_view;
         }

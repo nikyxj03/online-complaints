@@ -110,8 +110,8 @@ public class adminrequests extends AppCompatActivity {
                 }
             }
             adminrequests.this.finish();
-            }
         }
+    }
 
 
     @Override

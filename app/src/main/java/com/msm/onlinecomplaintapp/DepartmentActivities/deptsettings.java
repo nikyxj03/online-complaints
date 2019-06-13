@@ -28,19 +28,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.MainActivity;
 import com.msm.onlinecomplaintapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class deptsettings extends AppCompatActivity {
-
-    private static final int REQUEST_CODE_HOMEPAGE_D=21;
-    private static final int REQUEST_CODE_DeptCOMPLAINT_D=22;
-    private static final int REQUEST_CODE_SETTINGS_D=23;
-    private static final int REQUEST_CODE_MAIN_D=0;
-    private static final int REQUEST_CODE_TCD_D=7;
+public class deptsettings extends DepartmentActivity {
 
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
@@ -49,6 +44,8 @@ public class deptsettings extends AppCompatActivity {
     private Button logoutbutton1;
     private Button settingsbutton1;
     private Button deptcomplaintsbutton1;
+    private Button archivebutton1;
+    private Button deptarchivbutton1;
 
     private LinearLayout drepalinear;
     private LinearLayout dacchlinear;
@@ -75,7 +72,7 @@ public class deptsettings extends AppCompatActivity {
     private int anaf=0;
     private String uid="";
 
-    private FirebaseAuth vmauth;
+    private FirebaseAuth vmauth=FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener vmauthlistner;
     private AuthCredential vmcredential;
     private FirebaseUser vmauthu;
@@ -83,11 +80,6 @@ public class deptsettings extends AppCompatActivity {
     private FirebaseDatabase _database = FirebaseDatabase.getInstance();
     private DatabaseReference dud = _database.getReference("deptuserdata");
 
-    private Intent mainintent=new Intent();
-    private Intent depthomeintent=new Intent();
-    private Intent deptcomplaintintent=new Intent();
-    private Intent settingsintent=new Intent();
-    private Intent tcdintent=new Intent();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,11 +125,25 @@ public class deptsettings extends AppCompatActivity {
                         setResult(RESULT_OK,deptcomplaintintent);
                     }
                     else{
-                        if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                        {
-                            mainintent.putExtra("key1","logout");
-                            setResult(RESULT_OK,mainintent);
+                        if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DeptCOMPLAINT_D){
+                            archiveintent.putExtra("ac","lo" );
+                            setResult(RESULT_OK,archiveintent);
                         }
+                        else {
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
+                            }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+
+                        }
+
                     }
                 }
                 deptsettings.this.finish();
@@ -159,7 +165,9 @@ public class deptsettings extends AppCompatActivity {
         homebutton1=findViewById(R.id.homebutton1);
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);
         settingsbutton1=findViewById(R.id.settingsbutton1);
+        archivebutton1=findViewById(R.id.archivebutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
+        deptarchivbutton1=findViewById(R.id.deptarchivebutton1);
 
         drepalinear=findViewById(R.id.drepalinear);
         dacchlinear=findViewById(R.id.dacchlinear);
@@ -173,9 +181,8 @@ public class deptsettings extends AppCompatActivity {
         drpbutton=findViewById(R.id.drpbutton);
         dscbutton=findViewById(R.id.dscbutton);
 
-        mainintent.setClass(deptsettings.this,MainActivity.class);
-        deptcomplaintintent.setClass(deptsettings.this,deptcomplaints.class);
-        depthomeintent.setClass(deptsettings.this,department_home.class);
+        vmauth=FirebaseAuth.getInstance();
+        vmauthu=vmauth.getCurrentUser();
 
         homebutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +198,19 @@ public class deptsettings extends AppCompatActivity {
             }
         });
 
+        archivebutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(archiveintent,REQUEST_CODE_ARCHIVES_D);
+            }
+        });
+
+        deptarchivbutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptarchiveintent,REQUEST_CODE_DEPTARCHIVES_D);
+            }
+        });
 
         logoutbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,11 +224,25 @@ public class deptsettings extends AppCompatActivity {
                         setResult(RESULT_OK,deptcomplaintintent);
                     }
                     else{
-                        if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                        {
-                            mainintent.putExtra("key1","logout");
-                            setResult(RESULT_OK,mainintent);
+                        if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DeptCOMPLAINT_D){
+                            archiveintent.putExtra("ac","lo" );
+                            setResult(RESULT_OK,archiveintent);
                         }
+                        else {
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D){
+                                deptarchiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,deptarchiveintent);
+                            }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+
+                        }
+
                     }
                 }
                 deptsettings.this.finish();
@@ -284,7 +318,7 @@ public class deptsettings extends AppCompatActivity {
 
         });
 
-        uid=vmauthu.getUid();
+        uid=vmauth.getCurrentUser().getUid();
         dacchlinear.setVisibility(View.VISIBLE);
         drepalinear.setVisibility(View.GONE);
 

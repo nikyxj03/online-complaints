@@ -115,9 +115,9 @@ public class adminarchives extends AppCompatActivity {
                 }
             }
             adminarchives.this.finish();
-            }
         }
-        
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +201,7 @@ public class adminarchives extends AppCompatActivity {
                             setResult(RESULT_OK, createacintent);
                         }else {
                             if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_HOMEPAGE_A) {
-                               adminhomeintent.putExtra("ac", "lo");
+                                adminhomeintent.putExtra("ac", "lo");
                                 setResult(RESULT_OK, adminhomeintent);
                             }else{
                                 if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_A)

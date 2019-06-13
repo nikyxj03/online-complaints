@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DepartmentActivities.DeptArchives"></activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -32,7 +33,7 @@
         <activity android:name=".UserActivities.settingsactivity" />
         <activity android:name=".UserActivities.totcompdesc" />
         <activity android:name=".DepartmentActivities.department_home" />
-        <activity android:name="com.msm.onlinecomplaintapp.AdminActivities.admin_home" />
+        <activity android:name=".AdminActivities.admin_home" />
         <activity android:name=".DepartmentActivities.deptcomplaints" />
         <activity android:name=".DepartmentActivities.deptsettings" />
         <activity android:name=".DepartmentActivities.depttotcompdec" />
@@ -40,9 +41,9 @@
         <activity android:name=".AdminActivities.adminrequests" />
         <activity android:name=".AdminActivities.admincreateaccount" />
         <activity android:name=".UserActivities.userarchives" />
-        <activity android:name=".DepartmentActivities.deptarchives" />
-        <activity android:name="com.msm.onlinecomplaintapp.AdminActivities.adminarchives" />
-        <activity android:name=".UserActivities.notifictationsactivity"></activity>
+        <activity android:name=".DepartmentActivities.DeptPublicArchives" />
+        <activity android:name=".AdminActivities.adminarchives" />
+        <activity android:name=".UserActivities.notifictationsactivity" />
     </application>
 
 </manifest>
