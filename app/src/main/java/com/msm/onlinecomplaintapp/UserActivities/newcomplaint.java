@@ -997,7 +997,7 @@ public class newcomplaint extends AppCompatActivity {
 
     }
 
-    public class deptspinneradapter extends BaseAdapter {
+    /*public class deptspinneradapter extends BaseAdapter {
 
         private int chflag=0;
 
@@ -1061,7 +1061,7 @@ public class newcomplaint extends AppCompatActivity {
 
             return ds_view;
         }
-    }
+    }*/
 
     public static boolean setListViewHeightBasedOnItems(ListView listView)
     {
@@ -1093,7 +1093,7 @@ public class newcomplaint extends AppCompatActivity {
         botdialog=new BottomSheetDialog(newcomplaint.this);
         View view=botdialog.getLayoutInflater().inflate(R.layout.deplistlayout,null);
         depsellist=view.findViewById(R.id.depsellist);
-        depsellist.setAdapter(new deptspinneradapter(deptlistmap));
+        //depsellist.setAdapter(new deptspinneradapter(deptlistmap));
         setListViewHeightBasedOnItems(depsellist);
         botdialog.setContentView(view);
     }

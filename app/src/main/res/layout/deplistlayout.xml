@@ -5,19 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp">
-        <LinearLayout
+        android:layout_height="450dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dlldmintext"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="ADMIN"
+            android:textSize="21dp"
+            android:textStyle="bold"/>
+
+
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/depsellist"/>
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
 
 
 

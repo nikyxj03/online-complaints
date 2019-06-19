@@ -50,9 +50,6 @@ public class DepartmentActivity extends AppCompatActivity  {
     protected static final int REQUEST_CODE_ARCHIVES_D = 24;
     protected static final int REQUEST_CODE_DEPTARCHIVES_D=25;
 
-    protected OnSortChange onSortChange1;
-    protected OnSortChange onSortChange0;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -145,23 +142,7 @@ public class DepartmentActivity extends AppCompatActivity  {
         return PAGE_IGNORED_COMPLAINTS;
     }
 
-    public void setSortListener_ZERO(Context context,OnSortChange onSortChange){
-        Toast.makeText(context,"1234",Toast.LENGTH_LONG).show();
-        this.onSortChange0=onSortChange;
-    }
 
-    public OnSortChange getSortListener_ZERO(){
-        return onSortChange0;
-    }
-
-    public void setSortListener_ONE(Context context,OnSortChange onSortChange){
-        Toast.makeText(context,"1234",Toast.LENGTH_LONG).show();
-        this.onSortChange1=onSortChange;
-    }
-
-    public OnSortChange getSortListener_ONE(){
-        return onSortChange1;
-    }
 
 }
 

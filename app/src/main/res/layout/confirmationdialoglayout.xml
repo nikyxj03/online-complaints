@@ -8,7 +8,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:padding="15dp">
         <TextView
             android:id="@+id/cdtitletext"
             android:text="TITLE"

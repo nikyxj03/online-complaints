@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,12 +41,15 @@ public class DeptPublicArchives extends DepartmentActivity {
 
     private DCompListAdapter dCompListAdapter;
 
-    private List<Complaint> archivecomplaintlist = new ArrayList<>();
+    private List<Complaint> ssarchivecomplaintlist = new ArrayList<>();
+    private List<Complaint> starchivecompaintlist=new ArrayList<>();
     private List<String> deptlist = new ArrayList<>();
     private List<String> seldeptist = new ArrayList<>();
 
     private FirebaseDatabase _database = FirebaseDatabase.getInstance();
     private DatabaseReference acffb = _database.getReference("complaint");
+
+    private int sm=0;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -87,14 +91,26 @@ public class DeptPublicArchives extends DepartmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sortbutton_menu, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (_toggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if(item.getItemId()==R.id.item1){
+            sm=0;
+            if(starchivecompaintlist!=null)
+                dCompListAdapter.setList(starchivecompaintlist);
+        }
+        if(item.getItemId()==R.id.item2){
+            sm=1;
+            if(ssarchivecomplaintlist!=null){
+                dCompListAdapter.setList(ssarchivecomplaintlist);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,14 +209,30 @@ public class DeptPublicArchives extends DepartmentActivity {
         dCompListAdapter = new DCompListAdapter(DeptPublicArchives.this, R.layout.deptcompistcustom, 0,PAGE_PUBLIC_ARCHIVES_D);
         adminarchivelistview.setAdapter(dCompListAdapter);
 
-        GlobalApplication.databaseHelper.getPublicArchivedComplaints(new OnDataFetchListener<Complaint>() {
+        GlobalApplication.databaseHelper.getPublicArchivedComplaintsSS(new OnDataFetchListener<Complaint>() {
             @Override
             public void onDataFetched(List<Complaint> complaints) {
+                hideProgress();
                 if(complaints!=null) {
-                    archivecomplaintlist = new ArrayList<>();
-                    archivecomplaintlist = complaints;
-                    dCompListAdapter.setList(archivecomplaintlist);
-                    hideProgress();
+                    if(sm==1) {
+                        ssarchivecomplaintlist = complaints;
+                        dCompListAdapter.setList(ssarchivecomplaintlist);
+                        hideProgress();
+                    }
+                }
+            }
+        });
+
+        GlobalApplication.databaseHelper.getPublicArchivedComplaintsST(new OnDataFetchListener<Complaint>() {
+            @Override
+            public void onDataFetched(List<Complaint> complaints) {
+                hideProgress();
+                if(complaints!=null) {
+                    if(sm==1) {
+                        starchivecompaintlist = complaints;
+                        dCompListAdapter.setList(starchivecompaintlist);
+                        hideProgress();
+                    }
                 }
             }
         });

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.msm.onlinecomplaintapp.DepartmentActivities.DeptArchives;
+import com.msm.onlinecomplaintapp.DepartmentActivities.deptcomplaints;
 import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.DepartmentAdapters.DCompListAdapter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
@@ -36,7 +37,12 @@ public class DeptComplaintsFragment extends Fragment {
 
     private DCompListAdapter dCompListAdapter;
 
-    private List<Complaint> complaintList=new ArrayList<>();
+    private List<Complaint> stcomplaintList=new ArrayList<>();
+    private List<Complaint> sscomplaintList=new ArrayList<>();
+
+    private List<Complaint> stcomplaintList1=new ArrayList<>();
+    private List<Complaint> sscomplaintList1=new ArrayList<>();
+
 
     public DeptComplaintsFragment() {
         // Required empty public constructor
@@ -75,22 +81,107 @@ public class DeptComplaintsFragment extends Fragment {
        complaintListView=view.findViewById(R.id.dept_listview);
        Toast.makeText(context,"1",Toast.LENGTH_LONG).show();
 
+        if(status=="0"){
+            dCompListAdapter=new DCompListAdapter(activity,R.layout.deptcompistcustom,sm,((DepartmentActivity)activity).getPageRegisteredComplaintsD());
+            complaintListView.setAdapter(dCompListAdapter);
+            GlobalApplication.databaseHelper.getDepartmentPrivateRegisteredComplaintsSS(did,new OnDataFetchListener<Complaint>() {
+                @Override
+                public void onDataFetched(List<Complaint> complaints) {
+                    sscomplaintList=complaints;
+                    if(sscomplaintList!=null) {
+                        if (sm == 1)
+                            dCompListAdapter.setList(sscomplaintList);
+                    }
+                }
+            });
+            GlobalApplication.databaseHelper.getDepartmentPrivateRegisteredComplaintsST(did,new OnDataFetchListener<Complaint>() {
+                @Override
+                public void onDataFetched(List<Complaint> complaints) {
+                    stcomplaintList=complaints;
+                    if(stcomplaintList!=null) {
+                        if (sm == 0)
+                            dCompListAdapter.setList(stcomplaintList);
+                    }
+                }
+            });
+            ((deptcomplaints)activity).setSortListener_ZERO(context,new OnSortChange() {
+                @Override
+                public void onSortChanged(int sm) {
+                    DeptComplaintsFragment.this.sm=sm;
+                    if(sm==0)
+                        dCompListAdapter.setList(stcomplaintList);
+                    else
+                        dCompListAdapter.setList(sscomplaintList);
+                }
+            });
+        }
+
+        if(status=="1") {
+            dCompListAdapter = new DCompListAdapter(activity, R.layout.deptcompistcustom, sm, ((DepartmentActivity) activity).getPageWatchingComplaintsD());
+            complaintListView.setAdapter(dCompListAdapter);
+            GlobalApplication.databaseHelper.getDepartmentPrivateWatchingComplaintsSS(did,new OnDataFetchListener<Complaint>() {
+                @Override
+                public void onDataFetched(List<Complaint> complaints) {
+                    sscomplaintList1 = complaints;
+                    if(sscomplaintList!=null) {
+                        if (sm == 1)
+                            dCompListAdapter.setList(sscomplaintList1);
+                    }
+                }
+            });
+            GlobalApplication.databaseHelper.getDepartmentPrivateWatchingComplaintsST(did,new OnDataFetchListener<Complaint>() {
+                @Override
+                public void onDataFetched(List<Complaint> complaints) {
+                    stcomplaintList1 = complaints;
+                    if(stcomplaintList1!=null) {
+                        if (sm == 0)
+                            dCompListAdapter.setList(stcomplaintList1);
+                    }
+                }
+            });
+            ((deptcomplaints)activity).setSortListener_ONE(context,new OnSortChange() {
+                @Override
+                public void onSortChanged(int sm) {
+                    DeptComplaintsFragment.this.sm=sm;
+                    if(sm==0)
+                        dCompListAdapter.setList(stcomplaintList1);
+                    else
+                        dCompListAdapter.setList(sscomplaintList1);
+                }
+            });
+        }
+
        if(status=="2"){
            dCompListAdapter=new DCompListAdapter(activity,R.layout.deptcompistcustom,sm,((DepartmentActivity)activity).getPageResolvedComplaints());
            complaintListView.setAdapter(dCompListAdapter);
-           GlobalApplication.databaseHelper.getAllComplaintsA(new OnDataFetchListener<Complaint>() {
+           GlobalApplication.databaseHelper.getDepartmentPrivateResolvedComplaintsSS(did,new OnDataFetchListener<Complaint>() {
                @Override
                public void onDataFetched(List<Complaint> complaints) {
-                   complaintList=complaints;
-                   dCompListAdapter.setList(complaintList);
+                   sscomplaintList=complaints;
+                   if(sscomplaintList!=null) {
+                       if (sm == 1)
+                           dCompListAdapter.setList(sscomplaintList);
+                   }
                }
            });
-           dCompListAdapter.addSMListener();
-           ((DepartmentActivity)activity).setSortListener_ZERO(context,new OnSortChange() {
+           GlobalApplication.databaseHelper.getDepartmentPrivateResolvedComplaintsST(did,new OnDataFetchListener<Complaint>() {
+               @Override
+               public void onDataFetched(List<Complaint> complaints) {
+                   stcomplaintList=complaints;
+                   if(stcomplaintList!=null) {
+                       if (sm == 0)
+                           dCompListAdapter.setList(stcomplaintList);
+                   }
+               }
+           });
+           ((DeptArchives)activity).setSortListener_ZERO(context,new OnSortChange() {
                @Override
                public void onSortChanged(int sm) {
                    DeptComplaintsFragment.this.sm=sm;
-                   dCompListAdapter.changesm(sm);
+                   if(sm==0)
+                       dCompListAdapter.setList(stcomplaintList);
+                   else
+                       dCompListAdapter.setList(sscomplaintList);
                }
            });
        }
@@ -98,17 +189,34 @@ public class DeptComplaintsFragment extends Fragment {
            if(status=="3") {
                dCompListAdapter = new DCompListAdapter(activity, R.layout.deptcompistcustom, sm, ((DepartmentActivity) activity).getPageIgnoredComplaints());
                complaintListView.setAdapter(dCompListAdapter);
-               GlobalApplication.databaseHelper.getAllComplaintsUA(new OnDataFetchListener<Complaint>() {
+               GlobalApplication.databaseHelper.getDepartmentPrivateIgnoredComplaintsSS(did,new OnDataFetchListener<Complaint>() {
                    @Override
                    public void onDataFetched(List<Complaint> complaints) {
-                       complaintList = complaints;
-                       dCompListAdapter.setList(complaintList);
+                       sscomplaintList1 = complaints;
+                       if(sscomplaintList!=null) {
+                           if (sm == 1)
+                               dCompListAdapter.setList(sscomplaintList1);
+                       }
                    }
                });
-               ((DepartmentActivity)activity).setSortListener_ONE(context,new OnSortChange() {
+               GlobalApplication.databaseHelper.getDepartmentPrivateIgnoredComplaintsST(did,new OnDataFetchListener<Complaint>() {
+                   @Override
+                   public void onDataFetched(List<Complaint> complaints) {
+                       stcomplaintList1 = complaints;
+                       if(stcomplaintList1!=null) {
+                           if (sm == 0)
+                               dCompListAdapter.setList(stcomplaintList1);
+                       }
+                   }
+               });
+               ((DeptArchives)activity).setSortListener_ONE(context,new OnSortChange() {
                    @Override
                    public void onSortChanged(int sm) {
-                       dCompListAdapter.changesm(sm);
+                       DeptComplaintsFragment.this.sm=sm;
+                       if(sm==0)
+                           dCompListAdapter.setList(stcomplaintList1);
+                       else
+                           dCompListAdapter.setList(sscomplaintList1);
                    }
                });
            }

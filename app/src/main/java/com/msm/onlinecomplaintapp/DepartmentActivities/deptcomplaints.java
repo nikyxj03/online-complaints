@@ -1,28 +1,22 @@
 package com.msm.onlinecomplaintapp.DepartmentActivities;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,12 +30,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -53,10 +42,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.msm.onlinecomplaintapp.DepartmentActivity;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.DepartmentAdapters.DeptPagerAdapter;
+import com.msm.onlinecomplaintapp.GlobalApplication;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
+import com.msm.onlinecomplaintapp.Interfaces.OnSortChange;
+import com.msm.onlinecomplaintapp.Models.DeptUsers;
 import com.msm.onlinecomplaintapp.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -77,8 +69,11 @@ public class deptcomplaints extends DepartmentActivity {
     private Button archivebutton1;
     private Button deptarchivesbutton1;
     private Button deptcomplaintsbutton1;
-    private Button dsortbutton1;
-    private SwipeMenuListView dcomplaintlistviews;
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+
+    private DeptPagerAdapter deptPagerAdapter;
 
     private Button rdreplybutton;
     private EditText rdreplyedit;
@@ -88,6 +83,9 @@ public class deptcomplaints extends DepartmentActivity {
     private Button dardeletebutton;
     private Button darblockbutton;
     private Button dararchivebutton;
+
+    private OnSortChange onSortChange1;
+    private OnSortChange onSortChange0;
 
     private ArrayList<HashMap<String,Object>> udlistmap=new ArrayList<>();
     private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
@@ -175,9 +173,24 @@ public class deptcomplaints extends DepartmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.sortbutton_menu,menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (_toggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if(item.getItemId()==R.id.item1){
+            smf=0;
+            onSortChange0.onSortChanged(smf);
+        }
+        if(item.getItemId()==R.id.item2){
+            smf=1;
+            onSortChange1.onSortChanged(smf);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -190,6 +203,23 @@ public class deptcomplaints extends DepartmentActivity {
         InitializeLogic();
     }
 
+    public void setSortListener_ZERO(Context context, OnSortChange onSortChange){
+        this.onSortChange0=onSortChange;
+    }
+
+    public OnSortChange getSortListener_ZERO(){
+        return onSortChange0;
+    }
+
+    public void setSortListener_ONE(Context context,OnSortChange onSortChange){
+        Toast.makeText(context,"1234",Toast.LENGTH_LONG).show();
+        this.onSortChange1=onSortChange;
+    }
+
+    public OnSortChange getSortListener_ONE(){
+        return onSortChange1;
+    }
+
     private void Initialize(){
         _drawer= findViewById(R.id._drawer);
         _toggle=new ActionBarDrawerToggle(deptcomplaints.this,_drawer,R.string.open,R.string.close);
@@ -197,14 +227,17 @@ public class deptcomplaints extends DepartmentActivity {
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        showProgress("Loading");
+
         homebutton1=findViewById(R.id.homebutton1);
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);
         settingsbutton1=findViewById(R.id.settingsbutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
         deptarchivesbutton1=findViewById(R.id.deptarchivebutton1);
-        dsortbutton1=findViewById(R.id.dsortbutton1);
-        dcomplaintlistviews=findViewById(R.id.dcomplaintlistviews);
         archivebutton1=findViewById(R.id.archivebutton1);
+
+        viewPager=findViewById(R.id.dept_complaints_pager);
+        tabLayout=findViewById(R.id.dept_complaints_tab);
 
         setintents(this);
 
@@ -273,35 +306,37 @@ public class deptcomplaints extends DepartmentActivity {
             }
         });
 
-        popup = new PopupMenu(deptcomplaints.this,dsortbutton1);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.sortmenu, popup.getMenu());
+        tabLayout.addTab(tabLayout.newTab().setText("Registered"));
+        tabLayout.addTab(tabLayout.newTab().setText("Watching"));
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.toString().equals("Sort by time"))
-                {
-                    smf=0;
-                }
-                else{
-                    smf=1;
-                }
-                deptcomplaintlistmap=new ArrayList<>();
-                for(int i14=0;i14<complaintlistmap.size();i14++){
-                    if(complaintlistmap.get(i14).get("dept").toString().contains(did)){
-                        deptcomplaintlistmap.add(complaintlistmap.get(i14));
-                    }
-                }
-                dcomplaintlistviews.setAdapter(new complaintlistadapter(deptcomplaintlistmap,smf));
-                return false;
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
-        dsortbutton1.setOnClickListener(new View.OnClickListener() {
+        GlobalApplication.databaseHelper.fetchDeptUserData(getCurrentUserId(), new OnDataSFetchListener<DeptUsers>() {
             @Override
-            public void onClick(View view) {
-                popup.show();
+            public void onDataSFetch(DeptUsers deptUsers) {
+                if(deptUsers!=null){
+                    did=deptUsers.getDept();
+                    deptPagerAdapter =new DeptPagerAdapter(getSupportFragmentManager(),did,0,0);
+                    viewPager.setAdapter(deptPagerAdapter);
+                }
+                hideProgress();
             }
         });
 
@@ -528,9 +563,6 @@ public class deptcomplaints extends DepartmentActivity {
     private void InitializeLogic(){
         uid=vmauth.getCurrentUser().getUid();
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
 
         cffb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -618,56 +650,7 @@ public class deptcomplaints extends DepartmentActivity {
                                                         }
                                                     }
                                                 }while(flag1==1);
-                                                for(int i13=0;i13<deptdatalistmap.size();i13++){
-                                                    if(deptdatalistmap.get(i13).get("uid").toString().equals(uid)){
-                                                        did=deptdatalistmap.get(i13).get("dept").toString();
-                                                    }
-                                                }
-                                                deptcomplaintlistmap=new ArrayList<>();
-                                                for(int i14=0;i14<complaintlistmap.size();i14++){
-                                                    if(complaintlistmap.get(i14).get("dept").toString().contains(did)){
-                                                        deptcomplaintlistmap.add(complaintlistmap.get(i14));
-                                                    }
-                                                }
-                                                dcomplaintlistviews.setAdapter(new complaintlistadapter(deptcomplaintlistmap,smf));
-                                                SwipeMenuCreator creator = new SwipeMenuCreator() {
-                                                    @Override
-                                                    public void create(SwipeMenu menu) {
-                                                        SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
-                                                        openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
-                                                        openItem.setWidth(220);
-                                                        openItem.setTitle("View");
-                                                        openItem.setTitleSize(18);
-                                                        openItem.setTitleColor(Color.WHITE);
-                                                        menu.addMenuItem(openItem);
-                                                        SwipeMenuItem reply=new SwipeMenuItem(getApplicationContext());
-                                                        reply.setTitle("Reply");
-                                                        reply.setTitleColor(Color.WHITE);
-                                                        reply.setTitleSize(18);
-                                                        reply.setWidth(220);
-                                                        reply.setBackground(R.color.colorPrimary);
-                                                        menu.addMenuItem(reply);
-                                                        SwipeMenuItem forward=new SwipeMenuItem(getApplicationContext());
-                                                        forward.setTitle("Forward");
-                                                        forward.setTitleColor(Color.WHITE);
-                                                        forward.setTitleSize(18);
-                                                        forward.setWidth(220);
-                                                        forward.setBackground(R.color.colorAccent);
-                                                        menu.addMenuItem(forward);
-                                                        SwipeMenuItem request = new SwipeMenuItem(getApplicationContext());
-                                                        request.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                                                        request.setWidth(220);
-                                                        request.setTitle("ADMIN REQUEST");
-                                                        request.setTitleSize(18);
-                                                        request.setTitleColor(Color.WHITE);
-                                                        menu.addMenuItem(request);
-                                                    }
-                                                };
-                                                dcomplaintlistviews.setMenuCreator(creator);
-                                                //setListViewHeightBasedOnItems(complaintlistviews);
-                                                dcomplaintlistviews.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-                                                dcomplaintlistviews.setCloseInterpolator(new BounceInterpolator());
-                                                progressDialog.dismiss();
+
                                             }
 
                                             @Override
@@ -828,7 +811,7 @@ public class deptcomplaints extends DepartmentActivity {
             else {
                 complistimage1.setVisibility(View.GONE);
             }
-            dcomplaintlistviews.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            /*dcomplaintlistviews.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                     final String tempcid=sortcidlist.get(position);
@@ -1025,7 +1008,7 @@ public class deptcomplaints extends DepartmentActivity {
                     }
                     return true;
                 }
-            });
+            });*/
             return cv_view;
         }
     }
@@ -1066,7 +1049,7 @@ public class deptcomplaints extends DepartmentActivity {
         return _temppos;
     }
 
-    public class deptspinneradapter extends BaseAdapter {
+   /* public class deptspinneradapter extends BaseAdapter {
 
         private int chflag=0;
 
@@ -1121,5 +1104,5 @@ public class deptcomplaints extends DepartmentActivity {
 
             return ds_view;
         }
-    }
+    }*/
 }

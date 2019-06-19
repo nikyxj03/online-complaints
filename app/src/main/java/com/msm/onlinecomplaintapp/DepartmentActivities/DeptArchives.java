@@ -1,5 +1,6 @@
 package com.msm.onlinecomplaintapp.DepartmentActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.msm.onlinecomplaintapp.DepartmentActivity;
-import com.msm.onlinecomplaintapp.DepartmentAdapters.DeptArchivesPagerAdapter;
-import com.msm.onlinecomplaintapp.DepartmentFragments.DeptComplaintsFragment;
+import com.msm.onlinecomplaintapp.DepartmentAdapters.DeptPagerAdapter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
+import com.msm.onlinecomplaintapp.Interfaces.OnSortChange;
 import com.msm.onlinecomplaintapp.Models.DeptUsers;
 import com.msm.onlinecomplaintapp.R;
 
@@ -40,9 +41,12 @@ public class DeptArchives extends DepartmentActivity {
     private ViewPager viewPager;
     private ViewGroup viewGroup;
 
+    private OnSortChange onSortChange1;
+    private OnSortChange onSortChange0;
+
     private String did;
 
-    private DeptArchivesPagerAdapter deptArchivesPagerAdapter;
+    private DeptPagerAdapter deptPagerAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -246,13 +250,29 @@ public class DeptArchives extends DepartmentActivity {
             public void onDataSFetch(DeptUsers deptUsers) {
                 if(deptUsers!=null){
                     did=deptUsers.getDept();
-                    deptArchivesPagerAdapter=new DeptArchivesPagerAdapter(getSupportFragmentManager(),did,0);
-                    viewPager.setAdapter(deptArchivesPagerAdapter);
-                    hideProgress();
+                    deptPagerAdapter =new DeptPagerAdapter(getSupportFragmentManager(),did,1,0);
+                    viewPager.setAdapter(deptPagerAdapter);
                 }
+                hideProgress();
             }
         });
+    }
 
+    public void setSortListener_ZERO(Context context, OnSortChange onSortChange){
+        Toast.makeText(context,"1234",Toast.LENGTH_LONG).show();
+        this.onSortChange0=onSortChange;
+    }
 
+    public OnSortChange getSortListener_ZERO(){
+        return onSortChange0;
+    }
+
+    public void setSortListener_ONE(Context context,OnSortChange onSortChange){
+        Toast.makeText(context,"1234",Toast.LENGTH_LONG).show();
+        this.onSortChange1=onSortChange;
+    }
+
+    public OnSortChange getSortListener_ONE(){
+        return onSortChange1;
     }
 }

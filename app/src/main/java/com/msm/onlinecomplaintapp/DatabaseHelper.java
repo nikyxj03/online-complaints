@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -49,6 +50,8 @@ public class DatabaseHelper {
     public static final String ADMIN_REQUESTS_DB_KEY = "AdminRequests";
     public static final String USER_SUPP_DB_KEY = "UserSupp";
 
+    public int sm=0;
+
     public static DatabaseHelper getInstance(Context context) {
         if (databaseHelper == null) {
             databaseHelper = new DatabaseHelper(context);
@@ -64,8 +67,8 @@ public class DatabaseHelper {
         database = FirebaseFirestore.getInstance();
     }
 
-    public void getPublicComplaints(final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","0").whereEqualTo("acm",1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getPublicComplaintsSS(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","0").whereEqualTo("acm",1).orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -82,8 +85,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getPublicArchivedComplaints(final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","2" ).whereEqualTo("acm","3").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getPublicComplaintsST(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","0").whereEqualTo("acm",1).orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -100,8 +103,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getUserPrivateOpenComplaints(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","0").whereEqualTo("acm","1").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getPublicArchivedComplaintsSS(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","2" ).whereEqualTo("acm","3").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -118,8 +121,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getUserPrivateClosedComplaints(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","2").whereEqualTo("acm","3").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getPublicArchivedComplaintsST(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("mode","public").whereEqualTo("acm","2" ).whereEqualTo("acm","3").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -136,8 +139,80 @@ public class DatabaseHelper {
         });
     }
 
-    public void getDepartmentPrivateRegisteredComplaints(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getUserPrivateOpenComplaintsSS(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","0").whereEqualTo("acm","1").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getUserPrivateOpenComplaintsST(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","0").whereEqualTo("acm","1").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getUserPrivateClosedComplaintsSS(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","2").whereEqualTo("acm","3").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getUserPrivateClosedComplaintsST(String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).whereEqualTo("acm","2").whereEqualTo("acm","3").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getDepartmentPrivateRegisteredComplaintsSS(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -156,8 +231,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getDepartmentPrivateWatchingComplaints(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getDepartmentPrivateRegisteredComplaintsST(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -176,8 +251,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getDepartmentPrivateResolvedComplaints(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","2").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getDepartmentPrivateWatchingComplaintsSS(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -196,8 +271,88 @@ public class DatabaseHelper {
         });
     }
 
-    public void getDepartmentPrivateIgnoredComplaints(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","3").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void getDepartmentPrivateWatchingComplaintsST(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        if(queryDocumentSnapshot.getData().get("dept").toString().contains(deptId)) {
+                            complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                        }
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getDepartmentPrivateResolvedComplaintsSS(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","2").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        if(queryDocumentSnapshot.getData().get("dept").toString().contains(deptId)) {
+                            complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                        }
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getDepartmentPrivateResolvedComplaintsST(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","2").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        if(queryDocumentSnapshot.getData().get("dept").toString().contains(deptId)) {
+                            complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                        }
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getDepartmentPrivateIgnoredComplaintsSS(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","3").orderBy("supportno", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(queryDocumentSnapshots!=null){
+                    List<Complaint> complaintList=new ArrayList<>();
+                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                        if(queryDocumentSnapshot.getData().get("dept").toString().contains(deptId)) {
+                            complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                        }
+                    }
+                    onDataFetchListener.onDataFetched(complaintList);
+                }
+                else {
+                    onDataFetchListener.onDataFetched(null);
+                }
+            }
+        });
+    }
+
+    public void getDepartmentPrivateIgnoredComplaintsST(final String deptId, final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","3").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(queryDocumentSnapshots!=null){
@@ -217,8 +372,8 @@ public class DatabaseHelper {
     }
 
 
-    public void getUserComplaints(final String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public void getUserComplaintsSS(final String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).orderBy("supportno", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Complaint> complaintList=new ArrayList<>();
@@ -235,8 +390,8 @@ public class DatabaseHelper {
         });
     }
 
-    public void getAllComplaintsUA(final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public void getUserComplaintsST(final String userId,final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("uid",userId ).orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Complaint> complaintList=new ArrayList<>();
@@ -253,8 +408,62 @@ public class DatabaseHelper {
         });
     }
 
-    public void getAllComplaintsA(final OnDataFetchListener<Complaint> onDataFetchListener){
-        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public void getAllComplaintsUASS(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").orderBy("supportno", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Complaint> complaintList=new ArrayList<>();
+                for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                    complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                }
+                onDataFetchListener.onDataFetched(complaintList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onDataFetchListener.onDataFetched(null);
+            }
+        });
+    }
+
+    public void getAllComplaintsUAST(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","0").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Complaint> complaintList=new ArrayList<>();
+                for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                    complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                }
+                onDataFetchListener.onDataFetched(complaintList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onDataFetchListener.onDataFetched(null);
+            }
+        });
+    }
+
+    public void getAllComplaintsASS(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").orderBy("supportno", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Complaint> complaintList=new ArrayList<>();
+                for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                    complaintList.add(queryDocumentSnapshot.toObject(Complaint.class));
+                }
+                onDataFetchListener.onDataFetched(complaintList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onDataFetchListener.onDataFetched(null);
+            }
+        });
+    }
+
+    public void getAllComplaintsAST(final OnDataFetchListener<Complaint> onDataFetchListener){
+        database.collection(COMPLAINT_DB_KEY).whereEqualTo("acm","1").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Complaint> complaintList=new ArrayList<>();
@@ -358,5 +567,6 @@ public class DatabaseHelper {
             }
         });
     }
+
 
 }

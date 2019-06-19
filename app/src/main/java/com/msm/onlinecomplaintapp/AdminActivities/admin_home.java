@@ -627,7 +627,7 @@ public class admin_home extends AppCompatActivity {
                             final BottomSheetDialog botdialog = new BottomSheetDialog(admin_home.this);
                             View view1 = botdialog.getLayoutInflater().inflate(R.layout.deplistlayout, null);
                             depsellist = view1.findViewById(R.id.depsellist);
-                            depsellist.setAdapter(new deptspinneradapter(deptlistmap));
+                            //depsellist.setAdapter(new deptspinneradapter(deptlistmap));
                             setListViewHeightBasedOnItems(depsellist);
                             botdialog.setContentView(view1);
                             botdialog.show();
@@ -716,7 +716,7 @@ public class admin_home extends AppCompatActivity {
         return _temppos;
     }
 
-    public class deptspinneradapter extends BaseAdapter {
+    /*public class deptspinneradapter extends BaseAdapter {
 
         private int chflag=0;
 
@@ -771,7 +771,7 @@ public class admin_home extends AppCompatActivity {
 
             return ds_view;
         }
-    }
+    }*/
 
     public static boolean setListViewHeightBasedOnItems(ListView listView)
     {

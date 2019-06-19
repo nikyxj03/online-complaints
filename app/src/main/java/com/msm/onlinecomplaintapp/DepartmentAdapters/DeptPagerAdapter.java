@@ -8,27 +8,27 @@ import android.view.ViewGroup;
 
 import com.msm.onlinecomplaintapp.DepartmentFragments.DeptComplaintsFragment;
 
-public class DeptArchivesPagerAdapter extends FragmentStatePagerAdapter {
+public class DeptPagerAdapter extends FragmentStatePagerAdapter {
 
     private String did;
     private int itemno=0;
     private int sm=0;
-    private FragmentManager fragmentManager;
+    private int pm=0;
 
     private DeptComplaintsFragment deptComplaintsFragment;
 
-    public DeptArchivesPagerAdapter(FragmentManager fm,String did) {
+    public DeptPagerAdapter(FragmentManager fm, String did,int pm) {
         super(fm);
         this.did=did;
         this.sm=sm;
-        fragmentManager=fm;
+        this.pm=pm;
     }
 
-    public DeptArchivesPagerAdapter(FragmentManager fm,String did,int sm) {
+    public DeptPagerAdapter(FragmentManager fm, String did,int pm, int sm) {
         super(fm);
         this.did=did;
         this.sm=sm;
-        fragmentManager=fm;
+        this.pm=pm;
     }
 
     @Override
@@ -37,11 +37,17 @@ public class DeptArchivesPagerAdapter extends FragmentStatePagerAdapter {
             switch (i) {
                 case 0:
                     itemno = 0;
-                    deptComplaintsFragment=DeptComplaintsFragment.newInstance("2",did,sm);
+                    if(pm==0)
+                        deptComplaintsFragment=DeptComplaintsFragment.newInstance("0",did,sm);
+                    else
+                        deptComplaintsFragment=DeptComplaintsFragment.newInstance("2",did,sm);
                     return deptComplaintsFragment;
                 case 1:
                     itemno = 1;
-                    deptComplaintsFragment=DeptComplaintsFragment.newInstance("3",did,sm);
+                    if(pm==0)
+                        deptComplaintsFragment=DeptComplaintsFragment.newInstance("1",did,sm);
+                    else
+                        deptComplaintsFragment=DeptComplaintsFragment.newInstance("3",did,sm);
                     return deptComplaintsFragment;
                 default:
                     return null;

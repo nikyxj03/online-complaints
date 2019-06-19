@@ -26,7 +26,7 @@ import com.msm.onlinecomplaintapp.Others.RandomStringBuilder;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DeptArchivemenu extends BottomSheetDialog {
+public class DeptIgnoreMenu extends BottomSheetDialog {
 
     private Context mContext;
     private Button aamviewcompbutton;
@@ -37,7 +37,7 @@ public class DeptArchivemenu extends BottomSheetDialog {
     private View mPassedView;
     private String rid="";
 
-    public DeptArchivemenu(Context context, Complaint complaint, View passedView) {
+    public DeptIgnoreMenu(Context context, Complaint complaint, View passedView) {
         super(context);
         mContext=context;
         cuComplaint=complaint;

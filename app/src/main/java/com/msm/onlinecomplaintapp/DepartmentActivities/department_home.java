@@ -37,12 +37,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.msm.onlinecomplaintapp.DepartmentActivity;
+import com.msm.onlinecomplaintapp.DepartmentAdapters.DCompListAdapter;
+import com.msm.onlinecomplaintapp.GlobalApplication;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class department_home extends DepartmentActivity {
 
@@ -73,9 +78,13 @@ public class department_home extends DepartmentActivity {
 
     private ArrayList<HashMap<String,Object>> dudlistmap=new ArrayList<>();
     private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
+    private List<Complaint> stcomplaintlistmap=new ArrayList<>();
+    private List<Complaint> sscomplaintlistmap=new ArrayList<>();
     private HashMap<String,Object> tempmap1=new HashMap<>();
     private HashMap<String,Object> tempmap2=new HashMap<>();
     private ArrayList<String> cidsortlist=new ArrayList<>();
+
+    private DCompListAdapter dCompListAdapter;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -130,8 +139,15 @@ public class department_home extends DepartmentActivity {
         if (_toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if(item.getItemId()==R.id.csortbutton){
-            popup.show();
+        if(item.getItemId()==R.id.item1){
+            smf=0;
+            if(stcomplaintlistmap!=null)
+                dCompListAdapter.setList(stcomplaintlistmap);
+        }
+        if(item.getItemId()==R.id.item2){
+            smf=1;
+            if(sscomplaintlistmap!=null)
+                dCompListAdapter.setList(sscomplaintlistmap);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,11 +163,8 @@ public class department_home extends DepartmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_department_home);
-        initialize();
-        initializelogic();
-    }
 
-    private void initialize(){
+        showProgress("Loading..");
         _drawer= findViewById(R.id._drawer);
         _toggle=new ActionBarDrawerToggle(this,_drawer,R.string.open,R.string.close);
         _drawer.addDrawerListener(_toggle);
@@ -159,6 +172,7 @@ public class department_home extends DepartmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         vmauth=FirebaseAuth.getInstance();
+        uid=vmauth.getCurrentUser().getUid();
 
         sortbutton1=findViewById(R.id.sortbutton1);
         complaintlistview1=findViewById(R.id.complaintlistview1);
@@ -170,11 +184,6 @@ public class department_home extends DepartmentActivity {
         deptarchivebutton1=findViewById(R.id.deptarchivebutton1);
 
         setintents(this);
-
-
-        popup = new PopupMenu(department_home.this,sortbutton1);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.sortmenu, popup.getMenu());
 
         deptcomplaintsbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,20 +213,6 @@ public class department_home extends DepartmentActivity {
             }
         });
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.toString().equals("Sort by time"))
-                {
-                    smf=0;
-                }
-                else{
-                    smf=1;
-                }
-                complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                return false;
-            }
-        });
 
         logoutbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,337 +248,30 @@ public class department_home extends DepartmentActivity {
             }
         });
 
-        ChildEventListener cffb_fl = new ChildEventListener() {
+        dCompListAdapter=new DCompListAdapter(department_home.this,R.layout.deptcompistcustom,smf,PAGE_HOME_D);
+        complaintlistview1.setAdapter(dCompListAdapter);
+
+        GlobalApplication.databaseHelper.getPublicComplaintsST(new OnDataFetchListener<Complaint>() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+            public void onDataFetched(List<Complaint> complaints) {
+                hideProgress();
+                stcomplaintlistmap=complaints;
+                if(stcomplaintlistmap!=null)
+                    if(smf==0)
+                        dCompListAdapter.setList(stcomplaintlistmap);
             }
+        });
 
+        GlobalApplication.databaseHelper.getPublicComplaintsSS(new OnDataFetchListener<Complaint>() {
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+            public void onDataFetched(List<Complaint> complaints) {
+                hideProgress();
+                sscomplaintlistmap=complaints;
+                if(sscomplaintlistmap!=null)
+                    if(smf==1)
+                        dCompListAdapter.setList(sscomplaintlistmap);
             }
+        });
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        complaintlistview1.setAdapter(new complaintlistadapter(complaintlistmap,smf));
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        complaintlistview1.setAdapter(new department_home.complaintlistadapter(complaintlistmap,smf));
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        cffb.addChildEventListener(cffb_fl);
-
-
-    }
-
-    private void initializelogic(){
-
-
-        uid=vmauth.getCurrentUser().getUid();
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                complaintlistmap = new ArrayList<>();
-                try {
-                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                    };
-                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                        HashMap<String, Object> _map = _data.getValue(_ind);
-                        complaintlistmap.add(_map);
-                    }
-                } catch (Exception _e) {
-                    _e.printStackTrace();
-                }
-
-                complaintlistview1.setAdapter(new department_home.complaintlistadapter(complaintlistmap, smf));
-
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-    });
-    }
-
-    public class complaintlistadapter extends BaseAdapter {
-
-        private ArrayList<HashMap<String,Object>> _data=new ArrayList<>();;
-        Calendar cutime=Calendar.getInstance();
-        Calendar comptime=Calendar.getInstance();
-        ArrayList<HashMap<String,Object>> dtim=new ArrayList<>();
-        ArrayList<HashMap<String,Object>> sdtim=new ArrayList<>();
-
-        public complaintlistadapter(ArrayList<HashMap<String,Object>> _arr,int sm){
-            ArrayList<HashMap<String,Object>> mtdlist =new ArrayList<>();
-            if(sm==0){
-                _data=new ArrayList<>();
-                cidsortlist=new ArrayList<>();
-                for(int i7=0;i7<_arr.size();i7++) {
-                    String comptimes = _arr.get(i7).get("time").toString();
-                    comptime.set(Calendar.HOUR, (int) (Double.parseDouble(comptimes.substring((int) (0), (int) (2)))));
-                    comptime.set(Calendar.MINUTE, (int) (Double.parseDouble(comptimes.substring((int) (3), (int) (5)))));
-                    comptime.set(Calendar.SECOND, (int) (00));
-                    comptime.set(Calendar.DAY_OF_MONTH, (int) (Double.parseDouble(comptimes.substring((int) (6), (int) (8)))));
-                    comptime.set(Calendar.MONTH, (int) (Double.parseDouble(comptimes.substring((int) (9), (int) (11))) - 1));
-                    comptime.set(Calendar.YEAR, (int) (Double.parseDouble(comptimes.substring((int) (12), (int) (16)))));
-                    int ttd=(Double.valueOf(cutime.getTimeInMillis()-comptime.getTimeInMillis()).intValue());
-                    tempmap1=new HashMap<>();
-                    tempmap1.put("pos",i7);
-                    tempmap1.put("val",ttd);
-                    mtdlist.add(tempmap1);
-                }
-                for(int i7=0;i7<_arr.size();i7++){
-                    int min=(int)Double.parseDouble(mtdlist.get(0).get("val").toString());
-                    int temppos=(int)Double.parseDouble(mtdlist.get(0).get("pos").toString());
-                    int temppos1=0;
-                    for(int j7=0;j7<mtdlist.size();j7++){
-                        if((int)Double.parseDouble(mtdlist.get(j7).get("val").toString())<min){
-                            min=(int)Double.parseDouble(mtdlist.get(j7).get("val").toString());
-                            temppos=(int)Double.parseDouble(mtdlist.get(j7).get("pos").toString());
-                            temppos1=j7;
-                        }
-                    }
-                    _data.add(_arr.get(temppos));
-                    cidsortlist.add(_arr.get(temppos).get("cid").toString());
-                    mtdlist.remove(temppos1);
-                }
-
-            }
-            else{
-                _data=new ArrayList<>();
-                cidsortlist=new ArrayList<>();
-                for (int i7=0;i7<_arr.size();i7++){
-                    tempmap1=new HashMap<>();
-                    tempmap1.put("pos",i7);
-                    tempmap1.put("val",_arr.get(i7).get("supportno"));
-                    mtdlist.add(tempmap1);
-                }
-
-                for(int i7=0;i7<_arr.size();i7++){
-                    int max=0;
-                    int temppos=(int)Double.parseDouble(mtdlist.get(0).get("pos").toString());
-                    int temppos1=0;
-                    for (int j7=0;j7<mtdlist.size();j7++){
-                        if(max<(int)Double.parseDouble(mtdlist.get(j7).get("val").toString())){
-                            max=(int)Double.parseDouble(mtdlist.get(j7).get("val").toString());
-                            temppos=(int)Double.parseDouble(mtdlist.get(j7).get("pos").toString());
-                            temppos1=j7;
-                        }
-                    }
-                    _data.add(_arr.get(temppos));
-                    cidsortlist.add(_arr.get(temppos).get("cid").toString());
-                    mtdlist.remove(temppos1);
-                }
-
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return _data.size();
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public HashMap<String, Object> getItem(int _index) {
-            return _data.get(_index);
-        }
-
-        @Override
-        public View getView(final int ist, View view, ViewGroup viewGroup) {
-            LayoutInflater cv_inflater=(LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View cv_view=view;
-            if(cv_view==null)
-            {
-                cv_view=cv_inflater.inflate(R.layout.deptcompistcustom,null);
-            }
-
-            final TextView comptitletext1 = cv_view.findViewById(R.id.comptitletext1);
-            final TextView comptimetext1 = cv_view.findViewById(R.id.comptimetext1);
-            final TextView compdesctext1=cv_view.findViewById(R.id.compdesctext1);
-            final TextView supportnotext1=cv_view.findViewById(R.id.supportnotext1);
-            final LinearLayout complistmainlinear1=cv_view.findViewById(R.id.complistmainlinear1);
-            final ImageView complistimage1=cv_view.findViewById(R.id.complistimage1);
-
-            int tf2=0;
-
-            complistmainlinear1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tcdintent.putExtra("cid",_data.get(ist).get("cid").toString());
-                    tcdintent.putExtra("tiltle",_data.get(ist).get("title").toString());
-                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(department_home.this,comptitletext1,"trans1");
-                    startActivity(tcdintent,activityOptionsCompat.toBundle());
-                    //overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                }
-            });
-
-
-            if(_data.get(_data.size()-ist-1).get("mode").toString().equals("public")){
-                complistmainlinear1.setVisibility(View.VISIBLE);
-                comptitletext1.setText(_data.get(ist).get("title").toString());
-                comptimetext1.setText(_data.get(ist).get("time").toString().substring(6,16));
-                compdesctext1.setText(_data.get(ist).get("desc").toString());
-                supportnotext1.setText("Support:"+_data.get(ist).get("supportno").toString());
-                if(_data.get(ist).containsKey("ciuri")){
-                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage1);
-                    Glide.with(getApplicationContext()).load(_data.get(ist).get("ciuri").toString()).into(complistimage1);
-                }
-                else {
-                    complistimage1.setVisibility(View.GONE);
-                }
-
-            }
-            else{
-                complistmainlinear1.setVisibility(View.GONE);
-            }
-
-            return cv_view;
-        }
-    }
-
-    public static boolean setListViewHeightBasedOnItems(ListView listView)
-    {
-        ListAdapter listAdapter=listView.getAdapter();
-        if(listAdapter!=null)
-        {
-            int numberOfItems =listAdapter.getCount();
-            int th=0;
-            for(int ip=0;ip<numberOfItems;ip++)
-            {
-                View item =listAdapter.getView(ip,null,listView);
-                float px = 500*(listView.getResources().getDisplayMetrics().density);
-                item.measure(View.MeasureSpec.makeMeasureSpec((int)px,View.MeasureSpec.AT_MOST),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
-                th=th+item.getMeasuredHeight();
-            }
-            int totalDividerHeight=listView.getDividerHeight()*(numberOfItems-1);
-            int totalPadding=listView.getPaddingTop()+listView.getPaddingBottom();
-            ViewGroup.LayoutParams params= listView.getLayoutParams();
-            params.height=th+totalDividerHeight+totalPadding;
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-            return true;
-        }
-        else
-            return false;
     }
 }

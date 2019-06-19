@@ -19,7 +19,7 @@ public class Complaint  {
     private String dept;
     private String uid;
     private Timestamp time;
-
+    private String om;
 
     public String getTitle(){
         return title;
@@ -69,6 +69,10 @@ public class Complaint  {
         this.uid = uid;
     }
 
+    public void setOm(String om) {
+        this.om = om;
+    }
+
     public int getSupportno(){
         return supportno;
     }
@@ -105,6 +109,10 @@ public class Complaint  {
         return time;
     }
 
+    public String getOm() {
+        return om;
+    }
+
     public Map<String,Object> toMap(){
         Map<String,Object> result=new HashMap<>();
         result.put("title",title );
@@ -118,6 +126,7 @@ public class Complaint  {
         result.put("acm",acm );
         result.put("amode",amode );
         result.put("supportno",supportno );
+        result.put("om",om);
         return result;
     }
 
