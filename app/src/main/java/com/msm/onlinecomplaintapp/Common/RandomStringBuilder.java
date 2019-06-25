@@ -1,4 +1,4 @@
-package com.msm.onlinecomplaintapp.Others;
+package com.msm.onlinecomplaintapp.Common;
 
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
@@ -41,6 +41,7 @@ public class RandomStringBuilder {
                     do {
                         flag=0;
                         tempid=randomAlphaNumeric();
+                        if(id!=null)
                         for (int i1 = 0; i1 < id.size(); i1++) {
                             if (id.get(i1).equals(tempid)) {
                                 flag = 1;
@@ -51,7 +52,7 @@ public class RandomStringBuilder {
                 }
             });
         }
-        else{
+        else if(type=="rid"){
             GlobalApplication.databaseHelper.getAllRIDs(new OnDataFetchListener<String>() {
                 @Override
                 public void onDataFetched(List<String> strings) {
@@ -60,11 +61,32 @@ public class RandomStringBuilder {
                     do {
                         flag=0;
                         tempid=randomAlphaNumeric();
+                        if (id!=null)
                         for (int i1 = 0; i1 < id.size(); i1++) {
                             if (id.get(i1).equals(tempid)) {
                                 flag = 1;
                             }
                         }
+                    }while(flag==1);
+                    onDataSFetchListener.onDataSFetch(tempid);
+                }
+            });
+        }
+        else if(type=="msgId"){
+            GlobalApplication.databaseHelper.getAllMsgIDs(new OnDataFetchListener<String>() {
+                @Override
+                public void onDataFetched(List<String> strings) {
+                    id=strings;
+                    flag=0;
+                    do {
+                        flag=0;
+                        tempid=randomAlphaNumeric();
+                        if (id!=null)
+                            for (int i1 = 0; i1 < id.size(); i1++) {
+                                if (id.get(i1).equals(tempid)) {
+                                    flag = 1;
+                                }
+                            }
                     }while(flag==1);
                     onDataSFetchListener.onDataSFetch(tempid);
                 }

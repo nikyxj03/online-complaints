@@ -1,30 +1,23 @@
 package com.msm.onlinecomplaintapp.DepartmentActivities;
 
-import android.app.ProgressDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.Timestamp;
+import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.R;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
-public class depttotcompdec extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class depttotcompdec extends DepartmentActivity {
 
     private LinearLayout tcdimglinear1;
     private TextView tcdheadingtext1;
@@ -32,26 +25,14 @@ public class depttotcompdec extends AppCompatActivity {
     private TextView tcddesctext1;
     private TextView tcdsnt1;
     private ImageView tcdimg1;
+    private TextView authtext1;
+    private CircleImageView authimg1;
+    private TextView statustext1;
+    private LinearLayout tcdstatusmsglinear1;
+    private TextView tcdstatusmsg1;
 
-    private String cucid="";
-    private String cuuid="";
+    private HashMap<String,Object> cuComplaintmap;
 
-    private int tf2=0;
-
-    private Toolbar toolbar;
-
-    private Transition transition;
-
-    private ArrayList<HashMap<String,Object>> udlistmap=new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
-    private HashMap<String,Object> tempmap1=new HashMap<>();
-    private HashMap<String,Object> cucompmap=new HashMap<>();
-
-    private FirebaseAuth vmauth=FirebaseAuth.getInstance();
-
-    private FirebaseDatabase _database=FirebaseDatabase.getInstance();
-    private DatabaseReference udfb=_database.getReference("userdata");
-    private DatabaseReference cffb=_database.getReference("complaint");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,92 +40,65 @@ public class depttotcompdec extends AppCompatActivity {
         setContentView(R.layout.activity_depttotcompdec);
 
 
-        tcdimglinear1=findViewById(R.id.tcdimglinear1);
-        tcdimg1=findViewById(R.id.tcdimg1);
-        tcddesctext1=findViewById(R.id.tcddesctext1);
-        tcdheadingtext1=findViewById(R.id.tcdheadingtext1);
-        tcdsnt1=findViewById(R.id.tcdsnt1);
-        timeauthtext1=findViewById(R.id.timeauthtext1);
+        tcdimglinear1 = findViewById(R.id.tcdimglinear1);
+        tcdimg1 = findViewById(R.id.tcdimg1);
+        tcddesctext1 = findViewById(R.id.tcddesctext1);
+        tcdheadingtext1 = findViewById(R.id.tcdheadingtext1);
+        tcdsnt1 = findViewById(R.id.tcdsnt1);
+        timeauthtext1 = findViewById(R.id.timeauthtext1);
+        authimg1 = findViewById(R.id.authimage1);
+        authtext1 = findViewById(R.id.authtext1);
+        statustext1 = findViewById(R.id.statustext1);
+        tcdstatusmsglinear1 = findViewById(R.id.tcdmsglinear1);
+        tcdstatusmsg1 = findViewById(R.id.tcdmsg1);
 
-        cucid=getIntent().getStringExtra("cid");
-        tcdheadingtext1.setText(getIntent().getStringExtra("title"));
+        cuComplaintmap = (HashMap<String, Object>) getIntent().getSerializableExtra("cuComplaint");
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-
-
-        cuuid=vmauth.getCurrentUser().getUid();
-
-        cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                complaintlistmap = new ArrayList<>();
-                try {
-                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                    };
-                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                        HashMap<String, Object> _map = _data.getValue(_ind);
-                        complaintlistmap.add(_map);
-                    }
-                }
-                catch (Exception _e) {
-                    _e.printStackTrace();
-                }
-                udfb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        udlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                udlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        for(int i10=0;i10<complaintlistmap.size();i10++){
-                            if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                cucompmap=complaintlistmap.get(i10);
-                            }
-                        }
-                        if(cucompmap.containsKey("ciuri")){
-                            tcdimglinear1.setVisibility(View.VISIBLE);
-                            Glide.with(getApplicationContext()).load(cucompmap.get("ciuri").toString()).into(tcdimg1);
-                        }
-                        else {
-                            tcdimglinear1.setVisibility(View.GONE);
-                        }
-                        tcdheadingtext1.setText(cucompmap.get("title").toString());
-                        tcddesctext1.setText(cucompmap.get("desc").toString());
-                        tcdsnt1.setText("Support:"+cucompmap.get("supportno").toString());
-                        timeauthtext1.setText(cucompmap.get("time").toString().substring(6,16)+"|"+cucompmap.get("time").toString().substring(0,5)+" hrs");
-                        if(cucompmap.get("amode").toString().equals("no")){
-                            for(int i11=0;i11<udlistmap.size();i11++){
-                                if(cuuid.equals(udlistmap.get(i11).get("uid").toString())){
-                                    timeauthtext1.setText(timeauthtext1.getText()+"|by "+udlistmap.get(i11).get("fullname").toString());
-                                    break;
-                                }
-                            }
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+        tcdheadingtext1.setText(cuComplaintmap.get("title").toString());
+        tcdheadingtext1.setAllCaps(true);
+        if (cuComplaintmap.get("ciuri") != null) {
+            if (cuComplaintmap.get("ciuri").toString().length() != 0) {
+                tcdimglinear1.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext()).load(cuComplaintmap.get("ciuri").toString()).into(tcdimg1);
+            } else {
+                tcdimg1.setVisibility(View.GONE);
+                tcdimglinear1.setVisibility(View.GONE);
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        } else {
+            tcdimg1.setVisibility(View.GONE);
+            tcdimglinear1.setVisibility(View.GONE);
+        }
 
+        tcddesctext1.setText(cuComplaintmap.get("desc").toString());
+        tcdsnt1.setText("Support:" + String.valueOf((int) cuComplaintmap.get("supportno")));
+        SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyyy | HH:mm");
+        Timestamp timestamp = (Timestamp) cuComplaintmap.get("time");
+        timeauthtext1.setText(sfd.format(new Date(timestamp.getSeconds() * 1000L)));
+        if (cuComplaintmap.get("amode").toString().equals("yes")) {
+            authtext1.setText("Ananymous");
+        } else {
+            authtext1.setText(cuComplaintmap.get("userName").toString());
+        }
+        if (cuComplaintmap.get("acm").equals("0")) {
+            statustext1.setText("Registered");
+            statustext1.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_registered_grey_18dp), null, null, null);
+        } else if (cuComplaintmap.get("acm").equals("1")) {
+            statustext1.setText("Under Watch");
+            statustext1.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_underwatch_18dp), null, null, null);
+        } else if (cuComplaintmap.get("acm").equals("2")) {
+            statustext1.setText("Resolved");
+            statustext1.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_solved_18dp), null, null, null);
+        } else {
+            statustext1.setText("Ignored");
+            statustext1.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_ignored_18dp), null, null, null);
+        }
+        if (cuComplaintmap.get("statement") != null) {
+            if (!cuComplaintmap.get("statement").toString().equals("")) {
+                tcdstatusmsglinear1.setVisibility(View.VISIBLE);
+                tcdstatusmsg1.setText(cuComplaintmap.get("statement").toString());
             }
-        });
+        }
+
 
     }
 }

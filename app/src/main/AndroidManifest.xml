@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.msm.onlinecomplaintapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -9,6 +10,8 @@
     <uses-feature android:name="android.hardware.camera2" />
 
     <application
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="whateverString"
         android:name=".GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,7 +46,15 @@
         <activity android:name=".UserActivities.userarchives" />
         <activity android:name=".DepartmentActivities.DeptPublicArchives" />
         <activity android:name=".AdminActivities.adminarchives" />
-        <activity android:name=".UserActivities.notifictationsactivity" />
+        <activity android:name=".UserActivities.notificationsactivity" />
+        <service
+            android:name=".Services.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

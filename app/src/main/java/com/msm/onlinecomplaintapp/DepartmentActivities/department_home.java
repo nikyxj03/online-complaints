@@ -54,8 +54,6 @@ public class department_home extends DepartmentActivity {
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
 
-    private PopupMenu popup;
-
     private Button homebutton1;
     private Button logoutbutton1;
     private Button settingsbutton1;
@@ -66,15 +64,9 @@ public class department_home extends DepartmentActivity {
     private ListView complaintlistview1;
 
     private int smf=0;
-    private String uid="";
-
-    private Transition transition;
 
     private FirebaseAuth vmauth=FirebaseAuth.getInstance();
 
-    private FirebaseDatabase _database=FirebaseDatabase.getInstance();
-    private DatabaseReference cffb=_database.getReference("complaint");
-    private DatabaseReference dud=_database.getReference("deptuserdata");
 
     private ArrayList<HashMap<String,Object>> dudlistmap=new ArrayList<>();
     private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
@@ -172,9 +164,7 @@ public class department_home extends DepartmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         vmauth=FirebaseAuth.getInstance();
-        uid=vmauth.getCurrentUser().getUid();
 
-        sortbutton1=findViewById(R.id.sortbutton1);
         complaintlistview1=findViewById(R.id.complaintlistview1);
         homebutton1=findViewById(R.id.homebutton1);
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);

@@ -2,6 +2,8 @@ package com.msm.onlinecomplaintapp.DepartmentAdapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
+import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
 import com.msm.onlinecomplaintapp.DepartmentActivity;
-import com.msm.onlinecomplaintapp.Dialogs.DeptIgnoreMenu;
-import com.msm.onlinecomplaintapp.Dialogs.DeptRegisteredMenu;
+import com.msm.onlinecomplaintapp.DepartmentMenus.DeptIgnoreMenu;
+import com.msm.onlinecomplaintapp.DepartmentMenus.DeptRegisteredMenu;
+import com.msm.onlinecomplaintapp.DepartmentMenus.DeptWatchingMenu;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.Models.Departments;
-import com.msm.onlinecomplaintapp.Others.DateFormatUtils;
+import com.msm.onlinecomplaintapp.Common.DateFormatUtils;
 import com.msm.onlinecomplaintapp.R;
 
 import java.util.ArrayList;
@@ -91,6 +96,48 @@ public class DCompListAdapter extends BaseAdapter {
             complistimage1.setVisibility(View.GONE);
         }
 
+        if(complaintList.get(position).getAcm().equals("0")){
+            statustextview1.setText("Registered");
+            statustextview1.setCompoundDrawablesWithIntrinsicBounds(mcontext.getResources().getDrawable(R.drawable.ic_registered_grey_18dp),null,null,null);
+        }
+        else if(complaintList.get(position).getAcm().equals("1")){
+            statustextview1.setText("Under Watch");
+            statustextview1.setCompoundDrawablesWithIntrinsicBounds(mcontext.getResources().getDrawable(R.drawable.ic_underwatch_18dp),null,null,null);
+        }
+        else if (complaintList.get(position).getAcm().equals("2")){
+            statustextview1.setText("Resolved");
+            statustextview1.setCompoundDrawablesWithIntrinsicBounds(mcontext.getResources().getDrawable(R.drawable.ic_solved_18dp),null,null,null);
+        }
+        else {
+            statustextview1.setText("Ignored");
+            statustextview1.setCompoundDrawablesWithIntrinsicBounds(mcontext.getResources().getDrawable(R.drawable.ic_ignored_18dp),null,null,null);
+        }
+
+        if(page==((DepartmentActivity)mcontext).getPageHomeD() || page==((DepartmentActivity)mcontext).getPagePublicArchivesD()){
+            complistmainlinear1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent();
+                    intent.setClass(mcontext, depttotcompdec.class);
+                    intent.putExtra("cuComplaint",complaintList.get(position).toHashMap());
+                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((department_home)mcontext,comptitletext1,"trans1");
+                    mcontext.startActivity(intent,activityOptionsCompat.toBundle());
+                }
+            });
+        }
+
+        if(page==((DepartmentActivity)mcontext).getPageWatchingComplaintsD()){
+            complistmainlinear1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DeptWatchingMenu deptWatchingMenu=new DeptWatchingMenu(mcontext,complaintList.get(position),comptitletext1,departmentsList);
+                    View view=deptWatchingMenu.getLayoutInflater().inflate(R.layout.dept_watching_menu,null);
+                    deptWatchingMenu.setContentView(view);
+                    deptWatchingMenu.show();
+                }
+            });
+        }
+
         if (page==((DepartmentActivity)mcontext).getPageRegisteredComplaintsD()){
             complistmainlinear1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,7 +154,7 @@ public class DCompListAdapter extends BaseAdapter {
             complistmainlinear1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DeptIgnoreMenu deptIgnoreMenu = new DeptIgnoreMenu(mcontext, complaintList.get(position), comptitletext1);
+                    DeptIgnoreMenu deptIgnoreMenu = new DeptIgnoreMenu(mcontext, complaintList.get(position), comptitletext1,departmentsList);
                     View view = deptIgnoreMenu.getLayoutInflater().inflate(R.layout.dept_ignored_menu, null);
                     deptIgnoreMenu.setContentView(view);
                     deptIgnoreMenu.show();

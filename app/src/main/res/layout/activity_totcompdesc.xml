@@ -5,92 +5,172 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserActivities.totcompdesc">
+    tools:context=".DepartmentActivities.depttotcompdec">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tcdheadingtext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textSize="24dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:transitionName="trans2"/>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tcdheadingtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:transitionName="trans1"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/authimage"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@mipmap/ananymous_person_round"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:id="@+id/authtext"
+                    android:text="author"
+                    android:layout_toRightOf="@id/authimage"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/timeauthtext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:text="TextView"
-            android:textColor="#A0A0A0"/>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="8dp"
+                android:paddingLeft="6dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:id="@+id/tcdimglinear">
+                <TextView
+                    android:id="@+id/timeauthtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="TextView"
+                    android:textColor="#A0A0A0" />
 
-        <ImageView
-            android:id="@+id/tcdimg"
-            android:layout_width="140dp"
-            android:layout_height="130dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@mipmap/ic_launcher" />
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:id="@+id/tcdimglinear"
+                android:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/tcddesctext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textSize="18dp"
-            android:textColor="#0F0F0F"/>
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/tcdimg"
+                    android:layout_width="140dp"
+                    android:layout_height="130dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@mipmap/ic_launcher" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:padding="5dp">
 
-        <TextView
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tcdsnt"
-            android:layout_weight="1"
-            android:text="Support:1"
-            android:translationX="10dp"/>
+                <TextView
+                    android:id="@+id/tcddesctext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="18dp"
+                    android:textColor="#ffffff"/>
+            </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+                android:padding="5dp">
 
-        <ToggleButton
-            android:id="@+id/tcdsuppbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/roundshape"
-            android:textOff="SUPPORT"
-            android:textOn="UNSUPPORT" />
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tcdsnt"
+                    android:layout_weight="1"
+                    android:text="Support:1"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#ffffff"/>
+                <TextView
+                    android:id="@+id/statustext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="TextView"
+                    android:textColor="#ffffff"
+                    android:drawablePadding="5dp"
+                    android:layout_alignParentRight="true"/>
 
-    </LinearLayout>
+            </RelativeLayout>
+
+            <ToggleButton
+                android:id="@+id/tcdsupportbutton"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textOff="SUPPORT"
+                android:textOn="UNSUPPORT"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/roundshape"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/tcdmsglinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tcdmsg"
+                    android:textSize="18dp"
+                    android:textColor="#ffffff"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

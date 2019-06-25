@@ -10,6 +10,7 @@ public class Users {
     private String uenable;
     private String fullname;
     private String phoneno;
+    private String registrationToken;
 
     public void setUid(String uid) {
         this.uid = uid;
@@ -59,6 +60,14 @@ public class Users {
         this.uenable = uenable;
     }
 
+    public String getRegistrationToken() {
+        return registrationToken;
+    }
+
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
+    }
+
     public Map<String,Object> toMap(){
         Map<String,Object> result=new HashMap<>();
         result.put("uenable",uenable );
@@ -67,6 +76,7 @@ public class Users {
         result.put("email",email );
         result.put("cat",cat );
         result.put("uid",uid );
+        result.put("registrationToken",registrationToken);
         return result;
     }
 

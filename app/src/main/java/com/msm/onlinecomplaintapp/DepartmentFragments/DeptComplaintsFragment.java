@@ -58,9 +58,6 @@ public class DeptComplaintsFragment extends Fragment {
         return fragment;
     }
 
-    public void updateData(int sm){
-        this.sm=sm;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

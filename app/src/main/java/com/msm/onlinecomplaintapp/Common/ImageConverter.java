@@ -1,4 +1,4 @@
-package com.msm.onlinecomplaintapp.Others;
+package com.msm.onlinecomplaintapp.Common;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

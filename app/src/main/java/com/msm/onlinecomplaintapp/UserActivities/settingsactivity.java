@@ -29,26 +29,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.msm.onlinecomplaintapp.GlobalApplication;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
 import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.Models.Users;
 import com.msm.onlinecomplaintapp.R;
+import com.msm.onlinecomplaintapp.UserActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class settingsactivity extends AppCompatActivity {
+public class settingsactivity extends UserActivity {
 
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
 
-    private static final int REQUEST_CODE_NEWCOMP=5;
-    private static final int REQUEST_CODE_HOMEPAGE=11;
-    private static final int REQUEST_CODE_MYCOMPLAINT=12;
-    private static final int REQUEST_CODE_SETTINGS=13;
-    private static final int REQUEST_CODE_MAIN=0;
-
     private Button homebutton;
     private Button logoutbutton;
     private Button settingsbutton;
+    private Button archivesbutton;
+    private Button notificationsbutton;
     private Button mycomplaintsbutton;
 
     private LinearLayout repalinear;
@@ -63,33 +64,12 @@ public class settingsactivity extends AppCompatActivity {
     private Button scbutton;
     private Button rpbutton;
 
-    private ArrayList<HashMap<String,Object>> userdatalistmap =new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> templistmap =new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> templistmap1 =new ArrayList<>();
-    private HashMap<String,Object> tempmap = new HashMap<>();
-
-    private int udindex=0;
-    private int counter1=0;
-    private int i14=0;
-    private int i15=0;
-    private int i16=0;
     private int anaf=0;
-    private String uid="";
 
-    private FirebaseAuth vmauth;
-    private FirebaseAuth.AuthStateListener vmauthlistner;
+    private Users cuUser;
+
     private AuthCredential vmcredential;
     private FirebaseUser vmauthu;
-
-    private FirebaseDatabase _database = FirebaseDatabase.getInstance();
-    private DatabaseReference ud = _database.getReference("userdata");
-    private ChildEventListener _ud_child_listener;
-
-    private Intent mainintent=new Intent();
-    private Intent newcompintent=new Intent();
-    private Intent mycomplaintintent=new Intent();
-    private Intent settingsintent=new Intent();
-    private Intent homeintent=new Intent();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -108,11 +88,24 @@ public class settingsactivity extends AppCompatActivity {
                         setResult(RESULT_OK,mycomplaintintent);
                     }
                     else{
-                        if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                        {
-                            mainintent.putExtra("key1","logout");
-                            setResult(RESULT_OK,mainintent);
+                        if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_NOTIFICATION){
+                            notificationintent.putExtra("ac","lo");
+                            setResult(RESULT_OK,notificationintent);
                         }
+                        else {
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES){
+                                archiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,archiveintent);
+                            }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+                        }
+
                     }
                 }
                 settingsactivity.this.finish();
@@ -151,16 +144,13 @@ public class settingsactivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsactivity);
-        Initialize();
-        InitializeLogic();
-    }
-    private void Initialize(){
-
         _drawer= findViewById(R.id._drawer);
         _toggle=new ActionBarDrawerToggle(settingsactivity.this,_drawer,R.string.open,R.string.close);
         _drawer.addDrawerListener(_toggle);
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        showProgress("Loading..");
 
         vmauthu=FirebaseAuth.getInstance().getCurrentUser();
 
@@ -168,6 +158,8 @@ public class settingsactivity extends AppCompatActivity {
         mycomplaintsbutton=findViewById(R.id.mycomplaintsbutton);
         settingsbutton=findViewById(R.id.settingsbutton);
         logoutbutton=findViewById(R.id.logoutbutton);
+        archivesbutton=findViewById(R.id.archivebutton);
+        notificationsbutton=findViewById(R.id.notification_button);
 
         repalinear=findViewById(R.id.repalinear);
         acchlinear=findViewById(R.id.acchlinear);
@@ -181,10 +173,7 @@ public class settingsactivity extends AppCompatActivity {
         rpbutton=findViewById(R.id.rpbutton);
         scbutton=findViewById(R.id.scbutton);
 
-        mainintent.setClass(settingsactivity.this,MainActivity.class);
-        mycomplaintintent.setClass(settingsactivity.this,mycomplaints.class);
-        settingsintent.setClass(settingsactivity.this,settingsactivity.class);
-        homeintent.setClass(settingsactivity.this,homepage.class);
+        setintents(this);
 
         homebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +189,19 @@ public class settingsactivity extends AppCompatActivity {
             }
         });
 
+        archivesbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(archiveintent,REQUEST_CODE_ARCHIVES);
+            }
+        });
+
+        notificationsbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(notificationintent,REQUEST_CODE_NOTIFICATION);
+            }
+        });
 
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,11 +215,24 @@ public class settingsactivity extends AppCompatActivity {
                         setResult(RESULT_OK,mycomplaintintent);
                     }
                     else{
-                        if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                        {
-                            mainintent.putExtra("key1","logout");
-                            setResult(RESULT_OK,mainintent);
+                        if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_NOTIFICATION){
+                            notificationintent.putExtra("ac","lo");
+                            setResult(RESULT_OK,notificationintent);
                         }
+                        else {
+                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES){
+                                archiveintent.putExtra("ac","lo");
+                                setResult(RESULT_OK,archiveintent);
+                            }
+                            else {
+                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
+                                {
+                                    mainintent.putExtra("key1","logout");
+                                    setResult(RESULT_OK,mainintent);
+                                }
+                            }
+                        }
+
                     }
                 }
                 settingsactivity.this.finish();
@@ -227,17 +242,15 @@ public class settingsactivity extends AppCompatActivity {
         scbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempmap=new HashMap<>();
-                tempmap.put("fullname",nameedit.getText().toString());
-                tempmap.put("phoneno",phonenoedit.getText().toString());
-                tempmap.put("email",userdatalistmap.get(udindex).get("email").toString());
-                tempmap.put("uid",userdatalistmap.get(udindex).get("uid").toString());
-                tempmap.put("uenable",userdatalistmap.get(udindex).get("uid").toString());
-                tempmap.put("cat","student" );
-                ud.child(uid).updateChildren(tempmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                showProgress("Updating...");
+                cuUser.setFullname(nameedit.getText().toString());
+                cuUser.setPhoneno(phonenoedit.getText().toString());
+                GlobalApplication.databaseHelper.updateUserData(cuUser, new OnDataUpdatedListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(settingsactivity.this,"Successfully updated" ,Toast.LENGTH_LONG ).show();
+                    public void onDataUploaded(boolean success) {
+                        hideProgress();
+                        if(success)
+                            Toast.makeText(settingsactivity.this,"Details Updated",Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -256,6 +269,7 @@ public class settingsactivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (oldpedit.getText().toString().length() > 0) {
+                    showProgress("Changing Password...");
                     vmcredential = EmailAuthProvider.getCredential(vmauthu.getEmail(), oldpedit.getText().toString());
                     vmauthu.reauthenticate(vmcredential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -266,6 +280,7 @@ public class settingsactivity extends AppCompatActivity {
                                         vmauthu.updatePassword(npedit.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+                                                hideProgress();
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(settingsactivity.this, "password updated", Toast.LENGTH_LONG).show();
                                                     repalinear.setVisibility(View.GONE);
@@ -277,12 +292,15 @@ public class settingsactivity extends AppCompatActivity {
                                             }
                                         });
                                     } else {
+                                        hideProgress();
                                         Toast.makeText(settingsactivity.this, "new password size must be more than 6", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    hideProgress();
                                     Toast.makeText(settingsactivity.this, "passwords do not match", Toast.LENGTH_LONG).show();
                                 }
                             } else {
+                                hideProgress();
                                 Toast.makeText(settingsactivity.this, "Old password is not correct", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -295,9 +313,6 @@ public class settingsactivity extends AppCompatActivity {
 
         });
 
-    }
-    private void InitializeLogic(){
-        uid=vmauthu.getUid();
         acchlinear.setVisibility(View.VISIBLE);
         repalinear.setVisibility(View.GONE);
 
@@ -305,41 +320,16 @@ public class settingsactivity extends AppCompatActivity {
         emailidedit.setFocusableInTouchMode(false);
         emailidedit.setClickable(false);
 
-        ud.addListenerForSingleValueEvent(new ValueEventListener() {
+        GlobalApplication.databaseHelper.fetchUserData(getCurrentUserId(), new OnDataSFetchListener<Users>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                userdatalistmap= new ArrayList<>();
-                try {
-                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                    };
-                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                        HashMap<String, Object> _map = _data.getValue(_ind);
-                        userdatalistmap.add(_map);
-                    }
-                } catch (Exception _e) {
-                    _e.printStackTrace();
-                }
-                counter1=0;
-                for(int i = 0; i< userdatalistmap.size(); i++)
-                {
-                    if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userdatalistmap.get(counter1).get("uid").toString())) {
-                        udindex=counter1;
-                    }
-                    counter1++;
-                }
-
-
-                emailidedit.setText(userdatalistmap.get(udindex).get("email").toString());
-                nameedit.setText(userdatalistmap.get(udindex).get("fullname").toString());
-                phonenoedit.setText(userdatalistmap.get(udindex).get("phoneno").toString());
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onDataSFetch(Users users) {
+                cuUser=users;
+                emailidedit.setText(users.getEmail());
+                nameedit.setText(users.getFullname());
+                phonenoedit.setText(users.getPhoneno());
+                hideProgress();
             }
         });
     }
+
 }

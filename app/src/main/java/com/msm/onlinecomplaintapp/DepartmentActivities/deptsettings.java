@@ -29,8 +29,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.msm.onlinecomplaintapp.DepartmentActivity;
+import com.msm.onlinecomplaintapp.GlobalApplication;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
 import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.Models.DeptUsers;
+import com.msm.onlinecomplaintapp.Models.Users;
 import com.msm.onlinecomplaintapp.R;
+import com.msm.onlinecomplaintapp.UserActivities.settingsactivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,27 +65,12 @@ public class deptsettings extends DepartmentActivity {
     private Button dscbutton;
     private Button drpbutton;
 
-    private ArrayList<HashMap<String,Object>> deptuserdatalistmap =new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> templistmap =new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> templistmap1 =new ArrayList<>();
-    private HashMap<String,Object> tempmap = new HashMap<>();
-
-    private int udindex=0;
-    private int counter1=0;
-    private int i14=0;
-    private int i15=0;
-    private int i16=0;
     private int anaf=0;
-    private String uid="";
 
-    private FirebaseAuth vmauth=FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener vmauthlistner;
     private AuthCredential vmcredential;
     private FirebaseUser vmauthu;
 
-    private FirebaseDatabase _database = FirebaseDatabase.getInstance();
-    private DatabaseReference dud = _database.getReference("deptuserdata");
-
+    private DeptUsers CudeptUsers;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -162,6 +153,8 @@ public class deptsettings extends DepartmentActivity {
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        showProgress("Loading...");
+
         homebutton1=findViewById(R.id.homebutton1);
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);
         settingsbutton1=findViewById(R.id.settingsbutton1);
@@ -181,8 +174,9 @@ public class deptsettings extends DepartmentActivity {
         drpbutton=findViewById(R.id.drpbutton);
         dscbutton=findViewById(R.id.dscbutton);
 
-        vmauth=FirebaseAuth.getInstance();
-        vmauthu=vmauth.getCurrentUser();
+        setintents(this);
+
+        vmauthu=FirebaseAuth.getInstance().getCurrentUser();
 
         homebutton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,15 +246,15 @@ public class deptsettings extends DepartmentActivity {
         dscbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempmap=new HashMap<>();
-                tempmap.put("fullname",dnameedit.getText().toString());
-                tempmap.put("phoneno",dphonenoedit.getText().toString());
-                tempmap.put("email",deptuserdatalistmap.get(udindex).get("email").toString());
-                tempmap.put("uid",deptuserdatalistmap.get(udindex).get("uid").toString());
-                dud.child(uid).updateChildren(tempmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                showProgress("Updating...");
+                CudeptUsers.setFullname(dnameedit.getText().toString());
+                CudeptUsers.setPhoneno(dphonenoedit.getText().toString());
+                GlobalApplication.databaseHelper.updateDeptUserData(CudeptUsers, new OnDataUpdatedListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(deptsettings.this, "Updated Successfully",Toast.LENGTH_LONG ).show();
+                    public void onDataUploaded(boolean success) {
+                        hideProgress();
+                        if(success)
+                            Toast.makeText(deptsettings.this,"Details Updated",Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -279,6 +273,7 @@ public class deptsettings extends DepartmentActivity {
             @Override
             public void onClick(View v) {
                 if (doldpedit.getText().toString().length() > 0) {
+                    showProgress("Changing Password..");
                     vmcredential = EmailAuthProvider.getCredential(vmauthu.getEmail(), doldpedit.getText().toString());
                     vmauthu.reauthenticate(vmcredential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -289,6 +284,7 @@ public class deptsettings extends DepartmentActivity {
                                         vmauthu.updatePassword(dnpedit.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+                                                hideProgress();
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(deptsettings.this, "password updated", Toast.LENGTH_LONG).show();
                                                     drepalinear.setVisibility(View.GONE);
@@ -300,12 +296,15 @@ public class deptsettings extends DepartmentActivity {
                                             }
                                         });
                                     } else {
+                                        hideProgress();
                                         Toast.makeText(deptsettings.this, "new password size must be more than 6", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    hideProgress();
                                     Toast.makeText(deptsettings.this, "passwords do not match", Toast.LENGTH_LONG).show();
                                 }
                             } else {
+                                hideProgress();
                                 Toast.makeText(deptsettings.this, "Old password is not correct", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -318,7 +317,6 @@ public class deptsettings extends DepartmentActivity {
 
         });
 
-        uid=vmauth.getCurrentUser().getUid();
         dacchlinear.setVisibility(View.VISIBLE);
         drepalinear.setVisibility(View.GONE);
 
@@ -326,40 +324,14 @@ public class deptsettings extends DepartmentActivity {
         demailidedit.setFocusableInTouchMode(false);
         demailidedit.setClickable(false);
 
-        dud.addListenerForSingleValueEvent(new ValueEventListener() {
+        GlobalApplication.databaseHelper.fetchDeptUserData(getCurrentUserId(), new OnDataSFetchListener<DeptUsers>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                deptuserdatalistmap= new ArrayList<>();
-                try {
-                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                    };
-                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                        HashMap<String, Object> _map = _data.getValue(_ind);
-                        deptuserdatalistmap.add(_map);
-                    }
-                } catch (Exception _e) {
-                    _e.printStackTrace();
-                }
-                counter1=0;
-                for(int i = 0; i<deptuserdatalistmap.size(); i++)
-                {
-                    if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(deptuserdatalistmap.get(counter1).get("uid").toString())) {
-                        udindex=counter1;
-                    }
-                    counter1++;
-                }
-
-
-                demailidedit.setText(deptuserdatalistmap.get(udindex).get("email").toString());
-                dnameedit.setText(deptuserdatalistmap.get(udindex).get("fullname").toString());
-                dphonenoedit.setText(deptuserdatalistmap.get(udindex).get("phoneno").toString());
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onDataSFetch(DeptUsers users) {
+                CudeptUsers=users;
+                demailidedit.setText(users.getEmail());
+                dnameedit.setText(users.getFullname());
+                dphonenoedit.setText(users.getPhoneno());
+                hideProgress();
             }
         });
     }

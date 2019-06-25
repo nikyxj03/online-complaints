@@ -1,4 +1,4 @@
-package com.msm.onlinecomplaintapp.Dialogs;
+package com.msm.onlinecomplaintapp.Common;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -53,7 +53,7 @@ public class ConfirmationDialog extends Dialog {
 
     @Override
     public boolean onTouchEvent( MotionEvent event) {
-        return super.onTouchEvent(event);
+        return false;
     }
 
     @Override

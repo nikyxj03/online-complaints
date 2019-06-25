@@ -53,12 +53,13 @@
         android:paddingRight="8dp">
 
         <TextView
+            android:gravity="left"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/complistimage"
             android:id="@+id/compdesctext"
-            android:layout_width="225dp"
-            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
             android:textSize="18dp"
@@ -103,7 +104,8 @@
             android:textOff="SUPPORT"
             android:textOn="UNSUPPORT"
             android:layout_marginRight="5dp"
-            android:background="@drawable/roundshape"/>
+            android:background="@drawable/roundshape"
+            android:visibility="gone"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -139,7 +141,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="#000000"
-            android:drawableLeft="@drawable/ic_registered_black_18dp"
+            android:drawableLeft="@drawable/ic_registered_grey_18dp"
             android:drawablePadding="5dp"/>
     </RelativeLayout>
 </LinearLayout>

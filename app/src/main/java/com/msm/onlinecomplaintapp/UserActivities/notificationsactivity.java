@@ -13,7 +13,7 @@ import android.widget.Button;
 import com.msm.onlinecomplaintapp.MainActivity;
 import com.msm.onlinecomplaintapp.R;
 
-public class notifictationsactivity extends AppCompatActivity {
+public class notificationsactivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_NEWCOMP=5;
     private static final int REQUEST_CODE_HOMEPAGE=11;
@@ -69,7 +69,7 @@ public class notifictationsactivity extends AppCompatActivity {
 
     private void Initialize(){
         _drawer= findViewById(R.id._drawer);
-        _toggle=new ActionBarDrawerToggle(notifictationsactivity.this,_drawer,R.string.open,R.string.close);
+        _toggle=new ActionBarDrawerToggle(notificationsactivity.this,_drawer,R.string.open,R.string.close);
         _drawer.addDrawerListener(_toggle);
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -86,7 +86,7 @@ public class notifictationsactivity extends AppCompatActivity {
         settingsintent.setClass(this,settingsactivity.class);
         homeintent.setClass(this,homepage.class);
         mycomplaintintent.setClass(this,mycomplaints.class );
-        notificationintent.setClass(this,notifictationsactivity.class );
+        notificationintent.setClass(this, notificationsactivity.class );
         archiveintent.setClass(this,userarchives.class );
 
         mycomplaintsbutton.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +148,7 @@ public class notifictationsactivity extends AppCompatActivity {
                         }
                     }
                 }
-                notifictationsactivity.this.finish();
+                notificationsactivity.this.finish();
             }
         });
     }

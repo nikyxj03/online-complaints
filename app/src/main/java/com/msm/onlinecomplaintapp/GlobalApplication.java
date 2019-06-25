@@ -4,7 +4,7 @@ package com.msm.onlinecomplaintapp;
 import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
-import com.msm.onlinecomplaintapp.Others.DatabaseHelper;
+import com.msm.onlinecomplaintapp.Common.DatabaseHelper;
 
 public class GlobalApplication extends Application {
 

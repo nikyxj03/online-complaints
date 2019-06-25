@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_forward_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_archive_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -30,7 +30,7 @@
                           <map>
                             <entry key="color" value="888888" />
                             <entry key="height" value="18" />
-                            <entry key="outputName" value="ic_forward_grey_18dp" />
+                            <entry key="outputName" value="ic_request_grey_18dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\manas" />
                             <entry key="width" value="18" />

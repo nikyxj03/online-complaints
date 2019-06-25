@@ -130,7 +130,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="#000000"
-            android:drawableLeft="@drawable/ic_registered_black_18dp"
+            android:drawableLeft="@drawable/ic_registered_grey_18dp"
             android:drawablePadding="5dp"/>
     </RelativeLayout>
 </LinearLayout>

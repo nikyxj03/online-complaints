@@ -52,6 +52,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -61,7 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="HOME"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="MY COMPLAINTS"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="NOTIFICATION"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -103,7 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="ARCHIVES"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 
@@ -119,7 +129,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SETTINGS"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -133,7 +144,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="LOGOUT"
-            android:background="@null"/>
+            android:background="@null"
+            android:textStyle="bold"/>
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

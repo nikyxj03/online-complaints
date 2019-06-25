@@ -1,6 +1,7 @@
 package com.msm.onlinecomplaintapp.UserActivities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,9 @@ import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,12 +28,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.msm.onlinecomplaintapp.Interfaces.CDOnClick;
+import com.msm.onlinecomplaintapp.Interfaces.OnClick;
 import com.msm.onlinecomplaintapp.R;
+import com.msm.onlinecomplaintapp.UserActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
-public class totcompdesc extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class totcompdesc extends UserActivity {
 
     private LinearLayout tcdimglinear;
     private TextView tcdheadingtext;
@@ -37,388 +50,168 @@ public class totcompdesc extends AppCompatActivity {
     private TextView tcddesctext;
     private TextView tcdsnt;
     private ImageView tcdimg;
-    private ToggleButton tcdsuppbutton;
+    private TextView authtext;
+    private CircleImageView authimg;
+    private TextView statustext;
+    private LinearLayout tcdstatusmsglinear;
+    private TextView tcdstatusmsg;
+    private ToggleButton tcdsupportbutton;
 
-    private int tf1=0;
+    private HashMap<String,Object> cuComplaintmap;
+    private Boolean sbe;
+    private Boolean sbp;
+    private String uid;
+    private int supportno;
+    private Boolean tempbool;
 
-    private String cucid="";
-    private String cuuid="";
+    private FirebaseFirestore database=FirebaseFirestore.getInstance();
 
-    private int tf2=0;
+    public static final String COMPLAINT_DB_KEY="Complaints";
+    public static final String USERS_DB_KEY = "Users";
+    public static final String SUPP_DB_KEY = "Support";
 
-    private Toolbar toolbar;
-
-    private ArrayList<HashMap<String,Object>> udlistmap=new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> complaintlistmap=new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> usercomplistmap=new ArrayList<>();
-    private ArrayList<HashMap<String,Object>> usersupplistmap=new ArrayList<>();
-    private HashMap<String,Object> tempmap1=new HashMap<>();
-    private HashMap<String,Object> tempmap2=new HashMap<>();
-    private HashMap<String,Object> cucompmap=new HashMap<>();
-
-    private FirebaseAuth vmauth=FirebaseAuth.getInstance();
-
-    private FirebaseDatabase _database=FirebaseDatabase.getInstance();
-    private DatabaseReference udfb=_database.getReference("userdata");
-    private DatabaseReference cffb=_database.getReference("complaint");
-    private DatabaseReference ucfb=_database.getReference("usercomp");
-    private DatabaseReference usfb=_database.getReference("usersupp");
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_totcompdesc);
-        Initialize();
-        InitializeLogic();
-    }
-    private void Initialize(){
-        tcdimglinear=findViewById(R.id.tcdimglinear);
-        tcdimg=findViewById(R.id.tcdimg);
-        tcddesctext=findViewById(R.id.tcddesctext);
-        tcdheadingtext=findViewById(R.id.tcdheadingtext);
-        tcdsnt=findViewById(R.id.tcdsnt);
-        tcdsuppbutton=findViewById(R.id.tcdsuppbutton);
-        timeauthtext=findViewById(R.id.timeauthtext);
 
-        tcdsuppbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(tcdsuppbutton.isChecked()) {
-                    int tf1=0;
-                    tempmap1=new HashMap<>();
-                    for(int i1=0;i1<usersupplistmap.size();i1++){
-                        if(usersupplistmap.get(i1).get("uid").toString().equals(cuuid)){
-                            tempmap1=usersupplistmap.get(i1);
-                            tempmap1.put("c"+String.valueOf((int)(usersupplistmap.get(i1).size())),cucid);
-                            usfb.child(cuuid).updateChildren(tempmap1);
-                            tf1=1;
-                            break;
-                        }
-                    }
-                    if(tf1==0){
-                        tempmap1=new HashMap<>();
-                        tempmap1.put("uid",cuuid);
-                        tempmap1.put("c1",cucid);
-                        usfb.child(cuuid).updateChildren(tempmap1);
-                    }
-                    tempmap2=new HashMap<>();
-                    for(int i2=0;i2<complaintlistmap.size();i2++){
-                        if(complaintlistmap.get(i2).get("cid").toString().equals(cucid)){
-                            tempmap2=complaintlistmap.get(i2);
-                            int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                            tempmap2.remove("supportno");
-                            tempmap2.put("supportno",tsn+1);
-                            cffb.child(cucid).updateChildren(tempmap2);
-                            break;
-                        }
-                    }
-                }
-                else{
-                    tempmap1=new HashMap<>();
-                    int tpc=0;
-                    for(int i1=0;i1<usersupplistmap.size();i1++){
-                        if(usersupplistmap.get(i1).get("uid").toString().equals(cuuid)){
-                            tempmap1=usersupplistmap.get(i1);
-                            for(int j1=0;j1<tempmap1.size()-1;j1++){
-                                if(tempmap1.get("c"+String.valueOf(j1+1)).equals(cucid)){
-                                    tpc=j1+1;
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-                    tempmap1.remove("c"+String.valueOf(tpc));
-                    for(int j1=tpc;j1<tempmap1.size();j1++){
-                        tempmap1.put("c"+String.valueOf(j1),tempmap1.get("c"+String.valueOf(j1+1)));
-                        tpc=j1+1;
-                    }
-                    if(tempmap1.containsKey("c"+String.valueOf(tpc))) {
-                        tempmap1.remove("c" + String.valueOf(tpc));
-                    }
-                    if(tempmap1.size()==1){
-                        usfb.child(cuuid).removeValue();
-                    }
-                    else {
-                        usfb.child(cuuid).removeValue();
-                        usfb.child(cuuid).updateChildren(tempmap1);
-                    }
-                    tempmap2=new HashMap<>();
-                    for(int i2=0;i2<complaintlistmap.size();i2++){
-                        if(complaintlistmap.get(i2).get("cid").toString().equals(cucid)){
-                            tempmap2=complaintlistmap.get(i2);
-                            int tsn=(int)Double.parseDouble(tempmap2.get("supportno").toString());
-                            tempmap2.remove("supportno");
-                            tempmap2.put("supportno",tsn-1);
-                            cffb.child(cucid).updateChildren(tempmap2);
-                            break;
-                        }
-                    }
+        tcdimglinear = findViewById(R.id.tcdimglinear);
+        tcdimg = findViewById(R.id.tcdimg);
+        tcddesctext = findViewById(R.id.tcddesctext);
+        tcdheadingtext = findViewById(R.id.tcdheadingtext);
+        tcdsnt = findViewById(R.id.tcdsnt);
+        timeauthtext = findViewById(R.id.timeauthtext);
+        authimg = findViewById(R.id.authimage);
+        authtext = findViewById(R.id.authtext);
+        statustext = findViewById(R.id.statustext);
+        tcdstatusmsglinear = findViewById(R.id.tcdmsglinear);
+        tcdstatusmsg = findViewById(R.id.tcdmsg);
+        tcdsupportbutton=findViewById(R.id.tcdsupportbutton);
 
-                }
+        cuComplaintmap = (HashMap<String, Object>) getIntent().getSerializableExtra("cuComplaint");
+        sbe=getIntent().getBooleanExtra("sbe",false);
+        sbp=getIntent().getBooleanExtra("sbp",false);
+
+
+        tcdheadingtext.setText(cuComplaintmap.get("title").toString());
+        tcdheadingtext.setAllCaps(true);
+
+        uid=getCurrentUserId();
+
+        if (cuComplaintmap.get("ciuri") != null) {
+            if (cuComplaintmap.get("ciuri").toString().length() != 0) {
+                tcdimglinear.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext()).load(cuComplaintmap.get("ciuri").toString()).into(tcdimg);
+            } else {
+                tcdimg.setVisibility(View.GONE);
+                tcdimglinear.setVisibility(View.GONE);
             }
-        });
-
-        ChildEventListener cffb_fl = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        for(int i10=0;i10<complaintlistmap.size();i10++){
-                            if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                cucompmap=complaintlistmap.get(i10);
-                            }
-                        }
-                        tcdsnt.setText("Support"+cucompmap.get("supportno").toString());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+        } else {
+            tcdimg.setVisibility(View.GONE);
+            tcdimglinear.setVisibility(View.GONE);
+        }
+        tcddesctext.setText(cuComplaintmap.get("desc").toString());
+        supportno=(int)cuComplaintmap.get("supportno");
+        tcdsnt.setText("Support:" + String.valueOf(supportno));
+        SimpleDateFormat sfd = new SimpleDateFormat("dd MMM yyyy | hh:mm a");
+        Timestamp timestamp = (Timestamp) cuComplaintmap.get("time");
+        timeauthtext.setText(sfd.format(new Date(timestamp.getSeconds() * 1000L)));
+        if (cuComplaintmap.get("amode").toString().equals("yes")) {
+            authtext.setText("Ananymous");
+        } else {
+            authtext.setText(cuComplaintmap.get("userName").toString());
+        }
+        if (cuComplaintmap.get("acm").equals("0")) {
+            statustext.setText("Registered");
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_registered_white_18dp), null, null, null);
+        } else if (cuComplaintmap.get("acm").equals("1")) {
+            statustext.setText("Under Watch");
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_underwatch_white_18dp), null, null, null);
+        } else if (cuComplaintmap.get("acm").equals("2")) {
+            statustext.setText("Resolved");
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_solved_white_18dp), null, null, null);
+        } else {
+            statustext.setText("Ignored");
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_ignored_white_18dp), null, null, null);
+        }
+        if (cuComplaintmap.get("statement") != null) {
+            if (!cuComplaintmap.get("statement").toString().equals("")) {
+                tcdstatusmsglinear.setVisibility(View.VISIBLE);
+                tcdstatusmsg.setText(cuComplaintmap.get("statement").toString());
             }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        for(int i10=0;i10<complaintlistmap.size();i10++){
-                            if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                cucompmap=complaintlistmap.get(i10);
-                            }
-                        }
-                        tcdsnt.setText("Support"+cucompmap.get("supportno").toString());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        for(int i10=0;i10<complaintlistmap.size();i10++){
-                            if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                cucompmap=complaintlistmap.get(i10);
-                            }
-                        }
-                        tcdsnt.setText("Support"+cucompmap.get("supportno").toString());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
-                final String _childKey = dataSnapshot.getKey();
-                final HashMap<String, Object> _childValue = dataSnapshot.getValue(_ind);
-                cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        complaintlistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                complaintlistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        for(int i10=0;i10<complaintlistmap.size();i10++){
-                            if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                cucompmap=complaintlistmap.get(i10);
-                            }
-                        }
-                        tcdsnt.setText("Support"+cucompmap.get("supportno").toString());
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        cffb.addChildEventListener(cffb_fl);
-
-    }
-    private void InitializeLogic(){
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        cucid=getIntent().getStringExtra("cid");
-
-        cuuid=vmauth.getCurrentUser().getUid();
-
-        cffb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                complaintlistmap = new ArrayList<>();
-                try {
-                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                    };
-                    for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                        HashMap<String, Object> _map = _data.getValue(_ind);
-                        complaintlistmap.add(_map);
-                    }
-                }
-                catch (Exception _e) {
-                    _e.printStackTrace();
-                }
-                usfb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot _dataSnapshot) {
-                        usersupplistmap = new ArrayList<>();
-                        try {
-                            GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                            };
-                            for (DataSnapshot _data : _dataSnapshot.getChildren()) {
-                                HashMap<String, Object> _map = _data.getValue(_ind);
-                                usersupplistmap.add(_map);
-                            }
-                        } catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                        udfb.addListenerForSingleValueEvent(new ValueEventListener() {
+        }
+        if(sbe) {
+            tempbool=sbp;
+            tcdsupportbutton.setVisibility(View.VISIBLE);
+            tcdsupportbutton.setChecked(sbp);
+            tcdsupportbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (tcdsupportbutton.isChecked()) {
+                        tempbool=true;
+                        supportno++;
+                        tcdsnt.setText("Support:" + String.valueOf(supportno));
+                        final Map<String, Object> map = new HashMap<>();
+                        map.put("time", Timestamp.now());
+                        database.collection(USERS_DB_KEY).document(uid).collection(SUPP_DB_KEY).document(cuComplaintmap.get("cid").toString()).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                udlistmap = new ArrayList<>();
-                                try {
-                                    GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {
-                                    };
-                                    for (DataSnapshot _data : dataSnapshot.getChildren()) {
-                                        HashMap<String, Object> _map = _data.getValue(_ind);
-                                        udlistmap.add(_map);
+                            public void onSuccess(Void aVoid) {
+                                database.collection(COMPLAINT_DB_KEY).document(cuComplaintmap.get("cid").toString()).update("supportno", supportno).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        tcdsnt.setText("Support:" + String.valueOf(supportno));
                                     }
-                                } catch (Exception _e) {
-                                    _e.printStackTrace();
-                                }
-                                for(int i10=0;i10<complaintlistmap.size();i10++){
-                                    if(complaintlistmap.get(i10).get("cid").toString().equals(cucid)){
-                                        cucompmap=complaintlistmap.get(i10);
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        supportno--;
+                                        tcdsnt.setText("Support:" + String.valueOf(supportno));
                                     }
-                                }
-                                if(cucompmap.containsKey("ciuri")){
-                                    tcdimglinear.setVisibility(View.VISIBLE);
-                                    Glide.with(getApplicationContext()).load(cucompmap.get("ciuri").toString()).into(tcdimg);
-                                }
-                                else {
-                                    tcdimglinear.setVisibility(View.GONE);
-                                }
-                                tcdheadingtext.setText(cucompmap.get("title").toString());
-                                tcddesctext.setText(cucompmap.get("desc").toString());
-                                tcdsnt.setText("Support"+cucompmap.get("supportno").toString());
-                                timeauthtext.setText(cucompmap.get("time").toString().substring(6,16)+"|"+cucompmap.get("time").toString().substring(0,5)+" hrs");
-                                if(cucompmap.get("amode").toString().equals("no")){
-                                    for(int i11=0;i11<udlistmap.size();i11++){
-                                        if(cuuid.equals(udlistmap.get(i11).get("uid").toString())){
-                                            timeauthtext.setText(timeauthtext.getText()+"|by "+udlistmap.get(i11).get("fullname").toString());
-                                            break;
-                                        }
-                                    }
-                                }
-                                for(int i3=0;i3<usersupplistmap.size();i3++){
-                                    if(usersupplistmap.get(i3).get("uid").toString().equals(cuuid)){
-                                        for (int j3=0;j3<usersupplistmap.get(i3).size()-1;j3++){
-                                            if(usersupplistmap.get(i3).get("c"+String.valueOf(j3+1)).toString().equals(cucompmap.get("cid").toString())){
-                                                tf2=1;
-                                            }
-                                        }
-                                    }
-                                }
-                                if(tf2==1){
-                                    tcdsuppbutton.setChecked(true);
-                                }
-                                else {
-                                    tcdsuppbutton.setChecked(false);
-                                }
-                                progressDialog.dismiss();
+                                });
                             }
-
+                        }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            public void onFailure(@NonNull Exception e) {
+                                supportno--;
+                                tcdsnt.setText("Support:" + String.valueOf(supportno));
                             }
                         });
 
+                    } else {
+                        tempbool=false;
+                        supportno--;
+                        tcdsnt.setText("Support:" + String.valueOf(supportno));
+                        database.collection(USERS_DB_KEY).document(uid).collection(SUPP_DB_KEY).document(cuComplaintmap.get("cid").toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                database.collection(COMPLAINT_DB_KEY).document(cuComplaintmap.get("cid").toString()).update("supportno", supportno).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        tcdsnt.setText("Support:" + String.valueOf(supportno));
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        supportno++;
+                                        tcdsnt.setText("Support:" + String.valueOf(supportno));
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                supportno++;
+                                tcdsnt.setText("Support:" + String.valueOf(supportno));
+                            }
+                        });
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+                }
+            });
+        }
     }
 }

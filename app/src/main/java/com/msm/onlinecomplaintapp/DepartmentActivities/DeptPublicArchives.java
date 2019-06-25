@@ -43,11 +43,6 @@ public class DeptPublicArchives extends DepartmentActivity {
 
     private List<Complaint> ssarchivecomplaintlist = new ArrayList<>();
     private List<Complaint> starchivecompaintlist=new ArrayList<>();
-    private List<String> deptlist = new ArrayList<>();
-    private List<String> seldeptist = new ArrayList<>();
-
-    private FirebaseDatabase _database = FirebaseDatabase.getInstance();
-    private DatabaseReference acffb = _database.getReference("complaint");
 
     private int sm=0;
 
@@ -228,7 +223,7 @@ public class DeptPublicArchives extends DepartmentActivity {
             public void onDataFetched(List<Complaint> complaints) {
                 hideProgress();
                 if(complaints!=null) {
-                    if(sm==1) {
+                    if(sm==0) {
                         starchivecompaintlist = complaints;
                         dCompListAdapter.setList(starchivecompaintlist);
                         hideProgress();

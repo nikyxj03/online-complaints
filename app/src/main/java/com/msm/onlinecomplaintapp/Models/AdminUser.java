@@ -7,6 +7,25 @@ public class AdminUser {
     private String email;
     private String name;
     private String uid;
+    private String type;
+    private String dept;
+    private String registrationToken;
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public String getEmail() {
         return email;
@@ -32,11 +51,22 @@ public class AdminUser {
         this.name = name;
     }
 
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
+    }
+
+    public String getRegistrationToken() {
+        return registrationToken;
+    }
+
     public Map<String,Object> toMap(){
         Map<String,Object> admin=new HashMap<>();
         admin.put("uid",uid );
         admin.put("email",email );
         admin.put("name",name );
+        admin.put("dept",dept);
+        admin.put("type",type);
+        admin.put("registrationToken",registrationToken);
         return admin;
     }
 }

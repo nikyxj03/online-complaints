@@ -11,6 +11,7 @@ tools:openDrawer="start">
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".DepartmentActivities.DeptPublicArchives">

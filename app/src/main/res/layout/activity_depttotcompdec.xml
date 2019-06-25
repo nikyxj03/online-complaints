@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context=".DepartmentActivities.depttotcompdec">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +29,34 @@
             android:text="TextView"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:textColor="#000000"
-            android:transitionName="trans1"/>
+            android:transitionName="trans1"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/authimage1"
+            android:layout_marginRight="5dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/ananymous_person_round"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:id="@+id/authtext1"
+            android:text="author"
+            android:layout_toRightOf="@id/authimage1"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,10 +69,10 @@
             android:id="@+id/timeauthtext1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:textSize="16dp"
             android:text="TextView"
-            android:textColor="#A0A0A0"/>
+            android:textColor="#A0A0A0" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -72,11 +104,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="18dp"
-            android:textColor="#0F0F0F"/>
+            android:textSize="18dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -89,7 +120,38 @@
             android:id="@+id/tcdsnt1"
             android:layout_weight="1"
             android:text="Support:1"
-            android:translationX="10dp"/>
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/statustext1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="TextView"
+            android:textColor="#A0A0A0"
+            android:layout_alignParentRight="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/tcdmsglinear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tcdmsg1"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
