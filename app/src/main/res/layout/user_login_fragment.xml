@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/user_login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <android.support.v7.widget.CardView
+        android:layout_alignParentTop="true"
+        android:id="@+id/user_login_email_card"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#f5f7fb"
+        app:cardCornerRadius="6dp"
+            android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintAnimationEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/user_login_emaid_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_below="@id/user_login_email_card"
+            android:id="@+id/user_login_password_card"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#f5f7fb"
+            app:cardCornerRadius="6dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintAnimationEnabled="true"
+                    app:passwordToggleEnabled="true">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/user_login_password_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/user_login_button"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/user_login_password_card"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="LOGIN"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/loginsignupbuttonbg"
+            android:visibility="gone"/>
+
+        <include android:layout_below="@id/user_login_button" android:visibility="gone"
+            android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/ulfdiv1" layout="@layout/or_divider"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_google_login_button"
+            android:layout_marginTop="55dp"
+            android:layout_below="@id/ulfdiv1"
+            android:layout_centerHorizontal="true"
+            app:colorScheme="dark"></com.google.android.gms.common.SignInButton>
+
+        <include android:layout_below="@id/user_google_login_button"
+            android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/ulfdiv2" layout="@layout/or_divider"/>
+
+        <Button
+            android:id="@+id/user_phone_login_button"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/ulfdiv2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Phone Number"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/loginsignupbuttonbg"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/user_phone_login_button"
+            android:layout_marginTop="25dp"
+            android:text="Note: New user must login with Google SignIn"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_phone_number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/phonenotitle"
+            android:text="Enter Phone Number"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_below="@id/phonenotitle"
+            android:id="@+id/user_login_phoneno_card"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#f5f7fb"
+            app:cardCornerRadius="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintAnimationEnabled="true"
+                    app:passwordToggleEnabled="true">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/user_login_phoneno_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLength="10" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/user_phoneno_confirm_button"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/user_login_phoneno_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM"
+            android:textColor="#ffffff"
+            android:background="@drawable/loginsignupbuttonbg"/>
+
+        <Button
+            android:id="@+id/user_phoneno_skip_button"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/user_phoneno_confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SKIP"
+            android:textColor="#ffffff"
+            android:background="@drawable/loginsignupbuttonbg"/>
+
+        <Button
+            android:id="@+id/userphonenobackbutton"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/user_phoneno_skip_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            android:textColor="#ffffff"
+            android:background="@drawable/loginsignupbuttonbg"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_login_otp_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/otptitle"
+            android:text="ENTER OTP"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <com.mukesh.OtpView
+            android:layout_below="@id/otptitle"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/otp_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:inputType="number"
+            android:itemBackground="#f5f7fb"
+            android:textColor="@color/colorPrimary"
+            app:itemCount="6"
+            app:lineColor="@color/colorPrimary"
+            app:viewType="line" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/userotpchronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/otp_view"
+            android:textColor="@color/colorPrimary"/>
+
+        <Button
+            android:background="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/otp_view"
+            android:id="@+id/userresendotpbutton"
+            android:layout_marginTop="15dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="RESEND OTP"
+            android:visibility="gone"/>
+
+        <Button
+            android:background="@drawable/loginsignupbuttonbg"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_below="@id/otp_view"
+            android:id="@+id/userotpskipbutton"
+            android:layout_marginTop="85dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="SKIP" />
+
+        <Button
+            android:background="@drawable/loginsignupbuttonbg"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:layout_below="@id/otp_view"
+            android:id="@+id/userotpbackbutton"
+            android:layout_marginTop="85dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

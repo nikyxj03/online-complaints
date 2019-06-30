@@ -78,7 +78,6 @@ public class UCompFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.user_complaint_fragment,container,false);
         complaintListView=view.findViewById(R.id.user_comp_listview);
-        Toast.makeText(context,"1",Toast.LENGTH_LONG).show();
 
         ((UserActivity)context).showProgress("Loading...");
 
@@ -119,6 +118,7 @@ public class UCompFragment extends Fragment {
                 @Override
                 public void onSortChanged(int sm) {
                     UCompFragment.this.sm=sm;
+                    Toast.makeText(context,"123",Toast.LENGTH_LONG).show();
                     if(sm==0)
                         uCompListAdapter.setList(stcomplaintList);
                     else

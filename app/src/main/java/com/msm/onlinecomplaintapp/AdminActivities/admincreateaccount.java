@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
 
@@ -112,7 +112,7 @@ public class admincreateaccount extends AppCompatActivity {
         settingsbutton2=findViewById(R.id.settingsbutton2);
         logoutbutton2=findViewById(R.id.logoutbutton2);
 
-        mainintent.setClass(admincreateaccount.this,MainActivity.class);
+        mainintent.setClass(admincreateaccount.this, LoginActivity.class);
         settingsintent.setClass(admincreateaccount.this,adminsettings.class);
         adminhomeintent.setClass(admincreateaccount.this,admin_home.class);
         tcdintent.setClass(admincreateaccount.this,depttotcompdec.class);

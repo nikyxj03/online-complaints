@@ -27,7 +27,7 @@
             android:textSize="24dp"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:transitionName="trans2"/>
+            android:transitionName="trans1" />
 
         <TextView
             android:textSize="15dp"
@@ -55,7 +55,6 @@
         <TextView
             android:gravity="left"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/complistimage"
             android:id="@+id/compdesctext"
             android:layout_width="match_parent"
@@ -65,13 +64,13 @@
             android:textSize="18dp"
             android:ellipsize="end"
             android:textColor="#000000"
-            android:maxLines="5"/>
+            android:maxLines="5" />
 
         <ImageView
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:id="@+id/complistimage"
-            android:layout_width="120dp"
+            android:layout_width="110dp"
             android:layout_height="110dp"
             android:scaleType="fitXY"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
@@ -91,28 +90,17 @@
             android:id="@+id/supportnotext"
             android:text="Support:1"
             android:textColor="#000000"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:textSize="15dp"/>
 
 
-        <ToggleButton
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/supportbutton"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:textOff="SUPPORT"
-            android:textOn="UNSUPPORT"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/roundshape"
-            android:visibility="gone"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:paddingRight="25dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
         android:layout_marginBottom="15dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -144,4 +132,14 @@
             android:drawableLeft="@drawable/ic_registered_grey_18dp"
             android:drawablePadding="5dp"/>
     </RelativeLayout>
+    <ToggleButton
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/supportbutton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textOff="SUPPORT"
+        android:textOn="UNSUPPORT"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/roundshape"/>
 </LinearLayout>

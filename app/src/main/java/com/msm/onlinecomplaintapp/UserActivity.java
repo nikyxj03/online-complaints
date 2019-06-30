@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
+import com.msm.onlinecomplaintapp.UserActivities.homepage;
 import com.msm.onlinecomplaintapp.UserActivities.mycomplaints;
 import com.msm.onlinecomplaintapp.UserActivities.notificationsactivity;
 import com.msm.onlinecomplaintapp.UserActivities.settingsactivity;
@@ -90,12 +92,14 @@ public class UserActivity extends AppCompatActivity {
     }
 
     protected void setintents(Context context){
+        homeintent=new Intent();
         mainintent=new Intent();
         settingsintent=new Intent();
         mycomplaintintent=new Intent();
         archiveintent=new Intent();
         notificationintent=new Intent();
-        mainintent.setClass(context,MainActivity.class);
+        homeintent.setClass(context, homepage.class);
+        mainintent.setClass(context, LoginActivity.class);
         settingsintent.setClass(context, settingsactivity.class);
         archiveintent.setClass(context, userarchives.class );
         mycomplaintintent.setClass(context, mycomplaints.class );

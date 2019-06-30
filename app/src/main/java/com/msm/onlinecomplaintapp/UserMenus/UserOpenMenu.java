@@ -64,7 +64,7 @@ public class UserOpenMenu extends BottomSheetDialog {
 
 
         if(cuComplaint.getCriuri()==null || cuComplaint.getCriuri().equals("")){
-
+            uomcompimage.setVisibility(View.GONE);
         }
         else {
             Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(R.drawable.ic_launcher_foreground).into(uomcompimage);

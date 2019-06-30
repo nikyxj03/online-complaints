@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
 import com.msm.onlinecomplaintapp.Common.BitMapLoader;
 import com.msm.onlinecomplaintapp.Common.ConfirmationDialog;
 import com.msm.onlinecomplaintapp.Common.ImageConverter;
@@ -56,18 +57,11 @@ public class UserClosedMenu extends BottomSheetDialog {
         ucmdonebutton=view.findViewById(R.id.ucmdonebutton);
         ucmcompimage=view.findViewById(R.id.ucmimage);
 
-        if(cuComplaint.getCiuri()==""){
-
+        if(cuComplaint.getCriuri()==null || cuComplaint.getCriuri().equals("")){
+            ucmcompimage.setVisibility(View.GONE);
         }
         else {
-            BitMapLoader bitMapLoader=new BitMapLoader(cuComplaint.getCiuri(), new OnLoad() {
-                @Override
-                public void OnLoaded(Bitmap loadedBitmap) {
-                    Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(loadedBitmap, 100);
-                    ucmcompimage.setImageBitmap(circularBitmap);
-                }
-            });
-            bitMapLoader.execute();
+            Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(R.drawable.ic_launcher_foreground).into(ucmcompimage);
         }
 
         ucmviewcompbutton.setOnClickListener(new View.OnClickListener() {

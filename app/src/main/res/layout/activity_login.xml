@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainscreenlinear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivities.LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/splashscreenlinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+
+        <ImageView
+                android:id="@+id/splashimage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/vitmonitorlogo"
+                android:layout_centerInParent="true"
+                android:translationY="-100dp"/>
+        <TextView
+            android:id="@+id/splashtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splashimage"
+            android:translationY="-70dp"
+            android:textSize="38dp"
+            android:text="VITMONITOR"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/splashloadinglinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:layout_below="@id/splashtitle">
+
+            <ProgressBar
+                android:id="@+id/splashprogressbar"
+                style="@style/CustomProgessBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="#ffffff"/>
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/loginpagerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VITMONITOR"
+            android:textColor="#ffffff"
+            android:textSize="44dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
+        <co.ceryle.segmentedbutton.SegmentedButtonGroup
+            android:elevation="5dp"
+            android:translationY="25dp"
+            android:id="@+id/user_type"
+            android:layout_above="@id/user_login_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:sbg_borderColor="#ffffff"
+            app:sbg_borderSize="1dp"
+            app:sbg_dividerColor="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:sbg_selectorColor="@color/colorPrimary"
+            app:sbg_backgroundColor="#ffffff"
+            app:sbg_radius="30dp"
+            app:sbg_position="0">
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:id="@+id/user_sb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:sb_textColor="@color/colorPrimary"
+                app:sb_textColor_onSelection="#ffffff"
+                app:sb_text="USERS" />
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:id="@+id/dept_sb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:sb_textColor="@color/colorPrimary"
+                app:sb_textColor_onSelection="#ffffff"
+                app:sb_text="DEPARTMENT"/>
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:id="@+id/admin_sb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:sb_textColor="@color/colorPrimary"
+                app:sb_textColor_onSelection="#ffffff"
+                app:sb_text="ADMIN"/>
+        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/user_login_card"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:background="@drawable/curved_linear"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/login_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

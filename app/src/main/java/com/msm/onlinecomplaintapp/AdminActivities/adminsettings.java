@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
 
@@ -173,7 +173,7 @@ public class adminsettings extends AppCompatActivity {
         settingsbutton2=findViewById(R.id.settingsbutton2);
         logoutbutton2=findViewById(R.id.logoutbutton2);
 
-        mainintent.setClass(adminsettings.this,MainActivity.class);
+        mainintent.setClass(adminsettings.this, LoginActivity.class);
         settingsintent.setClass(adminsettings.this,adminsettings.class);
         adminhomeintent.setClass(adminsettings.this,admin_home.class);
         tcdintent.setClass(adminsettings.this,depttotcompdec.class);

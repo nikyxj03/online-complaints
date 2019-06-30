@@ -1,10 +1,12 @@
 package com.msm.onlinecomplaintapp.UserActivities;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +16,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,7 +36,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +51,7 @@ import com.msm.onlinecomplaintapp.Common.UriToBitmapExecutor;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnLoad;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.Models.Users;
 import com.msm.onlinecomplaintapp.R;
@@ -57,6 +62,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import co.ceryle.segmentedbutton.SegmentedButton;
+import co.ceryle.segmentedbutton.SegmentedButtonGroup;
 
 public class homepage extends UserActivity {
 
@@ -75,6 +83,11 @@ public class homepage extends UserActivity {
     private FloatingActionButton ncfbutton;
     private TextView profilename;
     private TextView profileemail;
+    private SegmentedButtonGroup homesbg;
+    private SegmentedButton homesb1;
+    private SegmentedButton homesb2;
+
+    private Toolbar toolbar;
 
     private List<Complaint> stcomplaintList=new ArrayList<>();
     private List<Complaint> sscomplaintList=new ArrayList<>();
@@ -167,6 +180,11 @@ public class homepage extends UserActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        toolbar=findViewById(R.id.u_h_toolbar);
+
+        setSupportActionBar(toolbar);
+
         _drawer = findViewById(R.id._drawer);
         _toggle = new ActionBarDrawerToggle(homepage.this, _drawer, R.string.open, R.string.close);
         _drawer.addDrawerListener(_toggle);
@@ -187,6 +205,9 @@ public class homepage extends UserActivity {
         ncfbutton = findViewById(R.id.ncfbutton);
         profileemail = findViewById(R.id.profileemail);
         profilename = findViewById(R.id.profilename);
+        homesbg=findViewById(R.id.home_list_type);
+        homesb1=findViewById(R.id.sgb1);
+        homesb2=findViewById(R.id.sgb2);
 
         ncfbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,6 +315,68 @@ public class homepage extends UserActivity {
             }
         });
 
+        /*complaintlistview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if(scrollState==AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    hideToolBar();
+                else
+                    showToolBar();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });*/
+
+    }
+
+    public void hideToolBar(){
+        toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                getSupportActionBar().hide();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+    }
+
+    public void showToolBar(){
+        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                getSupportActionBar().show();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
 
     }
 }

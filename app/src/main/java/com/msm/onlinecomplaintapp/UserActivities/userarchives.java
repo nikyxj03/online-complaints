@@ -38,7 +38,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;

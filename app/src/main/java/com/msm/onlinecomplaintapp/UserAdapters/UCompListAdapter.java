@@ -95,6 +95,7 @@ public class UCompListAdapter extends BaseAdapter {
         final ToggleButton supportbutton=convertView.findViewById(R.id.supportbutton);
 
         comptitletext.setText(complaintList.get(position).getTitle());
+        comptitletext.setAllCaps(true);
         comptimetext.setText(DateFormatUtils.getRelativeTimeSpanStringShort(mcontext,complaintList.get(position).getTime().toDate().getTime()));
         compdesctext.setText(complaintList.get(position).getDesc());
         supportnotext.setText("Support:"+complaintList.get(position).getSupportno());
@@ -205,7 +206,7 @@ public class UCompListAdapter extends BaseAdapter {
                     else { 
                         intent.putExtra("sbp",false);
                     }
-                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((homepage)mcontext,comptitletext,"trans2");
+                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((homepage)mcontext,comptitletext,"trans1");
                     ((homepage) mcontext).startActivityForResult(intent,6,activityOptionsCompat.toBundle());
                 }
             });
@@ -244,7 +245,7 @@ public class UCompListAdapter extends BaseAdapter {
                     intent.putExtra("cuComplaint",complaintList.get(position).toHashMap());
                     intent.putExtra("sbe",false);
                     intent.putExtra("sbp",false);
-                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((homepage)mcontext,comptitletext,"trans2");
+                    ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((homepage)mcontext,comptitletext,"trans1");
                     ((homepage) mcontext).startActivityForResult(intent,6,activityOptionsCompat.toBundle());
                 }
             });

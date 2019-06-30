@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.msm.onlinecomplaintapp.Common.ConfirmationDialog;
@@ -79,18 +80,11 @@ public class DeptRegisteredMenu extends BottomSheetDialog {
         drmcompimage=view.findViewById(R.id.drmimage);
 
         final Activity activity=(deptcomplaints)mContext;
-        if(cuComplaint.getCiuri()==""){
-
+        if(cuComplaint.getCriuri()==null || cuComplaint.getCriuri().equals("")){
+            drmcompimage.setVisibility(View.GONE);
         }
         else {
-            BitMapLoader bitMapLoader=new BitMapLoader(cuComplaint.getCiuri(), new OnLoad() {
-                @Override
-                public void OnLoaded(Bitmap loadedBitmap) {
-                    Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(loadedBitmap, 100);
-                    drmcompimage.setImageBitmap(circularBitmap);
-                }
-            });
-            bitMapLoader.execute();
+            Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(R.drawable.ic_launcher_foreground).into(drmcompimage);
         }
 
         drmviewcompbutton.setOnClickListener(new View.OnClickListener() {

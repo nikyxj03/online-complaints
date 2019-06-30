@@ -27,8 +27,6 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +51,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
 
@@ -233,7 +231,7 @@ public class admin_home extends AppCompatActivity {
         logoutbutton2=findViewById(R.id.logoutbutton2);
         archivebutton2=findViewById(R.id.archivebutton2);
 
-        mainintent.setClass(admin_home.this,MainActivity.class);
+        mainintent.setClass(admin_home.this, LoginActivity.class);
         settingsintent.setClass(admin_home.this,adminsettings.class);
         adminhomeintent.setClass(admin_home.this,admin_home.class);
         tcdintent.setClass(admin_home.this,depttotcompdec.class);

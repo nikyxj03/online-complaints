@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.R;
 
 public class notificationsactivity extends AppCompatActivity {
@@ -81,7 +81,7 @@ public class notificationsactivity extends AppCompatActivity {
         notificationbutton=findViewById(R.id.notification_button);
         logoutbutton=findViewById(R.id.logoutbutton);
 
-        mainintent.setClass(this,MainActivity.class);
+        mainintent.setClass(this, LoginActivity.class);
         newcompintent.setClass(this,newcomplaint.class);
         settingsintent.setClass(this,settingsactivity.class);
         homeintent.setClass(this,homepage.class);

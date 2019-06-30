@@ -40,7 +40,7 @@ import com.msm.onlinecomplaintapp.DepartmentActivity;
 import com.msm.onlinecomplaintapp.DepartmentAdapters.DCompListAdapter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 

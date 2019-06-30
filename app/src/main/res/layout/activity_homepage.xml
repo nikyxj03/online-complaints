@@ -1,31 +1,80 @@
 <android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/_drawer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:openDrawer="start">
-    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:openDrawer="start">
+    
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.v7.widget.Toolbar
+            android:layout_alignParentTop="true"
+            android:id="@+id/u_h_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_bar_background"
+            android:elevation="-4dp"
+            app:titleTextColor="#ffffff"
+            android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+        
+        <co.ceryle.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/home_list_type"
+            android:layout_below="@id/u_h_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:sbg_borderColor="@color/colorPrimary"
+            app:sbg_borderSize="1dp"
+            app:sbg_dividerColor="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:sbg_selectorColor="@color/colorPrimary"
+            app:sbg_backgroundColor="#ffffff"
+            app:sbg_radius="30dp"
+            app:sbg_position="0">
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:id="@+id/sgb1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:sb_textColor="@color/colorPrimary"
+                app:sb_textColor_onSelection="#ffffff"
+                app:sb_text="  Complaints  " />
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:id="@+id/sgb2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:sb_textColor="@color/colorPrimary"
+                app:sb_textColor_onSelection="#ffffff"
+                app:sb_text="Announcements"/>
+        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+
         <LinearLayout
+            android:layout_below="@id/home_list_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:elevation="2dp">
                     <ListView
                         android:id="@+id/complaintlistview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
                         android:divider="#00000000"
-                        android:dividerHeight="8dp">
+                        android:dividerHeight="8dp"
+                        android:scrollbars="none">
 
                     </ListView>
 
         </LinearLayout>
         <android.support.design.widget.FloatingActionButton
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:id="@+id/ncfbutton"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -36,7 +85,7 @@
             android:layout_margin="10dp"
             android:foreground="@drawable/ic_add_black_240dp"
             android:backgroundTint="@color/colorPrimary"/>
-    </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/_nav_view"

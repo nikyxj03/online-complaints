@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
-import com.msm.onlinecomplaintapp.MainActivity;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.Models.Users;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.UserActivity;

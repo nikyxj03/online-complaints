@@ -16,6 +16,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.util.Executors;
+import com.msm.onlinecomplaintapp.Interfaces.BooleanListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
@@ -52,6 +53,7 @@ public class DatabaseHelper {
     public static final String STATUS_MSG_DB_KEY="StatusMsg";
     public static final String FWD_HISTORY_DB_KEY="FwdHistory";
     public static final String STATUS_LOG_DB_KEY="StatusLog";
+    public static final String USER_PHONENO_DB_KEY="UsersPhoneNo";
 
     public int sm=0;
 
@@ -494,6 +496,35 @@ public class DatabaseHelper {
             @Override
             public void onFailure(@NonNull Exception e) {
                 onDataUpdatedListener.onDataUploaded(false);
+            }
+        });
+    }
+
+    public void checkifUserExists(final String userId, final BooleanListener booleanListener){
+        database.collection(USERS_DB_KEY).document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                booleanListener.booleanResponse(documentSnapshot.exists());
+            }
+        });
+    }
+
+    public void checkifUserExistsByNumber(final String phoneNo,final BooleanListener booleanListener){
+        database.collection(USER_PHONENO_DB_KEY).document(phoneNo).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                booleanListener.booleanResponse(documentSnapshot.exists());
+            }
+        });
+    }
+
+    public void addUserNumber(final String phoneNo,final OnDataUpdatedListener onDataUpdatedListener){
+        Map<String,Object> map=new HashMap<>();
+        map.put("phoneNo",phoneNo);
+        database.collection(USER_PHONENO_DB_KEY).document(phoneNo).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                onDataUpdatedListener.onDataUploaded(true);
             }
         });
     }

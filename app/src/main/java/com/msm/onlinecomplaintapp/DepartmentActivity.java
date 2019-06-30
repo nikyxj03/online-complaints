@@ -8,10 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +19,7 @@ import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
 import com.msm.onlinecomplaintapp.DepartmentActivities.deptcomplaints;
 import com.msm.onlinecomplaintapp.DepartmentActivities.deptsettings;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
-import com.msm.onlinecomplaintapp.Interfaces.OnSortChange;
+import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 
 public class DepartmentActivity extends AppCompatActivity  {
 
@@ -109,7 +107,7 @@ public class DepartmentActivity extends AppCompatActivity  {
         archiveintent=new Intent();
         deptcomplaintintent=new Intent();
         deptarchiveintent=new Intent();
-        mainintent.setClass(context,MainActivity.class);
+        mainintent.setClass(context, LoginActivity.class);
         settingsintent.setClass(context, deptsettings.class);
         depthomeintent.setClass(context, department_home.class);
         tcdintent.setClass(context, depttotcompdec.class);

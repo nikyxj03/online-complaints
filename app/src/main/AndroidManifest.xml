@@ -14,22 +14,21 @@
         android:appComponentFactory="whateverString"
         android:name=".GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/vitmonitorlogo"
         android:label="VITMONITOR"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/vitmonitor_circle_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DepartmentActivities.DeptArchives"></activity>
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".LoginActivities.LoginActivity"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserActivities.homepage" />
+        <activity android:name=".UserActivities.homepage" android:theme="@style/LoginTheme"/>
         <activity android:name=".UserActivities.newcomplaint" />
         <activity android:name=".cameracapture" />
         <activity android:name=".UserActivities.mycomplaints" />

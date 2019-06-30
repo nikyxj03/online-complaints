@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.msm.onlinecomplaintapp.Common.BitMapLoader;
@@ -72,18 +73,11 @@ public class DeptIgnoreMenu extends BottomSheetDialog {
         dimdeletebutton=view.findViewById(R.id.dimdeletebutton);
         dimdonebutton=view.findViewById(R.id.dimdonebutton);
         final Activity activity=(DeptArchives)mContext;
-        if(cuComplaint.getCiuri()==""){
-
+        if(cuComplaint.getCriuri()==null || cuComplaint.getCriuri().equals("")){
+            dimcompimage.setVisibility(View.GONE);
         }
         else {
-            BitMapLoader bitMapLoader=new BitMapLoader(cuComplaint.getCiuri(), new OnLoad() {
-                @Override
-                public void OnLoaded(Bitmap loadedBitmap) {
-                    Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(loadedBitmap, 100);
-                    dimcompimage.setImageBitmap(circularBitmap);
-                }
-            });
-            bitMapLoader.execute();
+            Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(R.drawable.ic_launcher_foreground).into(dimcompimage);
         }
 
         dimviewcompbutton.setOnClickListener(new View.OnClickListener() {

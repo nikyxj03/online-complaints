@@ -135,11 +135,19 @@ public class deptcomplaints extends DepartmentActivity {
         }
         if(item.getItemId()==R.id.item1){
             smf=0;
-            onSortChange0.onSortChanged(smf);
+            if(tabLayout.getSelectedTabPosition()==0){
+                getSortListener_ZERO().onSortChanged(0);
+            }else {
+                getSortListener_ONE().onSortChanged(0);
+            }
         }
         if(item.getItemId()==R.id.item2){
             smf=1;
-            onSortChange1.onSortChanged(smf);
+            if(tabLayout.getSelectedTabPosition()==0){
+                getSortListener_ZERO().onSortChanged(1);
+            }else {
+                getSortListener_ONE().onSortChanged(1);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

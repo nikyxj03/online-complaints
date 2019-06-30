@@ -55,7 +55,8 @@
                     android:id="@+id/authtext"
                     android:text="author"
                     android:layout_toRightOf="@id/authimage"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:textColor="#000000"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -69,7 +70,7 @@
                     android:id="@+id/timeauthtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16dp"
+                    android:textSize="14dp"
                     android:text="TextView"
                     android:textColor="#A0A0A0" />
 
@@ -104,8 +105,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textSize="18dp"
-                    android:textColor="#ffffff"/>
+                    android:textSize="20dp"
+                    android:textColor="#000000"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -122,16 +123,16 @@
                     android:layout_weight="1"
                     android:text="Support:1"
                     android:layout_alignParentLeft="true"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#000000"/>
                 <TextView
                     android:id="@+id/statustext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:text="TextView"
-                    android:textColor="#ffffff"
                     android:drawablePadding="5dp"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true"
+                    android:textColor="#000000"/>
 
             </RelativeLayout>
 
@@ -162,14 +163,12 @@
                     android:layout_height="wrap_content"
                     android:text="Status:"
                     android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"/>
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tcdmsg"
-                    android:textSize="18dp"
-                    android:textColor="#ffffff"/>
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

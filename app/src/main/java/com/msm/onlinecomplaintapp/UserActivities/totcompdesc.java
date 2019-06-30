@@ -2,6 +2,8 @@ package com.msm.onlinecomplaintapp.UserActivities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,12 @@ import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -29,11 +37,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.msm.onlinecomplaintapp.Common.ImageConverter;
 import com.msm.onlinecomplaintapp.Interfaces.CDOnClick;
 import com.msm.onlinecomplaintapp.Interfaces.OnClick;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.UserActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -128,16 +139,16 @@ public class totcompdesc extends UserActivity {
         }
         if (cuComplaintmap.get("acm").equals("0")) {
             statustext.setText("Registered");
-            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_registered_white_18dp), null, null, null);
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_registered_grey_18dp), null, null, null);
         } else if (cuComplaintmap.get("acm").equals("1")) {
             statustext.setText("Under Watch");
-            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_underwatch_white_18dp), null, null, null);
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_underwatch_18dp), null, null, null);
         } else if (cuComplaintmap.get("acm").equals("2")) {
             statustext.setText("Resolved");
-            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_solved_white_18dp), null, null, null);
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_solved_18dp), null, null, null);
         } else {
             statustext.setText("Ignored");
-            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_ignored_white_18dp), null, null, null);
+            statustext.setCompoundDrawablesWithIntrinsicBounds(this.getResources().getDrawable(R.drawable.ic_ignored_18dp), null, null, null);
         }
         if (cuComplaintmap.get("statement") != null) {
             if (!cuComplaintmap.get("statement").toString().equals("")) {

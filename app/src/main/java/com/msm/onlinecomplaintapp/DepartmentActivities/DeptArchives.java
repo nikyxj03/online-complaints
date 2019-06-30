@@ -66,7 +66,6 @@ public class DeptArchives extends DepartmentActivity {
             }else {
                 getSortListener_ONE().onSortChanged(0);
             }
-
         }
         if(item.getItemId()==R.id.item2){
             if(tabLayout.getSelectedTabPosition()==0){
