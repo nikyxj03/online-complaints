@@ -67,7 +67,7 @@ public class UserOpenMenu extends BottomSheetDialog {
             uomcompimage.setVisibility(View.GONE);
         }
         else {
-            Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(R.drawable.ic_launcher_foreground).into(uomcompimage);
+            Glide.with(mContext.getApplicationContext()).load(cuComplaint.getCriuri()).placeholder(mContext.getResources().getDrawable(R.drawable.loading_animation)).into(uomcompimage);
         }
 
         uomviewcompbutton.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class UserOpenMenu extends BottomSheetDialog {
                 intent.putExtra("cuComplaint",cuComplaint.toHashMap());
                 intent.putExtra("sbe",true);
                 intent.putExtra("sbp",tsbp);
-                ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((mycomplaints)mContext,mPassedView,"trans2");
+                ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((mycomplaints)mContext,mPassedView,"trans1");
                 ((mycomplaints) mContext).startActivityForResult(intent,6,activityOptionsCompat.toBundle());
             }
         });

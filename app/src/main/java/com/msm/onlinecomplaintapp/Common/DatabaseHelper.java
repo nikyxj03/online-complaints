@@ -3,8 +3,10 @@ package com.msm.onlinecomplaintapp.Common;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,6 +18,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.util.Executors;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.msm.onlinecomplaintapp.Interfaces.BooleanListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
@@ -539,6 +543,16 @@ public class DatabaseHelper {
             @Override
             public void onFailure(@NonNull Exception e) {
                 onDataSFetchListener.onDataSFetch(null);
+            }
+        });
+    }
+
+    public void updateRegistrationToken(final String userId){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(task.isSuccessful())
+                database.collection(USERS_DB_KEY).document(userId).update("registrationToken",task.getResult().getToken());
             }
         });
     }

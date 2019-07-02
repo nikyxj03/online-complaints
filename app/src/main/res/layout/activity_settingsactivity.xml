@@ -20,100 +20,44 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/repalinear"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:id="@+id/oldpedit"
-                            android:background="@drawable/editboxbg"
-                            android:inputType="textPassword"
-                            android:hint="Enter Old Password"
-                            android:padding="5dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:id="@+id/npedit"
-                            android:background="@drawable/editboxbg"
-                            android:inputType="textPassword"
-                            android:hint="Enter New Password"
-                            android:padding="5dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:id="@+id/rnpedit"
-                            android:background="@drawable/editboxbg"
-                            android:inputType="textPassword"
-                            android:hint="Re-Enter New Password"
-                            android:padding="5dp"/>
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/repabutton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="RESET PASSWORD" />
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/acchlinear"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                    <LinearLayout
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="15dp"
+                        app:border_color="@color/colorPrimary"
+                        app:border_width="3dp"
+                        android:src="@mipmap/ananymous_person_round"/>
+
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="22dp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/emailidtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email-id" />
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="#f5f7fb"
+                        android:padding="8dp">
 
                         <TextView
-                            android:id="@+id/emailidtext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Email-id:" />
-
-                        <EditText
-                            android:id="@+id/emailidedit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:inputType="textPersonName" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
+                            android:textSize="20dp"
+                            android:layout_alignParentLeft="true"
                             android:id="@+id/nametext"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -121,20 +65,31 @@
                             android:text="Name:" />
 
                         <EditText
+                            android:background="@null"
+                            android:textSize="20dp"
+                            android:layout_alignParentRight="true"
                             android:id="@+id/nameedit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
                             android:inputType="textPersonName" />
-                    </LinearLayout>
+                    </RelativeLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#f5f7fb"
+                        android:padding="8dp">
 
                         <TextView
+                            android:textSize="20dp"
+                            android:layout_alignParentLeft="true"
                             android:id="@+id/phonenotext"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -142,33 +97,255 @@
                             android:text="Phone no:" />
 
                         <EditText
+                            android:background="@null"
+                            android:textSize="20dp"
+                            android:layout_alignParentRight="true"
                             android:id="@+id/phonenoedit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:maxLength="10"
                             android:inputType="phone" />
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <Button
+                        android:textColor="#ffffff"
+                        android:layout_margin="10dp"
                         android:id="@+id/scbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SAVE CHANGES" />
+                        android:text="SAVE CHANGES"
+                        android:background="@drawable/loginsignupbuttonbg"/>
 
                     <Button
+                        android:textColor="#ffffff"
+                        android:layout_margin="10dp"
                         android:id="@+id/rpbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="CHANGE PASSWORD" />
+                        android:text="CHANGE PASSWORD"
+                        android:background="@drawable/loginsignupbuttonbg"
+                        android:visibility="gone"/>
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/repalinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_alignParentTop="true"
+                        android:id="@+id/user_old_pwd__card"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#f5f7fb"
+                        app:cardCornerRadius="6dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter Old Password"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="5dp"/>
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintAnimationEnabled="true">
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/user_old_pswd_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textVisiblePassword"/>
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_below="@+id/user_old_pwd__card"
+                        android:id="@+id/user_new_pwd__card"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#f5f7fb"
+                        app:cardCornerRadius="6dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter New Password"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="5dp"/>
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintAnimationEnabled="true"
+                                app:passwordToggleEnabled="true">
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/user_new_pswd_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPassword"/>
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_below="@+id/user_new_pwd__card"
+                        android:id="@+id/user_re_new_pwd__card"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#f5f7fb"
+                        app:cardCornerRadius="6dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter New Password Again"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="5dp"/>
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintAnimationEnabled="true"
+                                app:passwordToggleEnabled="true">
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/user_re_new_pswd_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPassword"/>
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <Button
+                        android:layout_margin="10dp"
+                        android:background="@drawable/loginsignupbuttonbg"
+                        android:layout_below="@id/user_re_new_pwd__card"
+                        android:id="@+id/user_settings_repabutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RESET PASSWORD"
+                        android:textColor="#ffffff"/>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/loginsignupbuttonbg"
+                        android:layout_below="@id/user_settings_repabutton"
+                        android:text="BACK"
+                        android:id="@+id/user_pwd_back_button"
+                        android:textColor="#ffffff"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/user_settings_otp_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp">
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/user_settings_otptitle"
+                        android:text="ENTER OTP"
+                        android:textSize="24dp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <com.mukesh.OtpView
+                        android:layout_below="@id/user_settings_otptitle"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/user_settings_otp_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="42dp"
+                        android:inputType="number"
+                        android:itemBackground="#f5f7fb"
+                        android:textColor="@color/colorPrimary"
+                        app:itemCount="6"
+                        app:lineColor="@color/colorPrimary"
+                        app:viewType="rectangle" />
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/user_settings_otpchronometer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/user_settings_otp_view"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <Button
+                        android:background="@color/colorPrimary"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/user_settings_otp_view"
+                        android:id="@+id/user_settings_resendotpbutton"
+                        android:layout_marginTop="15dp"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="RESEND OTP"
+                        android:visibility="gone"/>
+
+
+                    <Button
+                        android:background="@drawable/loginsignupbuttonbg"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/user_settings_otp_view"
+                        android:id="@+id/user_settings_otpbackbutton"
+                        android:layout_marginTop="90dp"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="BACK"
+                        />
+
+                </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
     <LinearLayout
         android:id="@+id/_nav_view"
-        android:layout_width="270dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#EEEEEE">

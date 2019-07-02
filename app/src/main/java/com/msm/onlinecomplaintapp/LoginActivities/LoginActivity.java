@@ -22,6 +22,7 @@ import android.content.Intent;
 import com.google.firebase.auth.FirebaseUser;
 import com.msm.onlinecomplaintapp.AdminActivities.admin_home;
 import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
+import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.PageLockListener;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.UserActivities.homepage;
@@ -179,6 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                     loginpagerlayout.setVisibility(View.VISIBLE);
                     if(checkUserLoggedIn(user)){
                         if(usertype==0){
+                            GlobalApplication.databaseHelper.updateRegistrationToken(user.getUid());
                             homeintent.setClass(LoginActivity.this,homepage.class);
                             startActivityForResult(homeintent,REQUEST_CODE_HOMEPAGE);
                         }

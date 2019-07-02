@@ -291,7 +291,7 @@
             android:layout_below="@id/otp_view"
             android:id="@+id/userotpskipbutton"
             android:layout_marginTop="85dp"
-            android:layout_width="150dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="SKIP" />
 
@@ -302,7 +302,7 @@
             android:layout_below="@id/otp_view"
             android:id="@+id/userotpbackbutton"
             android:layout_marginTop="85dp"
-            android:layout_width="150dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="BACK"
             />

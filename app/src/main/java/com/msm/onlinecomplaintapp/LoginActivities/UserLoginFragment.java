@@ -98,6 +98,7 @@ public class UserLoginFragment extends Fragment {
     private SharedPreferences.Editor loginpreferenceseditor;
 
     private String phoneVerificationId;
+    private String resendVerificationId;
 
     private Users curUser;
 
@@ -245,7 +246,6 @@ public class UserLoginFragment extends Fragment {
         otpView.setOtpCompletionListener(new OnOtpCompletionListener() {
             @Override
             public void onOtpCompleted(String otp) {
-                otpView.clearFocus();
                 showProgress("Signing In...");
                 phoneAuthCredential=PhoneAuthProvider.getCredential(phoneVerificationId,otp);
                 authAndLink(loginType, new BooleanListener() {
@@ -257,6 +257,13 @@ public class UserLoginFragment extends Fragment {
             }
         });
 
+
+        userresendotpbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendOtp(forceResendingToken);
+            }
+        });
 
         verifyPhoneNumberlistener=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
@@ -278,6 +285,7 @@ public class UserLoginFragment extends Fragment {
                 userotpchronometer.setVisibility(View.VISIBLE);
                 userresendotpbutton.setVisibility(View.GONE);
                 phoneVerificationId=s;
+                UserLoginFragment.this.forceResendingToken=forceResendingToken;
                 countDownTimer.start();
                 hideProgress();
             }
@@ -321,7 +329,7 @@ public class UserLoginFragment extends Fragment {
         startActivityForResult(googlesigninintent,G_RC_SIGN_IN );
     }
 
-    public void firebaseAuthWithGoogle(GoogleSignInAccount acct, final OnTaskCompleteListener onTaskCompleteListener) {
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct, final BooleanListener booleanListener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         vmauth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -329,27 +337,29 @@ public class UserLoginFragment extends Fragment {
                 if (task.isSuccessful()) {
                     Log.d("gsi", "signInWithCredential:success");
                     user = task.getResult().getUser();
+                    booleanListener.booleanResponse(true);
                 } else {
                     Log.w("gsi", "signInWithCredential:failure", task.getException());
                     user=null;
+                    booleanListener.booleanResponse(false);
                 }
-                onTaskCompleteListener.onTaskCompleted();
             }
         });
     }
 
-    public void firebaseAuthWithPhone(PhoneAuthCredential phoneAuthCredential,final OnTaskCompleteListener onTaskCompleteListener){
+    public void firebaseAuthWithPhone(PhoneAuthCredential phoneAuthCredential,final BooleanListener booleanListener){
         vmauth.signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d("gsi", "signInWithCredential:success");
                     user = task.getResult().getUser();
+                    booleanListener.booleanResponse(true);
                 } else {
                     Log.w("gsi", "signInWithCredential:failure", task.getException());
                     user=null;
+                    booleanListener.booleanResponse(false);
                 }
-                onTaskCompleteListener.onTaskCompleted();
             }
         });
     }
@@ -389,15 +399,20 @@ public class UserLoginFragment extends Fragment {
     public void authAndLink(final int loginType, final BooleanListener booleanListener){
         if(loginType==0) {
             if (user == null){
-                firebaseAuthWithGoogle(account, new OnTaskCompleteListener() {
+                firebaseAuthWithGoogle(account, new BooleanListener() {
                     @Override
-                    public void onTaskCompleted() {
-                        GlobalApplication.databaseHelper.checkifUserExists(user.getUid(), new BooleanListener() {
-                            @Override
-                            public void booleanResponse(boolean response) {
-                                booleanListener.booleanResponse(response);
-                            }
-                        });
+                    public void booleanResponse(boolean response) {
+                        if(response) {
+                            GlobalApplication.databaseHelper.checkifUserExists(user.getUid(), new BooleanListener() {
+                                @Override
+                                public void booleanResponse(boolean response) {
+                                    booleanListener.booleanResponse(response);
+                                }
+                            });
+                        }
+                        else {
+                            Toast.makeText(context,"Failed",Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -414,6 +429,7 @@ public class UserLoginFragment extends Fragment {
                                         @Override
                                         public void onDataUploaded(boolean success) {
                                             if(success){
+                                               // GlobalApplication.databaseHelper.updateRegistrationToken(user.getUid());
                                                 updateUI(user);
                                                 booleanListener.booleanResponse(true);
                                             }
@@ -439,12 +455,16 @@ public class UserLoginFragment extends Fragment {
             });
         }
         else if(loginType==2){
-            firebaseAuthWithPhone(phoneAuthCredential, new OnTaskCompleteListener() {
+            firebaseAuthWithPhone(phoneAuthCredential, new BooleanListener() {
                 @Override
-                public void onTaskCompleted() {
-                    updateUI(user);
-                    booleanListener.booleanResponse(true);
-
+                public void booleanResponse(boolean response) {
+                    if(response) {
+                        updateUI(user);
+                        booleanListener.booleanResponse(true);
+                    }
+                    else {
+                        Toast.makeText(context,"Failed",Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -472,6 +492,8 @@ public class UserLoginFragment extends Fragment {
 
     public void updateUI(FirebaseUser user){
         if(user!=null) {
+            userphonenoedit.setText("");
+            otpView.setText("");
             userloginlayout.setVisibility(View.VISIBLE);
             loginpreferenceseditor.putInt("type",0).commit();
             Toast.makeText(context,user.getEmail(),Toast.LENGTH_LONG).show();
@@ -480,4 +502,5 @@ public class UserLoginFragment extends Fragment {
             startActivityForResult(intent,REQUEST_CODE_HOMEPAGE);
         }
     }
+
 }
