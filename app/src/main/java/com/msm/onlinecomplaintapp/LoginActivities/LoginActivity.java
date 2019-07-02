@@ -3,8 +3,6 @@ package com.msm.onlinecomplaintapp.LoginActivities;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.widget.*;
 import android.content.*;
@@ -12,13 +10,17 @@ import android.content.*;
 import java.util.*;
 
 import android.view.View;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.msm.onlinecomplaintapp.AdminActivities.admin_home;
 import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
@@ -154,10 +156,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(!hasInternetConnection()){
-                    android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
                     alertDialog.setTitle("No Internet Connection");
                     alertDialog.setMessage("This app requires internet to run. Try again after connecting to internet");
-                    alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEUTRAL, "Try Again",
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Try Again",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();

@@ -29,8 +29,8 @@
                     android:layout_height="65dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_launcher_round"
-                    app:border_color="@color/colorPrimary"
-                    app:border_width="4dp" />
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_width="4dp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"

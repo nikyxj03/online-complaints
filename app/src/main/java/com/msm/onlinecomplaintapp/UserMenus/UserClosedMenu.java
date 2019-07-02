@@ -3,22 +3,19 @@ package com.msm.onlinecomplaintapp.UserMenus;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityOptionsCompat;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.core.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
-import com.msm.onlinecomplaintapp.Common.BitMapLoader;
 import com.msm.onlinecomplaintapp.Common.ConfirmationDialog;
-import com.msm.onlinecomplaintapp.Common.ImageConverter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.CDOnClick;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
-import com.msm.onlinecomplaintapp.Interfaces.OnLoad;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.UserActivities.mycomplaints;

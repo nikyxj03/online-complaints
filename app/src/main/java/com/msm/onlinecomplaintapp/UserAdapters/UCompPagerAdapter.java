@@ -1,15 +1,10 @@
 package com.msm.onlinecomplaintapp.UserAdapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
-import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.msm.onlinecomplaintapp.DepartmentFragments.DeptComplaintsFragment;
 import com.msm.onlinecomplaintapp.UserFragments.UCompFragment;
-
-import java.util.List;
 
 public class UCompPagerAdapter extends FragmentStatePagerAdapter {
 

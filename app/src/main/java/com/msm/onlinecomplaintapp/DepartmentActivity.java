@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.msm.onlinecomplaintapp.DepartmentActivities.DeptArchives;
@@ -21,7 +21,7 @@ import com.msm.onlinecomplaintapp.DepartmentActivities.deptsettings;
 import com.msm.onlinecomplaintapp.DepartmentActivities.depttotcompdec;
 import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 
-public class DepartmentActivity extends AppCompatActivity  {
+public class DepartmentActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private ActionBar actionBar;
@@ -49,7 +49,7 @@ public class DepartmentActivity extends AppCompatActivity  {
     protected static final int REQUEST_CODE_DEPTARCHIVES_D=25;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //actionBar=getSupportActionBar();

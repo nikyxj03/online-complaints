@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -31,8 +31,8 @@
                         android:layout_height="120dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="15dp"
-                        app:border_color="@color/colorPrimary"
-                        app:border_width="3dp"
+                        app:civ_border_color="@color/colorPrimary"
+                        app:civ_border_width="3dp"
                         android:src="@mipmap/ananymous_person_round"/>
 
                     <TextView
@@ -135,7 +135,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_alignParentTop="true"
                         android:id="@+id/user_old_pwd__card"
                         android:layout_marginLeft="15dp"
@@ -159,21 +159,21 @@
                                 android:text="Enter Old Password"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="5dp"/>
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintAnimationEnabled="true">
-                                <android.support.design.widget.TextInputEditText
+                                <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/user_old_pswd_edit"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="textVisiblePassword"/>
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_below="@+id/user_old_pwd__card"
                         android:id="@+id/user_new_pwd__card"
                         android:layout_marginLeft="15dp"
@@ -197,22 +197,22 @@
                                 android:text="Enter New Password"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="5dp"/>
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintAnimationEnabled="true"
                                 app:passwordToggleEnabled="true">
-                                <android.support.design.widget.TextInputEditText
+                                <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/user_new_pswd_edit"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="textPassword"/>
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_below="@+id/user_new_pwd__card"
                         android:id="@+id/user_re_new_pwd__card"
                         android:layout_marginLeft="15dp"
@@ -223,6 +223,7 @@
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="#f5f7fb"
                         app:cardCornerRadius="6dp">
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -236,20 +237,20 @@
                                 android:text="Enter New Password Again"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="5dp"/>
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:hintAnimationEnabled="true"
                                 app:passwordToggleEnabled="true">
-                                <android.support.design.widget.TextInputEditText
+                                <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/user_re_new_pswd_edit"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="textPassword"/>
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <Button
                         android:layout_margin="10dp"
@@ -342,7 +343,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <LinearLayout
         android:id="@+id/_nav_view"
         android:layout_width="300dp"
@@ -351,4 +352,4 @@
         android:background="#EEEEEE">
         <include layout="@layout/_drawer_main"/>
     </LinearLayout>
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

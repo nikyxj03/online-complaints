@@ -1,4 +1,4 @@
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_alignParentTop="true"
             android:id="@+id/u_h_toolbar"
             android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:background="@drawable/action_bar_background"
             android:elevation="-4dp"
             app:titleTextColor="#ffffff"
-            android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+            android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
         
         <co.ceryle.segmentedbutton.SegmentedButtonGroup
             android:id="@+id/home_list_type"
@@ -72,7 +72,7 @@
                     </ListView>
 
         </LinearLayout>
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:id="@+id/ncfbutton"
@@ -97,4 +97,4 @@
         <include layout="@layout/_drawer_main" />
     </LinearLayout>
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

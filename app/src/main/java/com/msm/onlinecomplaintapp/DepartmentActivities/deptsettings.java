@@ -1,12 +1,6 @@
 package com.msm.onlinecomplaintapp.DepartmentActivities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -100,7 +98,7 @@ public class deptsettings extends DepartmentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(_drawer.isDrawerOpen(GravityCompat.START)){
             _drawer.closeDrawer(GravityCompat.START);
@@ -277,13 +275,13 @@ public class deptsettings extends DepartmentActivity {
                     vmcredential = EmailAuthProvider.getCredential(vmauthu.getEmail(), doldpedit.getText().toString());
                     vmauthu.reauthenticate(vmcredential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(Task<Void> task) {
                             if (task.isSuccessful()) {
                                 if (dnpedit.getText().toString().equals(drnpedit.getText().toString())) {
                                     if (dnpedit.getText().toString().length() >= 6) {
                                         vmauthu.updatePassword(dnpedit.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
+                                            public void onComplete(Task<Void> task) {
                                                 hideProgress();
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(deptsettings.this, "password updated", Toast.LENGTH_LONG).show();

@@ -3,20 +3,15 @@ package com.msm.onlinecomplaintapp.UserFragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.msm.onlinecomplaintapp.DepartmentActivities.DeptArchives;
-import com.msm.onlinecomplaintapp.DepartmentActivities.deptcomplaints;
-import com.msm.onlinecomplaintapp.DepartmentActivity;
-import com.msm.onlinecomplaintapp.DepartmentAdapters.DCompListAdapter;
-import com.msm.onlinecomplaintapp.DepartmentFragments.DeptComplaintsFragment;
+import androidx.fragment.app.Fragment;
+
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnSortChange;
@@ -63,7 +58,7 @@ public class UCompFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             uid=getArguments().getString("USER_ID");
