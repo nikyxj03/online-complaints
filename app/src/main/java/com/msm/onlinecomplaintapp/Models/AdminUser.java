@@ -10,6 +10,7 @@ public class AdminUser {
     private String type;
     private String dept;
     private String registrationToken;
+    private String cat;
 
     public String getDept() {
         return dept;
@@ -59,6 +60,14 @@ public class AdminUser {
         return registrationToken;
     }
 
+    public String getCat() {
+        return cat;
+    }
+
+    public void setCat(String cat) {
+        this.cat = cat;
+    }
+
     public Map<String,Object> toMap(){
         Map<String,Object> admin=new HashMap<>();
         admin.put("uid",uid );
@@ -67,6 +76,7 @@ public class AdminUser {
         admin.put("dept",dept);
         admin.put("type",type);
         admin.put("registrationToken",registrationToken);
+        admin.put("cat",cat);
         return admin;
     }
 }

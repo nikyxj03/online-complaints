@@ -11,6 +11,7 @@ public class Users {
     private String fullname;
     private String phoneno;
     private String registrationToken;
+    private String profilePhoto;
 
     public void setUid(String uid) {
         this.uid = uid;
@@ -68,6 +69,14 @@ public class Users {
         this.registrationToken = registrationToken;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
     public Map<String,Object> toMap(){
         Map<String,Object> result=new HashMap<>();
         result.put("uenable",uenable );
@@ -77,6 +86,7 @@ public class Users {
         result.put("cat",cat );
         result.put("uid",uid );
         result.put("registrationToken",registrationToken);
+        result.put("profilePhoto",profilePhoto);
         return result;
     }
 

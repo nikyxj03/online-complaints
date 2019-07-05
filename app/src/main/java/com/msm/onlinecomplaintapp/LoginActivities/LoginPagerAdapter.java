@@ -23,11 +23,11 @@ public class LoginPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         switch (i){
             case 0:
-                return UserLoginFragment.getInstance(mpageLockListener);
+                return UserLoginFragment.getInstance(mpageLockListener,mContext);
             case 1:
-                return DeptLoginFragment.getInstance();
+                return DeptLoginFragment.getInstance(mContext);
             case 2:
-                return AdminLoginFragment.getInstance();
+                return AdminLoginFragment.getInstance(mContext);
                 default:
                     return null;
         }

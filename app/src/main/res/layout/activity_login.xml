@@ -124,7 +124,7 @@
             android:orientation="vertical"
             android:id="@+id/user_login_card"
             android:layout_width="match_parent"
-            android:layout_height="620dp"
+            android:layout_height="match_parent"
             android:background="@drawable/curved_linear"
             android:layout_alignParentBottom="true"
             android:padding="5dp">

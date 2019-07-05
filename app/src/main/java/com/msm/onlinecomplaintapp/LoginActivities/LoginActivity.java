@@ -3,6 +3,7 @@ package com.msm.onlinecomplaintapp.LoginActivities;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.*;
 import android.content.*;
@@ -22,12 +23,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.msm.onlinecomplaintapp.AdminActivities.admin_home;
-import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
+import com.msm.onlinecomplaintapp.Admin.AdminActivities.AdminHomeDefault;
+import com.msm.onlinecomplaintapp.Admin.AdminActivities.admin_home;
+import com.msm.onlinecomplaintapp.Department.DepartmentActivities.department_home;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.PageLockListener;
 import com.msm.onlinecomplaintapp.R;
-import com.msm.onlinecomplaintapp.UserActivities.homepage;
+import com.msm.onlinecomplaintapp.Users.UserActivities.homepage;
 
 import co.ceryle.segmentedbutton.SegmentedButtonGroup;
 
@@ -75,8 +77,12 @@ public class LoginActivity extends AppCompatActivity {
         {
             if(resultCode==RESULT_OK)
             {
+                Log.i("abcdef","1");
                 utaflag=0;
                 if(data.getStringExtra("key1").equals("logout")) {
+                    Log.i("abcdef","1");
+                    splashscreenlinear.setVisibility(View.GONE);
+                    loginpagerlayout.setVisibility(View.VISIBLE);
                     FirebaseAuth.getInstance().signOut();
                     loginprefeditor.putInt("type",-1).commit();
                     vmauth.signOut();
@@ -178,8 +184,6 @@ public class LoginActivity extends AppCompatActivity {
                     alertDialog.show();
                 }
                 else {
-                    splashscreenlinear.setVisibility(View.GONE);
-                    loginpagerlayout.setVisibility(View.VISIBLE);
                     if(checkUserLoggedIn(user)){
                         if(usertype==0){
                             GlobalApplication.databaseHelper.updateRegistrationToken(user.getUid());
@@ -191,9 +195,13 @@ public class LoginActivity extends AppCompatActivity {
                             startActivityForResult(depthomeintent,REQUEST_CODE_HOMEPAGE);
                         }
                         else if(usertype==2){
-                            adminhomeintent.setClass(LoginActivity.this,admin_home.class);
+                            adminhomeintent.setClass(LoginActivity.this, AdminHomeDefault.class);
                             startActivityForResult(adminhomeintent,REQUEST_CODE_HOMEPAGE);
                         }
+                    }
+                    else {
+                        splashscreenlinear.setVisibility(View.GONE);
+                        loginpagerlayout.setVisibility(View.VISIBLE);
                     }
                 }
             }

@@ -33,7 +33,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.msm.onlinecomplaintapp.UserActivities.newcomplaint;
+import com.msm.onlinecomplaintapp.Users.UserActivities.newcomplaint;
 
 import java.io.File;
 import java.io.FileNotFoundException;

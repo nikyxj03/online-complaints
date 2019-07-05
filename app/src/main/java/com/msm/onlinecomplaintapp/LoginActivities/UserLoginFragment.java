@@ -41,11 +41,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.BooleanListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
-import com.msm.onlinecomplaintapp.Interfaces.OnTaskCompleteListener;
 import com.msm.onlinecomplaintapp.Interfaces.PageLockListener;
 import com.msm.onlinecomplaintapp.Models.Users;
 import com.msm.onlinecomplaintapp.R;
-import com.msm.onlinecomplaintapp.UserActivities.homepage;
+import com.msm.onlinecomplaintapp.Users.UserActivities.homepage;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
@@ -100,20 +99,23 @@ public class UserLoginFragment extends Fragment {
     private String resendVerificationId;
 
     private Users curUser;
+    private String photoUri;
 
     private int loginType=0;
 
     public static UserLoginFragment userLoginFragment;
     public static PageLockListener mpageLockListener;
+    public static Context mContext;
 
     public UserLoginFragment() {
         // Required empty public constructor
     }
 
-    public static UserLoginFragment getInstance(PageLockListener pageLockListener) {
+    public static UserLoginFragment getInstance(PageLockListener pageLockListener,Context context) {
         if (userLoginFragment==null) {
             userLoginFragment = new UserLoginFragment();
             mpageLockListener=pageLockListener;
+            mContext=context;
         }
         return userLoginFragment;
     }
@@ -199,7 +201,6 @@ public class UserLoginFragment extends Fragment {
                 userotplayout.setVisibility(View.GONE);
                 userphonenoedit.setText("");
                 userphonenoedit.clearFocus();
-                hideKeyboard();
             }
         });
 
@@ -324,11 +325,12 @@ public class UserLoginFragment extends Fragment {
     }
 
     public void GoogleSignIn(){
+        user=null;
         Intent googlesigninintent=googleSignInClient.getSignInIntent();
         startActivityForResult(googlesigninintent,G_RC_SIGN_IN );
     }
 
-    public void firebaseAuthWithGoogle(GoogleSignInAccount acct, final BooleanListener booleanListener) {
+    public void firebaseAuthWithGoogle(final GoogleSignInAccount acct, final BooleanListener booleanListener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         vmauth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -336,6 +338,7 @@ public class UserLoginFragment extends Fragment {
                 if (task.isSuccessful()) {
                     Log.d("gsi", "signInWithCredential:success");
                     user = task.getResult().getUser();
+                    photoUri=acct.getPhotoUrl().toString();
                     booleanListener.booleanResponse(true);
                 } else {
                     Log.w("gsi", "signInWithCredential:failure", task.getException());
@@ -390,7 +393,6 @@ public class UserLoginFragment extends Fragment {
 
     public void setupGoogleSignIn(){
         gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("1006518179317-taj9gl946jjoulg0ft4ofuosi8b8t61h.apps.googleusercontent.com").requestEmail().build();
-
         googleSignInClient=GoogleSignIn.getClient(context,gso);
 
     }
@@ -428,7 +430,6 @@ public class UserLoginFragment extends Fragment {
                                         @Override
                                         public void onDataUploaded(boolean success) {
                                             if(success){
-                                               // GlobalApplication.databaseHelper.updateRegistrationToken(user.getUid());
                                                 updateUI(user);
                                                 booleanListener.booleanResponse(true);
                                             }
@@ -478,6 +479,9 @@ public class UserLoginFragment extends Fragment {
         curUser.setUid(user.getUid());
         if(loginType==0)
             curUser.setPhoneno(userphonenoedit.getText().toString());
+        if(photoUri!=null){
+            curUser.setProfilePhoto(photoUri);
+        }
     }
 
     public void hideKeyboard() {
@@ -491,15 +495,17 @@ public class UserLoginFragment extends Fragment {
 
     public void updateUI(FirebaseUser user){
         if(user!=null) {
+            GlobalApplication.databaseHelper.updateRegistrationToken(user.getUid());
             userphonenoedit.setText("");
             otpView.setText("");
             userloginlayout.setVisibility(View.VISIBLE);
             loginpreferenceseditor.putInt("type",0).commit();
             Toast.makeText(context,user.getEmail(),Toast.LENGTH_LONG).show();
             Intent intent=new Intent();
-            intent.setClass(getContext(), homepage.class);
-            startActivityForResult(intent,REQUEST_CODE_HOMEPAGE);
+            intent.setClass(mContext, homepage.class);
+            activity.startActivityForResult(intent,REQUEST_CODE_HOMEPAGE);
         }
     }
+
 
 }

@@ -7,14 +7,23 @@ android:id="@+id/_drawer"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:openDrawer="start">
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_alignParentTop="true"
+        android:id="@+id/d_da_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/action_bar_background"
+        app:titleTextColor="#ffffff"
+        android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
     <LinearLayout
+        android:layout_below="@id/d_da_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".DepartmentActivities.DeptArchives">
+        android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
@@ -28,7 +37,7 @@ tools:openDrawer="start">
 
 
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>
 <LinearLayout
     android:id="@+id/_nav_view"
     android:layout_width="270dp"

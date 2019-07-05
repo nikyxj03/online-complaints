@@ -4,10 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserActivities.newcomplaint"
+    tools:context=".Users.UserActivities.newcomplaint"
     android:orientation="vertical">
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/u_nc_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/action_bar_background"
+    android:elevation="-4dp"
+    app:titleTextColor="#ffffff"
+    android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
+
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

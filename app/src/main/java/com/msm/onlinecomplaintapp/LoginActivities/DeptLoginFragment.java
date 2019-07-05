@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
+import com.msm.onlinecomplaintapp.Department.DepartmentActivities.department_home;
 import com.msm.onlinecomplaintapp.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -39,6 +39,7 @@ public class DeptLoginFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     private static DeptLoginFragment deptLoginFragment;
+    public static Context mContext;
 
     private static final int RC_DEPARTMENT_HOME=21;
 
@@ -49,9 +50,10 @@ public class DeptLoginFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DeptLoginFragment getInstance() {
+    public static DeptLoginFragment getInstance(Context context) {
         if(deptLoginFragment==null) {
             deptLoginFragment = new DeptLoginFragment();
+            mContext=context;
         }
         return deptLoginFragment;
     }
@@ -91,8 +93,8 @@ public class DeptLoginFragment extends Fragment {
                                             deptloginemailedit.setText("");
                                             deptloginpswdedit.setText("");
                                             Intent intent=new Intent();
-                                            intent.setClass(getContext(), department_home.class);
-                                            startActivityForResult(intent,RC_DEPARTMENT_HOME);
+                                            intent.setClass(mContext, department_home.class);
+                                            activity.startActivityForResult(intent,RC_DEPARTMENT_HOME);
                                         }
                                         else {
                                             Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_LONG).show();

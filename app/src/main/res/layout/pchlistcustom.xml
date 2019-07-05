@@ -141,5 +141,6 @@
         android:textOff="SUPPORT"
         android:textOn="UNSUPPORT"
         android:layout_marginRight="5dp"
-        android:background="@drawable/roundshape"/>
+        android:background="@drawable/roundshape"
+        android:visibility="gone"/>
 </LinearLayout>

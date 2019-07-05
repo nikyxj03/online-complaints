@@ -21,7 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.msm.onlinecomplaintapp.DepartmentActivities.department_home;
+import com.msm.onlinecomplaintapp.Admin.AdminActivities.AdminHomeDefault;
+import com.msm.onlinecomplaintapp.Department.DepartmentActivities.department_home;
 import com.msm.onlinecomplaintapp.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -41,6 +42,7 @@ public class AdminLoginFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     private static AdminLoginFragment adminLoginFragment;
+    private static Context mContext;
 
     private static final int RC_ADMIN_HOME=31;
 
@@ -51,9 +53,10 @@ public class AdminLoginFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AdminLoginFragment getInstance() {
+    public static AdminLoginFragment getInstance(Context context) {
         if(adminLoginFragment==null) {
             adminLoginFragment = new AdminLoginFragment();
+            mContext=context;
         }
         return adminLoginFragment;
     }
@@ -93,8 +96,8 @@ public class AdminLoginFragment extends Fragment {
                                             adminloginemailedit.setText("");
                                             adminloginpswdedit.setText("");
                                             Intent intent=new Intent();
-                                            intent.setClass(getContext(), department_home.class);
-                                            startActivityForResult(intent,RC_ADMIN_HOME);
+                                            intent.setClass(mContext, AdminHomeDefault.class);
+                                            activity.startActivityForResult(intent,RC_ADMIN_HOME);
                                         }
                                         else {
                                             Toast.makeText(getContext(),task.getException().toString(),Toast.LENGTH_LONG).show();

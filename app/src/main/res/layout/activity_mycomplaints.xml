@@ -6,11 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_alignParentTop="true"
+            android:id="@+id/u_mc_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_bar_background"
+            android:elevation="-4dp"
+            app:titleTextColor="#ffffff"
+            android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+
+
         <LinearLayout
+            android:layout_below="@id/u_mc_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -27,7 +39,7 @@
                 android:id="@+id/user_complaints_pager"></androidx.viewpager.widget.ViewPager>
 
         </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/_nav_view"

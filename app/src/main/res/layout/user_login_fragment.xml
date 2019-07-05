@@ -251,6 +251,7 @@
             android:textColor="@color/colorPrimary"/>
 
         <com.mukesh.OtpView
+            android:elevation="2dp"
             android:layout_below="@id/otptitle"
             android:layout_centerHorizontal="true"
             android:id="@+id/otp_view"

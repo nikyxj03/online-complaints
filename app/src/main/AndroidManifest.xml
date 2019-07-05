@@ -19,7 +19,7 @@
         android:roundIcon="@drawable/vitmonitor_circle_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DepartmentActivities.DeptArchives"></activity>
+        <activity android:name=".Department.DepartmentActivities.DeptArchives" android:theme="@style/LoginTheme"></activity>
         <activity
             android:name=".LoginActivities.LoginActivity"
             android:theme="@style/LoginTheme">
@@ -28,24 +28,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserActivities.homepage" android:theme="@style/LoginTheme"/>
-        <activity android:name=".UserActivities.newcomplaint" />
+        <activity android:name=".Users.UserActivities.homepage" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Users.UserActivities.newcomplaint" android:theme="@style/LoginTheme"/>
         <activity android:name=".cameracapture" />
-        <activity android:name=".UserActivities.mycomplaints" />
-        <activity android:name=".UserActivities.settingsactivity" />
-        <activity android:name=".UserActivities.totcompdesc" />
-        <activity android:name=".DepartmentActivities.department_home" />
-        <activity android:name=".AdminActivities.admin_home" />
-        <activity android:name=".DepartmentActivities.deptcomplaints" />
-        <activity android:name=".DepartmentActivities.deptsettings" />
-        <activity android:name=".DepartmentActivities.depttotcompdec" />
-        <activity android:name=".AdminActivities.adminsettings" />
-        <activity android:name=".AdminActivities.adminrequests" />
-        <activity android:name=".AdminActivities.admincreateaccount" />
-        <activity android:name=".UserActivities.userarchives" />
-        <activity android:name=".DepartmentActivities.DeptPublicArchives" />
-        <activity android:name=".AdminActivities.adminarchives" />
-        <activity android:name=".UserActivities.notificationsactivity" />
+        <activity android:name=".Users.UserActivities.mycomplaints" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Users.UserActivities.settingsactivity"
+            android:theme="@style/LoginTheme"/>
+        <activity android:name=".Users.UserActivities.totcompdesc" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Department.DepartmentActivities.department_home" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Admin.AdminActivities.admin_home" />
+        <activity android:name=".Department.DepartmentActivities.deptcomplaints" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Department.DepartmentActivities.deptsettings" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Department.DepartmentActivities.depttotcompdec" android:theme="@style/LoginTheme" />
+        <activity android:name=".Admin.AdminActivities.adminsettings" />
+        <activity android:name=".Admin.AdminActivities.adminrequests" />
+        <activity android:name=".Admin.AdminActivities.admincreateaccount" />
+        <activity android:name=".Users.UserActivities.userarchives" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Department.DepartmentActivities.DeptPublicArchives" android:theme="@style/LoginTheme" />
+        <activity android:name=".Admin.AdminActivities.adminarchives" />
+        <activity android:name=".Users.UserActivities.notificationsactivity" android:theme="@style/LoginTheme"/>
+        <activity android:name=".Admin.AdminActivities.AdminHomeDefault" android:theme="@style/LoginTheme"/>
         <service
             android:name=".Services.MessagingService"
             android:exported="false">
