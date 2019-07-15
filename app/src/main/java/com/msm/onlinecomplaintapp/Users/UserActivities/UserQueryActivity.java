@@ -1,51 +1,58 @@
 package com.msm.onlinecomplaintapp.Users.UserActivities;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.msm.onlinecomplaintapp.Common.ImageConverter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
-import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
-import com.msm.onlinecomplaintapp.Models.Users;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
+import com.msm.onlinecomplaintapp.Models.UserQuery;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.Users.UserActivity;
+import com.msm.onlinecomplaintapp.Users.UserAdapters.UserQueryListAdapter;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class notificationsactivity extends UserActivity {
+public class UserQueryActivity extends UserActivity {
 
     private DrawerLayout _drawer;
     private ActionBarDrawerToggle _toggle;
 
     private Toolbar toolbar;
 
+    private Button homebutton;
+    private Button logoutbutton;
+    private Button settingsbutton;
+    private Button archivesbutton;
+    private Button notificationsbutton;
+    private Button mycomplaintsbutton;
+    private Button querybutton;
+
     private TextView profileEmailText;
     private TextView profileNameText;
     private CircleImageView profilePhoto;
 
-    private Button homebutton;
-    private Button logoutbutton;
-    private Button settingsbutton;
-    private Button mycomplaintsbutton;
-    private Button archivebutton;
-    private Button notificationbutton;
-    private Button querybutton;
+    private SwipeRefreshLayout refreshLayout;
+    private RecyclerView recyclerView;
+
+    private RecyclerView.LayoutManager layoutManager;
+
+    private UserQueryListAdapter userQueryListAdapter;
 
     @Override
     public void onBackPressed() {
@@ -92,9 +99,9 @@ public class notificationsactivity extends UserActivity {
                                 setResult(RESULT_OK,archiveintent);
                             }
                             else {
-                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
-                                    queryintent.putExtra("ac","lo");
-                                    setResult(RESULT_OK,queryintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_NOTIFICATION){
+                                    notificationintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,notificationintent);
                                 }
                                 else {
                                     if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
@@ -107,7 +114,7 @@ public class notificationsactivity extends UserActivity {
 
                     }
                 }
-                notificationsactivity.this.finish();
+                UserQueryActivity.this.finish();
             }
         }
     }
@@ -115,18 +122,13 @@ public class notificationsactivity extends UserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifictationsactivity);
-        Initialize();
-        InitializeLogic();
-    }
+        setContentView(R.layout.activity_user_query);
 
-    private void Initialize(){
-
-        toolbar=findViewById(R.id.u_no_toolbar);
+        toolbar=findViewById(R.id.u_q_toolbar);
         setSupportActionBar(toolbar);
 
         _drawer= findViewById(R.id._drawer);
-        _toggle=new ActionBarDrawerToggle(notificationsactivity.this,_drawer,R.string.open,R.string.close);
+        _toggle=new ActionBarDrawerToggle(UserQueryActivity.this,_drawer,R.string.open,R.string.close);
         _drawer.addDrawerListener(_toggle);
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -138,10 +140,16 @@ public class notificationsactivity extends UserActivity {
         homebutton=findViewById(R.id.homebutton);
         mycomplaintsbutton=findViewById(R.id.mycomplaintsbutton);
         settingsbutton=findViewById(R.id.settingsbutton);
-        archivebutton=findViewById(R.id.archivebutton);
-        notificationbutton=findViewById(R.id.notification_button);
+        archivesbutton=findViewById(R.id.archivebutton);
+        notificationsbutton=findViewById(R.id.notification_button);
         logoutbutton=findViewById(R.id.logoutbutton);
         querybutton=findViewById(R.id.myqueriesbutton);
+
+        recyclerView=findViewById(R.id.uq_listview);
+        refreshLayout=findViewById(R.id.uq_refresh);
+
+        layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         setintents(this);
 
@@ -166,17 +174,17 @@ public class notificationsactivity extends UserActivity {
             }
         });
 
-        archivebutton.setOnClickListener(new View.OnClickListener() {
+        archivesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(archiveintent,REQUEST_CODE_ARCHIVES);
             }
         });
 
-        querybutton.setOnClickListener(new View.OnClickListener() {
+        notificationsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(queryintent, REQUEST_CODE_QUERY);
+                startActivityForResult(notificationintent, REQUEST_CODE_QUERY);
             }
         });
 
@@ -202,9 +210,9 @@ public class notificationsactivity extends UserActivity {
                                 setResult(RESULT_OK,homeintent );
                             }
                             else{
-                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
-                                    queryintent.putExtra("ac","lo");
-                                    setResult(RESULT_OK,queryintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_NOTIFICATION){
+                                    notificationintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,notificationintent);
                                 }
                                 else {
                                     if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
@@ -216,32 +224,31 @@ public class notificationsactivity extends UserActivity {
                         }
                     }
                 }
-                notificationsactivity.this.finish();
+                UserQueryActivity.this.finish();
             }
         });
 
-        GlobalApplication.databaseHelper.fetchUserData(getCurrentUserId(), new OnDataSFetchListener<Users>() {
+        userQueryListAdapter=new UserQueryListAdapter(this);
+        recyclerView.setAdapter(userQueryListAdapter);
+
+        updateData();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onDataSFetch(Users users) {
-                profileEmailText.setText(users.getEmail());
-                profileNameText.setText(users.getFullname());
-                if(users.getProfilePhoto()!=null)
-                    Glide.with(notificationsactivity.this).asBitmap().load(users.getProfilePhoto()).placeholder(R.mipmap.ananymous_person_round).into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            profilePhoto.setImageBitmap(ImageConverter.getRoundedCornerBitmap(resource,100));
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                        }
-                    });
+            public void onRefresh() {
+                updateData();
             }
         });
+
     }
 
-    private void InitializeLogic(){
-
+    public void updateData(){
+        GlobalApplication.databaseHelper.getUserQueries(getCurrentUserId(), new OnDataFetchListener<UserQuery>() {
+            @Override
+            public void onDataFetched(List<UserQuery> userQueries) {
+                userQueryListAdapter.setList(userQueries);
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 }

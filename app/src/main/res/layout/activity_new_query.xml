@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Users.UserActivities.NewQueryActivity"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/u_nq_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/action_bar_background"
+        android:elevation="-4dp"
+        app:titleTextColor="#ffffff"
+        android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/queryformlayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To:"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"/>
+
+            <TextView
+                android:layout_toRightOf="@id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/nq_depstext"
+                android:textSize="18dp"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="10dp"/>
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_alignParentTop="true"
+            android:id="@+id/nq_question_card"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#f5f7fb"
+            app:cardCornerRadius="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Question"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintAnimationEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/nq_question_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/nq_submit_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="SUBMIT"
+            android:background="@drawable/loginsignupbuttonbg"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

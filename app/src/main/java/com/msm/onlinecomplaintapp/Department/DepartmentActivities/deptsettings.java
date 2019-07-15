@@ -40,6 +40,7 @@ public class deptsettings extends DepartmentActivity {
     private Button deptcomplaintsbutton1;
     private Button archivebutton1;
     private Button deptarchivbutton1;
+    private Button deptquerybutton1;
 
     private LinearLayout drepalinear;
     private LinearLayout dacchlinear;
@@ -114,10 +115,15 @@ public class deptsettings extends DepartmentActivity {
                                 setResult(RESULT_OK,deptarchiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 
@@ -152,6 +158,7 @@ public class deptsettings extends DepartmentActivity {
         archivebutton1=findViewById(R.id.archivebutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
         deptarchivbutton1=findViewById(R.id.deptarchivebutton1);
+        deptquerybutton1=findViewById(R.id.deptqueriesbutton1);
 
         drepalinear=findViewById(R.id.drepalinear);
         dacchlinear=findViewById(R.id.dacchlinear);
@@ -197,6 +204,13 @@ public class deptsettings extends DepartmentActivity {
             }
         });
 
+        deptquerybutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptqueryintent,REQUEST_CODE_DEPTQUERY_D);
+            }
+        });
+
         logoutbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,10 +233,15 @@ public class deptsettings extends DepartmentActivity {
                                 setResult(RESULT_OK,deptarchiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 

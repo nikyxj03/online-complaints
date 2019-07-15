@@ -64,6 +64,7 @@ public class settingsactivity extends UserActivity {
     private Button archivesbutton;
     private Button notificationsbutton;
     private Button mycomplaintsbutton;
+    private Button querybutton;
 
     private TextView profileEmailText;
     private TextView profileNameText;
@@ -131,10 +132,15 @@ public class settingsactivity extends UserActivity {
                                 setResult(RESULT_OK,archiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }
@@ -205,6 +211,7 @@ public class settingsactivity extends UserActivity {
         settingsbutton=findViewById(R.id.settingsbutton);
         logoutbutton=findViewById(R.id.logoutbutton);
         archivesbutton=findViewById(R.id.archivebutton);
+        querybutton=findViewById(R.id.myqueriesbutton);
         notificationsbutton=findViewById(R.id.notification_button);
 
         repalinear=findViewById(R.id.repalinear);
@@ -258,6 +265,13 @@ public class settingsactivity extends UserActivity {
             }
         });
 
+        querybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(queryintent,REQUEST_CODE_QUERY);
+            }
+        });
+
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -280,10 +294,15 @@ public class settingsactivity extends UserActivity {
                                 setResult(RESULT_OK,archiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }

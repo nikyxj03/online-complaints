@@ -8,8 +8,14 @@
         tools:openDrawer="start">
     
     <RelativeLayout
+        android:id="@+id/u_h_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/u_h_abl">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_alignParentTop="true"
@@ -19,11 +25,13 @@
             android:background="@drawable/action_bar_background"
             android:elevation="-4dp"
             app:titleTextColor="#ffffff"
-            android:minHeight="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"></androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
         
         <co.ceryle.segmentedbutton.SegmentedButtonGroup
             android:id="@+id/home_list_type"
-            android:layout_below="@id/u_h_toolbar"
+            android:layout_below="@id/u_h_abl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -54,26 +62,27 @@
                 app:sb_text="Announcements"/>
         </co.ceryle.segmentedbutton.SegmentedButtonGroup>
 
-        <LinearLayout
-            android:layout_below="@id/home_list_type"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:elevation="2dp">
-                    <ListView
-                        android:id="@+id/complaintlistview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8dp"
-                        android:divider="#00000000"
-                        android:dividerHeight="8dp"
-                        android:scrollbars="none">
+            android:id="@+id/u_h_refresh"
+            android:layout_below="@id/home_list_type"
+            android:layout_margin="8dp">
 
-                    </ListView>
+            <ListView
+                android:id="@+id/complaintlistview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:divider="#00000000"
+                android:dividerHeight="8dp"
+                android:scrollbars="none">
 
-        </LinearLayout>
+            </ListView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:id="@+id/ncfbutton"
             android:layout_width="50dp"
@@ -84,7 +93,92 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="10dp"
             android:foreground="@drawable/ic_add_black_240dp"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:backgroundTint="@color/colorPrimary"
+            android:visibility="gone"/>
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_new_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            app:menu_fab_size="normal"
+            app:menu_showShadow="true"
+            app:menu_shadowColor="#66000000"
+            app:menu_shadowRadius="4dp"
+            app:menu_shadowXOffset="1dp"
+            app:menu_shadowYOffset="3dp"
+            app:menu_colorNormal="@color/colorPrimary"
+            app:menu_colorPressed="@color/colorPrimary"
+            app:menu_colorRipple="#99FFFFFF"
+            app:menu_animationDelayPerItem="50"
+            app:menu_icon="@drawable/ic_new_black_40dp"
+            app:menu_buttonSpacing="0dp"
+            app:menu_labels_margin="0dp"
+            app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            app:menu_labels_paddingTop="4dp"
+            app:menu_labels_paddingRight="8dp"
+            app:menu_labels_paddingBottom="4dp"
+            app:menu_labels_paddingLeft="8dp"
+            app:menu_labels_padding="8dp"
+            app:menu_labels_textColor="#FFFFFF"
+            app:menu_labels_textSize="14sp"
+            app:menu_labels_cornerRadius="3dp"
+            app:menu_labels_colorNormal="#333333"
+            app:menu_labels_colorPressed="#444444"
+            app:menu_labels_colorRipple="#66FFFFFF"
+            app:menu_labels_showShadow="true"
+            app:menu_labels_singleLine="false"
+            app:menu_labels_ellipsize="none"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_position="left"
+            app:menu_openDirection="up"
+            app:menu_backgroundColor="#00000000">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_new_complaint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_complaints_blue_32dp"
+                app:fab_colorNormal="#ffffff"
+                app:fab_colorPressed="#ffffff"
+                app:fab_colorRipple="#ffffff"
+                app:fab_size="mini"
+                app:fab_label="New Complaint" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_new_query"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_question_answer_blue_32dp"
+                app:fab_colorNormal="#ffffff"
+                app:fab_colorPressed="#ffffff"
+                app:fab_colorRipple="#ffffff"
+                app:fab_size="mini"
+                app:fab_label="New Query" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_new_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_news_blue_32dp"
+                app:fab_colorNormal="#ffffff"
+                app:fab_colorPressed="#ffffff"
+                app:fab_colorRipple="#ffffff"
+                app:fab_size="mini"
+                app:fab_label="Publish News" />
+
+        </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 
     <LinearLayout

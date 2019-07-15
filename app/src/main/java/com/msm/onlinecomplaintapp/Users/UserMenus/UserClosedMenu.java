@@ -16,6 +16,7 @@ import com.msm.onlinecomplaintapp.Common.ConfirmationDialog;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.CDOnClick;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataUpdatedListener;
+import com.msm.onlinecomplaintapp.Interfaces.OnListItemRemoveListener;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.Users.UserActivities.mycomplaints;
@@ -36,8 +37,10 @@ public class UserClosedMenu extends BottomSheetDialog {
     private Complaint cuComplaint;
     private View mPassedView;
 
-    public UserClosedMenu(Context context,Complaint complaint,View passedView) {
-        super(context);
+    private OnListItemRemoveListener onListItemRemoveListener;
+
+    public UserClosedMenu(Context context,int style,Complaint complaint,View passedView) {
+        super(context,style);
         mContext=context;
         cuComplaint=complaint;
         mPassedView=passedView;
@@ -149,6 +152,8 @@ public class UserClosedMenu extends BottomSheetDialog {
                                 @Override
                                 public void onDataUploaded(boolean success) {
                                     ((UserActivity)mContext).hideProgress();
+                                    if (success)
+                                        onListItemRemoveListener.onItemRemoved(cuComplaint);
                                 }
                             });
                         }
@@ -164,5 +169,9 @@ public class UserClosedMenu extends BottomSheetDialog {
             }
         });
 
+    }
+
+    public void setItemRemoveListener(final OnListItemRemoveListener itemRemoveListener){
+        this.onListItemRemoveListener=itemRemoveListener;
     }
 }

@@ -14,11 +14,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.msm.onlinecomplaintapp.Admin.AdminActivity;
 import com.msm.onlinecomplaintapp.Admin.AdminAdapters.AdminMasterPagerAdapter;
 import com.msm.onlinecomplaintapp.Admin.AdminFragments.AdminManageUsersFragment;
 import com.msm.onlinecomplaintapp.R;
 
-public class AdminHomeDefault extends AppCompatActivity {
+public class AdminHomeDefault extends AdminActivity {
 
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;

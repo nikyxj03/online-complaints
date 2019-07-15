@@ -1,5 +1,7 @@
 package com.msm.onlinecomplaintapp.Users.UserActivities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -57,6 +59,7 @@ public class userarchives extends UserActivity {
     private Button mycomplaintsbutton;
     private Button archivebutton;
     private Button notificationbutton;
+    private Button querybutton;
     private ListView archivelistview1;
 
     private int smf=0;
@@ -129,10 +132,15 @@ public class userarchives extends UserActivity {
                                 setResult(RESULT_OK,notificationintent );
                             }
                             else{
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }
@@ -173,6 +181,7 @@ public class userarchives extends UserActivity {
         settingsbutton = findViewById(R.id.settingsbutton);
         archivebutton = findViewById(R.id.archivebutton);
         notificationbutton = findViewById(R.id.notification_button);
+        querybutton=findViewById(R.id.myqueriesbutton);
         logoutbutton = findViewById(R.id.logoutbutton);
         archivelistview1 = findViewById(R.id.archivelistview1);
 
@@ -206,6 +215,13 @@ public class userarchives extends UserActivity {
             }
         });
 
+        querybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(queryintent,REQUEST_CODE_QUERY);
+            }
+        });
+
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -228,10 +244,15 @@ public class userarchives extends UserActivity {
                                 setResult(RESULT_OK,notificationintent );
                             }
                             else{
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }

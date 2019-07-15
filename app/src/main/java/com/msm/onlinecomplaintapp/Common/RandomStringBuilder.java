@@ -1,5 +1,8 @@
 package com.msm.onlinecomplaintapp.Common;
 
+import android.content.Context;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
@@ -15,11 +18,17 @@ public class RandomStringBuilder {
     private List<String> id=new ArrayList<>();
     private int flag=0;
     private String tempid;
+    private Context mcontext;
 
     public RandomStringBuilder(String type,int count){
         this.type=type;
         this.count=count;
         flag=0;
+    }
+
+    public RandomStringBuilder(Context context,String type){
+        this.type=type;
+        this.mcontext=context;
     }
 
     private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -92,6 +101,15 @@ public class RandomStringBuilder {
                 }
             });
         }
+        else if(type=="qid"){
+            CloudFunctionHelper.getInstance(mcontext).getRandomQID(new OnDataSFetchListener<String>() {
+                @Override
+                public void onDataSFetch(String s) {
+                    onDataSFetchListener.onDataSFetch(s);
+                }
+            });
+        }
+
 
     }
 }

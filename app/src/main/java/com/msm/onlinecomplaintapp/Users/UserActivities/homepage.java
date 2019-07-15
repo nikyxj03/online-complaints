@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +25,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.protobuf.ByteString;
+import com.msm.onlinecomplaintapp.Common.CloudFunctionHelper;
 import com.msm.onlinecomplaintapp.Common.ImageConverter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
@@ -38,6 +45,8 @@ import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.Users.UserActivity;
 import com.msm.onlinecomplaintapp.Users.UserAdapters.UCompListAdapter;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +71,20 @@ public class homepage extends UserActivity {
     private Button mycomplaintsbutton;
     private Button archivebutton;
     private Button notificationbutton;
+    private Button querybutton;
     private ListView complaintlistview;
     private FloatingActionButton ncfbutton;
     private SegmentedButtonGroup homesbg;
     private SegmentedButton homesb1;
     private SegmentedButton homesb2;
+    private SwipeRefreshLayout refreshLayout;
+    private RelativeLayout mainlayout;
+    private com.github.clans.fab.FloatingActionButton newComplaintButton;
+    private com.github.clans.fab.FloatingActionButton newQueryButton;
+    private com.github.clans.fab.FloatingActionButton publishNewsButton;
+    private FloatingActionMenu newMenu;
+
+    private ViewGroup viewGroup;
 
     private Toolbar toolbar;
 
@@ -74,7 +92,8 @@ public class homepage extends UserActivity {
     private List<Complaint> sscomplaintList=new ArrayList<>();
     private List<String> uriList=new ArrayList<>();
     private List<Bitmap> bitmaps=new ArrayList<>();
-    private List<String> supportList =new ArrayList<>();
+    private List<String> stsupportList =new ArrayList<>();
+    private List<String> sssupportList =new ArrayList<>();
 
     private UCompListAdapter uCompListAdapter;
 
@@ -87,9 +106,15 @@ public class homepage extends UserActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if(_drawer.isDrawerOpen(GravityCompat.START)){
             _drawer.closeDrawer(GravityCompat.START);
+        }
+        else if(newMenu.isOpened())
+        {
+            newMenu.close(true);
+        }
+        else {
+            super.onBackPressed();
         }
     }
 
@@ -101,10 +126,12 @@ public class homepage extends UserActivity {
         }
         if(item.getItemId()==R.id.item1){
             smf=0;
+            uCompListAdapter.setSupportList(stsupportList);
             uCompListAdapter.setList(stcomplaintList);
         }
         if(item.getItemId()==R.id.item2){
             smf=1;
+            uCompListAdapter.setSupportList(sssupportList);
             uCompListAdapter.setList(sscomplaintList);
         }
         return super.onOptionsItemSelected(item);
@@ -141,9 +168,15 @@ public class homepage extends UserActivity {
                                 notificationintent.putExtra("ac", "lo");
                                 setResult(RESULT_OK, notificationintent);
                             } else {
-                                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
-                                    mainintent.putExtra("key1", "logout");
-                                    setResult(RESULT_OK, mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }
@@ -186,22 +219,22 @@ public class homepage extends UserActivity {
         settingsbutton = findViewById(R.id.settingsbutton);
         archivebutton = findViewById(R.id.archivebutton);
         notificationbutton = findViewById(R.id.notification_button);
+        querybutton=findViewById(R.id.myqueriesbutton);
         logoutbutton = findViewById(R.id.logoutbutton);
+
         ncfbutton = findViewById(R.id.ncfbutton);
         homesbg=findViewById(R.id.home_list_type);
         homesb1=findViewById(R.id.sgb1);
         homesb2=findViewById(R.id.sgb2);
-
-        ncfbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent();
-                intent.setClass(homepage.this,newcomplaint.class);
-                startActivity(intent);
-            }
-        });
+        refreshLayout=findViewById(R.id.u_h_refresh);
+        mainlayout=findViewById(R.id.u_h_layout);
+        newComplaintButton=findViewById(R.id.fab_new_complaint);
+        newQueryButton=findViewById(R.id.fab_new_query);
+        publishNewsButton=findViewById(R.id.fab_new_news);
+        newMenu=findViewById(R.id.fab_new_menu);
 
 
+        viewGroup=(ViewGroup)mainlayout;
         mycomplaintsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,6 +263,13 @@ public class homepage extends UserActivity {
             }
         });
 
+        querybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(queryintent, REQUEST_CODE_QUERY);
+            }
+        });
+
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -249,9 +289,15 @@ public class homepage extends UserActivity {
                                 notificationintent.putExtra("ac", "lo");
                                 setResult(RESULT_OK, notificationintent);
                             } else {
-                                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
-                                    mainintent.putExtra("key1", "logout");
-                                    setResult(RESULT_OK, mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }
@@ -260,6 +306,31 @@ public class homepage extends UserActivity {
                     }
                 }
                 homepage.this.finish();
+            }
+        });
+
+        profilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* String s="Hello";
+                byte[] bytes=s.getBytes();
+                try {
+                    bytes=s.getBytes("UTF-8");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                byte[] encrypted;
+                String s1;
+                try {
+                    encrypted=encrypt("onlinecomplaints-49234","global","test", "quikstart",bytes);
+                    s1=new String(encrypted, StandardCharsets.UTF_8);
+                    Toast.makeText(homepage.this,s1,Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                */
             }
         });
 
@@ -286,34 +357,40 @@ public class homepage extends UserActivity {
             }
         });
 
-        GlobalApplication.databaseHelper.getUserSupportList(getCurrentUserId(), new OnDataFetchListener<String>() {
-            @Override
-            public void onDataFetched(List<String> strings) {
-                supportList = strings;
-                uCompListAdapter.setSupportList(supportList);
-                GlobalApplication.databaseHelper.getPublicComplaintsST(new OnDataFetchListener<Complaint>() {
-                    @Override
-                    public void onDataFetched(List<Complaint> complaints) {
-                        if (complaints != null) {
-                            stcomplaintList = complaints;
-                            if (stcomplaintList != null)
-                                if (smf == 0)
-                                    uCompListAdapter.setList(stcomplaintList);
-                            hideProgress();
-                        }
-                    }
-                });
+       updateData();
 
-                GlobalApplication.databaseHelper.getPublicComplaintsSS(new OnDataFetchListener<Complaint>() {
-                    @Override
-                    public void onDataFetched(List<Complaint> complaints) {
-                        sscomplaintList = complaints;
-                        if (sscomplaintList != null)
-                            if (smf == 1)
-                                uCompListAdapter.setList(sscomplaintList);
-                            hideProgress();
-                    }
-                });
+       refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               updateData();
+               enableTouch(false);
+           }
+       });
+
+        ncfbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        newComplaintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newMenu.close(true);
+                Intent intent=new Intent();
+                intent.setClass(homepage.this,newcomplaint.class);
+                startActivity(intent);
+            }
+        });
+
+        newQueryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newMenu.close(true);
+                Intent intent=new Intent();
+                intent.setClass(homepage.this,NewQueryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -381,4 +458,72 @@ public class homepage extends UserActivity {
         });
 
     }
+
+    public void updateData(){
+        GlobalApplication.databaseHelper.getUserSupportList(getCurrentUserId(), new OnDataFetchListener<String>() {
+            @Override
+            public void onDataFetched(List<String> strings) {
+                stsupportList = strings;
+                sssupportList= strings;
+                GlobalApplication.databaseHelper.getPublicComplaintsST(new OnDataFetchListener<Complaint>() {
+                    @Override
+                    public void onDataFetched(List<Complaint> complaints) {
+                        if (complaints != null) {
+                            stcomplaintList = complaints;
+                            if (stcomplaintList != null)
+                                if (smf == 0){
+                                    uCompListAdapter.setSupportList(stsupportList);
+                                    uCompListAdapter.setList(stcomplaintList);
+                                    hideProgress();
+                                    refreshLayout.setRefreshing(false);
+                                    enableTouch(true);
+                                }
+                        }
+                    }
+                });
+
+                GlobalApplication.databaseHelper.getPublicComplaintsSS(new OnDataFetchListener<Complaint>() {
+                    @Override
+                    public void onDataFetched(List<Complaint> complaints) {
+                        sscomplaintList = complaints;
+                        if (sscomplaintList != null)
+                            if (smf == 1){
+                                uCompListAdapter.setSupportList(sssupportList);
+                                uCompListAdapter.setList(sscomplaintList);
+                                hideProgress();
+                                refreshLayout.setRefreshing(false);
+                                enableTouch(true);
+                            }
+                    }
+                });
+            }
+        });
+    }
+
+    public void enableTouch(final boolean b){
+        viewGroup.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return !b;
+            }
+        });
+    }
+
+   /* public static byte[] encrypt(
+            String projectId, String locationId, String keyRingId, String cryptoKeyId, byte[] plaintext)
+            throws IOException {
+
+        // Create the KeyManagementServiceClient using try-with-resources to manage client cleanup.
+        try (KeyManagementServiceClient client = KeyManagementServiceClient.create()) {
+
+            // The resource name of the cryptoKey
+            String resourceName = CryptoKeyName.format(projectId, locationId, keyRingId, cryptoKeyId);
+
+            // Encrypt the plaintext with Cloud KMS.
+            EncryptResponse response = client.encrypt(resourceName, ByteString.copyFrom(plaintext));
+
+            // Extract the ciphertext from the response.
+            return response.getCiphertext().toByteArray();
+        }
+    }*/
 }

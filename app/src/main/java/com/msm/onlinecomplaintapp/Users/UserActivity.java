@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.msm.onlinecomplaintapp.LoginActivities.LoginActivity;
 import com.msm.onlinecomplaintapp.R;
+import com.msm.onlinecomplaintapp.Users.UserActivities.UserQueryActivity;
 import com.msm.onlinecomplaintapp.Users.UserActivities.homepage;
 import com.msm.onlinecomplaintapp.Users.UserActivities.mycomplaints;
 import com.msm.onlinecomplaintapp.Users.UserActivities.notificationsactivity;
@@ -29,6 +30,7 @@ public class UserActivity extends AppCompatActivity {
     protected static final int REQUEST_CODE_SETTINGS=13;
     protected static final int REQUEST_CODE_ARCHIVES=14;
     protected static final int REQUEST_CODE_NOTIFICATION=15;
+    protected static final int REQUEST_CODE_QUERY=16;
     protected static final int REQUEST_CODE_MAIN=0;
     protected static final int REQUEST_CODE_TCD=6;
 
@@ -44,6 +46,7 @@ public class UserActivity extends AppCompatActivity {
     protected Intent tcdintent=new Intent();
     protected Intent notificationintent=new Intent();
     protected Intent archiveintent=new Intent();
+    protected Intent queryintent=new Intent();
 
 
     @Override
@@ -98,12 +101,14 @@ public class UserActivity extends AppCompatActivity {
         mycomplaintintent=new Intent();
         archiveintent=new Intent();
         notificationintent=new Intent();
+        queryintent=new Intent();
         homeintent.setClass(context, homepage.class);
         mainintent.setClass(context, LoginActivity.class);
         settingsintent.setClass(context, settingsactivity.class);
         archiveintent.setClass(context, userarchives.class );
         mycomplaintintent.setClass(context, mycomplaints.class );
         notificationintent.setClass(context, notificationsactivity.class);
+        queryintent.setClass(context, UserQueryActivity.class);
     }
 
     public static int getPageClosedComplaints() {

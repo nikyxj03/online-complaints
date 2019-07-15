@@ -50,6 +50,7 @@ public class mycomplaints extends UserActivity {
     private Button mycomplaintsbutton;
     private Button archivebutton;
     private Button notificationbutton;
+    private Button querybutton;
 
     private TextView profileEmailText;
     private TextView profileNameText;
@@ -101,10 +102,15 @@ public class mycomplaints extends UserActivity {
                                 setResult(RESULT_OK,notificationintent );
                             }
                             else{
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }
@@ -196,6 +202,7 @@ public class mycomplaints extends UserActivity {
         logoutbutton=findViewById(R.id.logoutbutton);
         archivebutton=findViewById(R.id.archivebutton);
         notificationbutton=findViewById(R.id.notification_button);
+        querybutton=findViewById(R.id.myqueriesbutton);
 
         viewPager=findViewById(R.id.user_complaints_pager);
         tabLayout=findViewById(R.id.user_complaints_tab);
@@ -237,6 +244,13 @@ public class mycomplaints extends UserActivity {
             }
         });
 
+        querybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(queryintent, REQUEST_CODE_QUERY);
+            }
+        });
+
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -259,10 +273,15 @@ public class mycomplaints extends UserActivity {
                                 setResult(RESULT_OK,notificationintent );
                             }
                             else{
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_QUERY){
+                                    queryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,queryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
                         }

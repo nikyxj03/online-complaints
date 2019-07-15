@@ -1,33 +1,40 @@
 package com.msm.onlinecomplaintapp.Department.DepartmentActivities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.protobuf.ByteString;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivity;
-import com.msm.onlinecomplaintapp.Department.DepartmentAdapters.DCompListAdapter;
+import com.msm.onlinecomplaintapp.Department.DepartmentAdapters.DeptQueryListAdapter;
 import com.msm.onlinecomplaintapp.GlobalApplication;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
-import com.msm.onlinecomplaintapp.Models.Complaint;
+import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
+import com.msm.onlinecomplaintapp.Models.Departments;
+import com.msm.onlinecomplaintapp.Models.DeptUsers;
+import com.msm.onlinecomplaintapp.Models.UserQuery;
 import com.msm.onlinecomplaintapp.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
 
-public class department_home extends DepartmentActivity {
+public class DeptQueryActivity extends DepartmentActivity {
 
+    private SwipeRefreshLayout refreshLayout;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private Toolbar toolbar;
 
     private DrawerLayout _drawer;
@@ -39,62 +46,50 @@ public class department_home extends DepartmentActivity {
     private Button deptcomplaintsbutton1;
     private Button archivebutton1;
     private Button deptarchivebutton1;
-    private Button deptquerybutton1;
-    private Button sortbutton1;
-    private ListView complaintlistview1;
 
-    private int smf=0;
+    private DeptQueryListAdapter deptQueryListAdapter;
 
-    private FirebaseAuth vmauth=FirebaseAuth.getInstance();
-
-    private List<Complaint> stcomplaintlistmap=new ArrayList<>();
-    private List<Complaint> sscomplaintlistmap=new ArrayList<>();
-
-    private DCompListAdapter dCompListAdapter;
+    private DeptUsers deptUsers;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(_drawer.isDrawerOpen(GravityCompat.START)){
+        if (_drawer.isDrawerOpen(GravityCompat.START)) {
             _drawer.closeDrawer(GravityCompat.START);
         }
-            if (resultCode==RESULT_OK) {
-                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_SETTINGS_D) {
-                    settingsintent.putExtra("ac", "lo");
-                    setResult(RESULT_OK, settingsintent);
+        if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_SETTINGS_D) {
+            settingsintent.putExtra("ac", "lo");
+            setResult(RESULT_OK, settingsintent);
+        } else {
+            if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DeptCOMPLAINT_D) {
+                deptcomplaintintent.putExtra("ac", "lo");
+                setResult(RESULT_OK, deptcomplaintintent);
+            } else {
+                if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES_D) {
+                    archiveintent.putExtra("ac", "lo");
+                    setResult(RESULT_OK, archiveintent);
                 } else {
-                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DeptCOMPLAINT_D) {
-                        deptcomplaintintent.putExtra("ac", "lo");
-                        setResult(RESULT_OK, deptcomplaintintent);
+                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D) {
+                        deptarchiveintent.putExtra("ac", "lo");
+                        setResult(RESULT_OK, deptarchiveintent);
                     } else {
-                        if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_ARCHIVES_D){
-                            archiveintent.putExtra("ac","lo");
-                            setResult(RESULT_OK,archiveintent);
-                        }else {
-                            if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTARCHIVES_D){
-                                deptarchiveintent.putExtra("ac","lo");
-                                setResult(RESULT_OK,deptarchiveintent);
+                        if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_HOMEPAGE_D) {
+                            depthomeintent.putExtra("ac", "lo");
+                            setResult(RESULT_OK, depthomeintent);
+                        } else {
+                            if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                mainintent.putExtra("key1", "logout");
+                                setResult(RESULT_OK, mainintent);
                             }
-                            else {
-                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
-                                    deptqueryintent.putExtra("ac","lo");
-                                    setResult(RESULT_OK,deptqueryintent);
-                                }
-                                else {
-                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
-                                        mainintent.putExtra("key1", "logout");
-                                        setResult(RESULT_OK, mainintent);
-                                    }
-                                }
-                            }
-
                         }
-
                     }
+
                 }
-                department_home.this.finish();
+
             }
         }
+        DeptQueryActivity.this.finish();
+    }
 
 
     @Override
@@ -111,51 +106,38 @@ public class department_home extends DepartmentActivity {
         if (_toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if(item.getItemId()==R.id.item1){
-            smf=0;
-            if(stcomplaintlistmap!=null)
-                dCompListAdapter.setList(stcomplaintlistmap);
-        }
-        if(item.getItemId()==R.id.item2){
-            smf=1;
-            if(sscomplaintlistmap!=null)
-                dCompListAdapter.setList(sscomplaintlistmap);
-        }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sortbutton_menu, menu);
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department_home);
-
-        toolbar=findViewById(R.id.d_hp_toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_dept_query);
 
         showProgress("Loading..");
+
+        refreshLayout=findViewById(R.id.dq_refresh);
+        recyclerView=findViewById(R.id.dq_listview);
+        toolbar=findViewById(R.id.d_q_toolbar);
+
+        setSupportActionBar(toolbar);
+
         _drawer= findViewById(R.id._drawer);
         _toggle=new ActionBarDrawerToggle(this,_drawer,R.string.open,R.string.close);
         _drawer.addDrawerListener(_toggle);
         _toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        vmauth=FirebaseAuth.getInstance();
+        layoutManager= new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        complaintlistview1=findViewById(R.id.complaintlistview1);
         homebutton1=findViewById(R.id.homebutton1);
         deptcomplaintsbutton1=findViewById(R.id.deptcomplaintsbutton1);
         settingsbutton1=findViewById(R.id.settingsbutton1);
         archivebutton1=findViewById(R.id.archivebutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
         deptarchivebutton1=findViewById(R.id.deptarchivebutton1);
-        deptquerybutton1=findViewById(R.id.deptqueriesbutton1);
 
         setintents(this);
 
@@ -187,10 +169,10 @@ public class department_home extends DepartmentActivity {
             }
         });
 
-        deptquerybutton1.setOnClickListener(new View.OnClickListener() {
+        homebutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(deptqueryintent,REQUEST_CODE_DEPTQUERY_D);
+                startActivityForResult(depthomeintent,REQUEST_CODE_HOMEPAGE_D);
             }
         });
 
@@ -215,9 +197,9 @@ public class department_home extends DepartmentActivity {
                                 setResult(RESULT_OK,deptarchiveintent);
                             }
                             else {
-                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
-                                    deptqueryintent.putExtra("ac","lo");
-                                    setResult(RESULT_OK,deptqueryintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_HOMEPAGE_D){
+                                    depthomeintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,depthomeintent);
                                 }
                                 else {
                                     if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
@@ -231,34 +213,39 @@ public class department_home extends DepartmentActivity {
 
                     }
                 }
-                department_home.this.finish();
+                DeptQueryActivity.this.finish();
             }
         });
 
-        dCompListAdapter=new DCompListAdapter(department_home.this,R.layout.deptcompistcustom,smf,PAGE_HOME_D);
-        complaintlistview1.setAdapter(dCompListAdapter);
+        deptQueryListAdapter=new DeptQueryListAdapter(this);
+        recyclerView.setAdapter(deptQueryListAdapter);
 
-        GlobalApplication.databaseHelper.getPublicComplaintsST(new OnDataFetchListener<Complaint>() {
+        GlobalApplication.databaseHelper.fetchDeptUserData(getCurrentUserId(), new OnDataSFetchListener<DeptUsers>() {
             @Override
-            public void onDataFetched(List<Complaint> complaints) {
-                hideProgress();
-                stcomplaintlistmap=complaints;
-                if(stcomplaintlistmap!=null)
-                    if(smf==0)
-                        dCompListAdapter.setList(stcomplaintlistmap);
+            public void onDataSFetch(DeptUsers deptUsers) {
+                DeptQueryActivity.this.deptUsers=deptUsers;
+                updateData();
             }
         });
 
-        GlobalApplication.databaseHelper.getPublicComplaintsSS(new OnDataFetchListener<Complaint>() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onDataFetched(List<Complaint> complaints) {
-                hideProgress();
-                sscomplaintlistmap=complaints;
-                if(sscomplaintlistmap!=null)
-                    if(smf==1)
-                        dCompListAdapter.setList(sscomplaintlistmap);
+            public void onRefresh() {
+                updateData();
             }
         });
 
+    }
+
+    public void updateData(){
+        GlobalApplication.databaseHelper.getDeptQueries(deptUsers.getDept(), new OnDataFetchListener<UserQuery>() {
+            @Override
+            public void onDataFetched(List<UserQuery> userQueries) {
+                deptQueryListAdapter.setList(userQueries);
+                Log.i("abcdef",String.valueOf(userQueries.size()));
+                hideProgress();
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 }

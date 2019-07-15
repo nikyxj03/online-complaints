@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivities.DeptArchives;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivities.DeptPublicArchives;
+import com.msm.onlinecomplaintapp.Department.DepartmentActivities.DeptQueryActivity;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivities.department_home;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivities.deptcomplaints;
 import com.msm.onlinecomplaintapp.Department.DepartmentActivities.deptsettings;
@@ -34,6 +35,7 @@ public class DepartmentActivity extends AppCompatActivity {
     protected Intent tcdintent = new Intent();
     protected Intent archiveintent = new Intent();
     protected Intent deptarchiveintent=new Intent();
+    protected Intent deptqueryintent=new Intent();
 
     protected static int PAGE_HOME_D=1;
     protected static int PAGE_REGISTERED_COMPLAINTS_D=2;
@@ -48,6 +50,7 @@ public class DepartmentActivity extends AppCompatActivity {
     protected static final int REQUEST_CODE_MAIN_D = 0;
     protected static final int REQUEST_CODE_ARCHIVES_D = 24;
     protected static final int REQUEST_CODE_DEPTARCHIVES_D=25;
+    protected static final int REQUEST_CODE_DEPTQUERY_D=26;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class DepartmentActivity extends AppCompatActivity {
         archiveintent=new Intent();
         deptcomplaintintent=new Intent();
         deptarchiveintent=new Intent();
+        deptqueryintent=new Intent();
         mainintent.setClass(context, LoginActivity.class);
         settingsintent.setClass(context, deptsettings.class);
         depthomeintent.setClass(context, department_home.class);
@@ -115,6 +119,7 @@ public class DepartmentActivity extends AppCompatActivity {
         archiveintent.setClass(context, DeptPublicArchives.class );
         deptcomplaintintent.setClass(context, deptcomplaints.class );
         deptarchiveintent.setClass(context, DeptArchives.class);
+        deptqueryintent.setClass(context, DeptQueryActivity.class);
     }
 
     public int getPageHomeD() {

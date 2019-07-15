@@ -40,6 +40,7 @@ public class deptcomplaints extends DepartmentActivity {
     private Button archivebutton1;
     private Button deptarchivesbutton1;
     private Button deptcomplaintsbutton1;
+    private Button deptquerybutton1;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -80,10 +81,15 @@ public class deptcomplaints extends DepartmentActivity {
                                 setResult(RESULT_OK,deptarchiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 
@@ -169,6 +175,7 @@ public class deptcomplaints extends DepartmentActivity {
         logoutbutton1=findViewById(R.id.logoutbutton1);
         deptarchivesbutton1=findViewById(R.id.deptarchivebutton1);
         archivebutton1=findViewById(R.id.archivebutton1);
+        deptquerybutton1=findViewById(R.id.deptqueriesbutton1);
 
         viewPager=findViewById(R.id.dept_complaints_pager);
         tabLayout=findViewById(R.id.dept_complaints_tab);
@@ -203,6 +210,15 @@ public class deptcomplaints extends DepartmentActivity {
             }
         });
 
+        deptquerybutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptqueryintent,REQUEST_CODE_DEPTQUERY_D);
+            }
+        });
+
+
+
         logoutbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,10 +241,15 @@ public class deptcomplaints extends DepartmentActivity {
                                 setResult(RESULT_OK,deptarchiveintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 

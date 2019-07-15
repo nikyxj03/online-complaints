@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.msm.onlinecomplaintapp.Common.DateFormatUtils;
+import com.msm.onlinecomplaintapp.Interfaces.OnListItemRemoveListener;
 import com.msm.onlinecomplaintapp.Models.Complaint;
 import com.msm.onlinecomplaintapp.R;
 import com.msm.onlinecomplaintapp.Users.UserActivities.homepage;
@@ -76,6 +80,8 @@ public class UCompListAdapter extends BaseAdapter {
         return position;
     }
 
+
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater=(LayoutInflater)mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -123,67 +129,39 @@ public class UCompListAdapter extends BaseAdapter {
 
         if(page==((UserActivity)mcontext).getPageHome()) {
             supportbutton.setVisibility(View.VISIBLE);
-            if(supportList.contains(complaintList.get(position).getCid())){
+            if (supportList.contains(complaintList.get(position).getCid())) {
                 supportbutton.setChecked(true);
-            }
-            else {
+            } else {
                 supportbutton.setChecked(false);
             }
             supportbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (supportbutton.isChecked()) {
-                        ((UserActivity)mcontext).showProgress("Loading...");
                         supportList.add(complaintList.get(position).getCid());
+                        complaintList.get(position).setSupportno(complaintList.get(position).getSupportno()+1);
+                        supportnotext.setText("Support:"+String.valueOf(complaintList.get(position).getSupportno()));
                         final Map<String, Object> map = new HashMap<>();
                         map.put("time", Timestamp.now());
                         database.collection(USERS_DB_KEY).document(uid).collection(SUPP_DB_KEY).document(complaintList.get(position).getCid()).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                database.collection(COMPLAINT_DB_KEY).document(complaintList.get(position).getCid()).update("supportno", complaintList.get(position).getSupportno() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        ((UserActivity)mcontext).hideProgress();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                ((UserActivity)mcontext).hideProgress();
-                            }
+                                }
                         });
+                        database.collection(COMPLAINT_DB_KEY).document(complaintList.get(position).getCid()).update("supportno", complaintList.get(position).getSupportno() );
+
 
                     } else {
-                        ((UserActivity)mcontext).showProgress("Loading..");
                         supportList.remove(complaintList.get(position).getCid());
+                        complaintList.get(position).setSupportno(complaintList.get(position).getSupportno()-1);
+                        supportnotext.setText("Support:"+String.valueOf(complaintList.get(position).getSupportno()));
                         database.collection(USERS_DB_KEY).document(uid).collection(SUPP_DB_KEY).document(complaintList.get(position).getCid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                database.collection(COMPLAINT_DB_KEY).document(complaintList.get(position).getCid()).update("supportno", complaintList.get(position).getSupportno() - 1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        ((UserActivity)mcontext).hideProgress();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        ((UserActivity)mcontext).hideProgress();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                ((UserActivity)mcontext).hideProgress();
-
-                            }
+                               }
                         });
+                        database.collection(COMPLAINT_DB_KEY).document(complaintList.get(position).getCid()).update("supportno", complaintList.get(position).getSupportno());
+
                     }
                 }
             });
@@ -213,9 +191,17 @@ public class UCompListAdapter extends BaseAdapter {
             complistmainlinear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UserOpenMenu openMenu=new UserOpenMenu(mcontext,complaintList.get(position),comptitletext);
+                    UserOpenMenu openMenu=new UserOpenMenu(mcontext,R.style.BottomSheetDialog,complaintList.get(position),comptitletext);
                     View view=openMenu.getLayoutInflater().inflate(R.layout.user_open_menu,null);
+                    openMenu.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     openMenu.setContentView(view);
+                    openMenu.setItemRemoveListener(new OnListItemRemoveListener() {
+                        @Override
+                        public void onItemRemoved(Object item) {
+                            complaintList.remove(item);
+                            notifyDataSetChanged();
+                        }
+                    });
                     openMenu.show();
                 }
             });
@@ -225,9 +211,16 @@ public class UCompListAdapter extends BaseAdapter {
             complistmainlinear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UserClosedMenu closedMenu=new UserClosedMenu(mcontext,complaintList.get(position),comptitletext);
+                    UserClosedMenu closedMenu=new UserClosedMenu(mcontext,R.style.BottomSheetDialog,complaintList.get(position),comptitletext);
                     View view=closedMenu.getLayoutInflater().inflate(R.layout.user_open_menu,null);
                     closedMenu.setContentView(view);
+                    closedMenu.setItemRemoveListener(new OnListItemRemoveListener() {
+                        @Override
+                        public void onItemRemoved(Object item) {
+                            complaintList.remove(item);
+                            notifyDataSetChanged();
+                        }
+                    });
                     closedMenu.show();
                 }
             });

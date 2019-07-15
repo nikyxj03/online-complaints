@@ -39,7 +39,8 @@ public class DeptArchives extends DepartmentActivity {
     private Button settingsbutton1;
     private Button deptcomplaintsbutton1;
     private Button archivebutton1;
-    private Button deptarchivbutton1;
+    private Button deptarchivebutton1;
+    private Button deptquerybutton1;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -119,10 +120,15 @@ public class DeptArchives extends DepartmentActivity {
                                 setResult(RESULT_OK,settingsintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 
@@ -159,7 +165,8 @@ public class DeptArchives extends DepartmentActivity {
         settingsbutton1=findViewById(R.id.settingsbutton1);
         archivebutton1=findViewById(R.id.archivebutton1);
         logoutbutton1=findViewById(R.id.logoutbutton1);
-        deptarchivbutton1=findViewById(R.id.deptarchivebutton1);
+        deptarchivebutton1=findViewById(R.id.deptarchivebutton1);
+        deptquerybutton1=findViewById(R.id.deptqueriesbutton1);
 
         viewPager=findViewById(R.id.dept_archives_pager);
         tabLayout=findViewById(R.id.dept_archives_tab);
@@ -192,6 +199,13 @@ public class DeptArchives extends DepartmentActivity {
             }
         });
 
+        deptquerybutton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(deptqueryintent,REQUEST_CODE_DEPTQUERY_D);
+            }
+        });
+
         logoutbutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,10 +228,15 @@ public class DeptArchives extends DepartmentActivity {
                                 setResult(RESULT_OK,settingsintent);
                             }
                             else {
-                                if (getIntent().getIntExtra("pp",0)==REQUEST_CODE_MAIN_D)
-                                {
-                                    mainintent.putExtra("key1","logout");
-                                    setResult(RESULT_OK,mainintent);
+                                if(getIntent().getIntExtra("pp", 0) == REQUEST_CODE_DEPTQUERY_D){
+                                    deptqueryintent.putExtra("ac","lo");
+                                    setResult(RESULT_OK,deptqueryintent);
+                                }
+                                else {
+                                    if (getIntent().getIntExtra("pp", 0) == REQUEST_CODE_MAIN_D) {
+                                        mainintent.putExtra("key1", "logout");
+                                        setResult(RESULT_OK, mainintent);
+                                    }
                                 }
                             }
 
