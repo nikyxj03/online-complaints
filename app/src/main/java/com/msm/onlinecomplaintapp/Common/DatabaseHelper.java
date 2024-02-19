@@ -20,6 +20,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.msm.onlinecomplaintapp.Chat.Models.ChatContact;
+import com.msm.onlinecomplaintapp.Chat.Models.ChatInfo;
+import com.msm.onlinecomplaintapp.Chat.Models.GroupInfo;
+import com.msm.onlinecomplaintapp.Chat.Models.MyGroup;
 import com.msm.onlinecomplaintapp.Interfaces.BooleanListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataFetchListener;
 import com.msm.onlinecomplaintapp.Interfaces.OnDataSFetchListener;
@@ -1041,5 +1045,17 @@ public class DatabaseHelper {
                     onDataUpdatedListener.onDataUploaded(false);
             }
         });
+    }
+
+    public void getMyContacts(String uid, OnDataFetchListener<ChatContact> onDataFetchListener) {
+    }
+
+    public void getMyGroups(String uid, OnDataFetchListener<MyGroup> myGroupOnDataFetchListener) {
+    }
+
+    public void getGroupInfo(String gid, OnDataSFetchListener<GroupInfo> onDataSFetchListener) {
+    }
+
+    public void getChatInfo(String chatId, OnDataSFetchListener<ChatInfo> chatInfoOnDataSFetchListener) {
     }
 }

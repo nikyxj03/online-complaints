@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1006518179317-d3oc80lq0obt891svhb6vgo6ef6i3697.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.msm.onlinecomplaintapp",
+            "certificate_hash": "1bd20e326084d37de30ab9fe8d0a1fdac4a84fa1"
+          }
+        },
+        {
+          "client_id": "1006518179317-l332c6jgjrhfeom7nlueselsk0982jge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.msm.onlinecomplaintapp",
+            "certificate_hash": "91d5be1f1016a420c793926a38c416ec22c1b128"
+          }
+        },
+        {
           "client_id": "1006518179317-t33dgv5olj1qefrsikirj7lkjgvg5r35.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -33,20 +49,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "1006518179317-taj9gl946jjoulg0ft4ofuosi8b8t61h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

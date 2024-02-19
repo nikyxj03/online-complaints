@@ -134,38 +134,38 @@ public class DeptIgnoreMenu extends BottomSheetDialog {
             public void onClick(View v) {
                 if (departmentsList == null) {
                     GlobalApplication.databaseHelper.getDepartmentsList(new OnDataFetchListener<Departments>() {
-                                                            @Override
-                                                            public void onDataFetched(List<Departments> departments) {
-                                                                departmentsList = departments;
-                                                            }
-                                                        });
-                                                    } else {
-                                                        dismiss();
-                                                        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext);
-                                                        View view1 = bottomSheetDialog.getLayoutInflater().inflate(R.layout.deplistlayout, null);
-                                                        bottomSheetDialog.setContentView(view1);
-                                                        bottomSheetDialog.show();
-                                                        ListView listView = view1.findViewById(R.id.depsellist);
-                                                        TextView dlladmintext = view1.findViewById(R.id.dlldmintext);
-                                                        dlladmintext.setVisibility(View.GONE);
-                                                        int temppos = 0;
-                                                        for (int i = 0; i < departmentsList.size(); i++) {
-                                                            if (cuComplaint.getDept().contains(departmentsList.get(i).getDid()))
-                                                                temppos = i;
-                                                        }
-                                                        DeptListAdapter deptListAdapter = new DeptListAdapter(departmentsList, temppos, mContext, cuComplaint);
-                                                        deptListAdapter.dissmiss(new OnClick() {
-                                                            @Override
-                                                            public void OnClicked() {
-                                                                bottomSheetDialog.dismiss();
-                                                            }
-                                                        });
-                                                        listView.setAdapter(deptListAdapter);
+                        @Override
+                        public void onDataFetched(List<Departments> departments) {
+                            departmentsList = departments;
+                        }
+                    });
+                } else {
+                    dismiss();
+                    final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext);
+                    View view1 = bottomSheetDialog.getLayoutInflater().inflate(R.layout.deplistlayout, null);
+                    bottomSheetDialog.setContentView(view1);
+                    bottomSheetDialog.show();
+                    ListView listView = view1.findViewById(R.id.depsellist);
+                    TextView dlladmintext = view1.findViewById(R.id.dlldmintext);
+                    dlladmintext.setVisibility(View.GONE);
+                    int temppos = 0;
+                    for (int i = 0; i < departmentsList.size(); i++) {
+                        if (cuComplaint.getDept().contains(departmentsList.get(i).getDid()))
+                            temppos = i;
+                    }
+                    DeptListAdapter deptListAdapter = new DeptListAdapter(departmentsList, temppos, mContext, cuComplaint);
+                    deptListAdapter.dissmiss(new OnClick() {
+                        @Override
+                        public void OnClicked() {
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+                    listView.setAdapter(deptListAdapter);
 
 
-                                                    }
-                                                }
-                                            });
+                }
+            }
+        });
 
         dimdeletebutton.setOnClickListener(new View.OnClickListener() {
             @Override

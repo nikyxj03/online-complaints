@@ -6,59 +6,59 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StatusMessage {
-    private String message;
-    private String cid;
-    private Timestamp timestamp;
-    private String authorId;
-    private String msgId;
+  private String message;
+  private String cid;
+  private Timestamp timestamp;
+  private String authorId;
+  private String msgId;
 
-    public String getMsgId() {
-        return msgId;
-    }
+  public String getMsgId() {
+    return msgId;
+  }
 
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
-    }
+  public void setMsgId(String msgId) {
+    this.msgId = msgId;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
+  public void setCid(String cid) {
+    this.cid = cid;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public String getCid() {
-        return cid;
-    }
+  public String getCid() {
+    return cid;
+  }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+  public Timestamp getTimestamp() {
+    return timestamp;
+  }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+  public void setTimestamp(Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
 
-    public String getAuthorId() {
-        return authorId;
-    }
+  public String getAuthorId() {
+    return authorId;
+  }
 
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
+  public void setAuthorId(String authorId) {
+    this.authorId = authorId;
+  }
 
-    public Map<String,Object> toMap(){
-        Map<String,Object> map=new HashMap<>();
-        map.put("message",message);
-        map.put("cid",cid);
-        map.put("timestamp",timestamp);
-        map.put("authorId",authorId);
-        map.put("msgId",msgId);
-        return map;
-    }
+  public Map<String,Object> toMap(){
+    Map<String,Object> map=new HashMap<>();
+    map.put("message",message);
+    map.put("cid",cid);
+    map.put("timestamp",timestamp);
+    map.put("authorId",authorId);
+    map.put("msgId",msgId);
+    return map;
+  }
 }
